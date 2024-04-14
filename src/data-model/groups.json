@@ -1,0 +1,24 @@
+[
+    {
+        "id": "1",
+        "name": "Basketball",
+        "description": "Basketball is a sport played between two teams of equal size. It is played by two teams of equal size, each with their own ball.",
+        "image": "icons/fitter-logo.jpg",
+        "location": "Tel-Aviv"
+    },
+    {
+        "id": "2",
+        "name": "Football",
+        "description": "Football is a sport played between two teams of equal size. It is played by two teams of equal size, each with their own ball.",
+        "image": "icons/fitter-logo.jpg",
+        "location": "Or Yehuda"
+    },
+    {
+        "id": "3",
+        "name": "Pingpong",
+        "description": "Pingpong is a sport played between two teams of equal size. It is played by two teams of equal size, each with their own ball.",
+        "image": "icons/fitter-logo.jpg",
+        "location": "Tel-Aviv"
+    }
+]
+
