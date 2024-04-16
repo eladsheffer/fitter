@@ -1,0 +1,47 @@
+[
+    {
+        "id": "1",
+        "name": "John Doe",
+        "email": "",
+        "phone": "123-456-7890",
+        "address": "123 Main St",
+        "city": "Anytown",
+        "picture": "icons/user.png"
+    },
+    {
+        "id": "2",
+        "name": "Jane Doe",
+        "email": "",
+        "phone": "123-456-7890",
+        "address": "123 Main St",
+        "city": "Anytown",
+        "picture": "icons/user.png"
+    },
+    {
+        "id": "3",
+        "name": "Jim Doe",
+        "email": "",
+        "phone": "123-456-7890",
+        "address": "123 Main St",
+        "city": "Anytown",
+        "picture": "icons/user.png"
+    },
+    {
+        "id": "4",
+        "name": "Jill Doe",
+        "email": "",
+        "phone": "123-456-7890",
+        "address": "123 Main St",
+        "city": "Anytown",
+        "picture": "icons/user.png"
+    },
+    {
+        "id": "5",
+        "name": "Jack Doe",
+        "email": "",
+        "phone": "123-456-7890",
+        "address": "123 Main St",
+        "city": "Anytown",
+        "picture": "icons/user.png"
+    }
+]

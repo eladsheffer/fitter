@@ -2,9 +2,19 @@ import FitterNavbar from '../components/FitterNavbar';
 import { Dropdown, Row, Col, Form, Button, Image, Card, CardGroup } from 'react-bootstrap';
 import groups from "../data-model/groups.json";
 import sports from "../data-model/sports.json";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext } from 'react';
+import { AppContext } from '../App';
 
 const GroupsPage = () => {
+    const navigate = useNavigate();
+    const { setGroup } = useContext(AppContext);
+
+    const pickGroup = (group) => {
+        setGroup(group);
+        navigate(`/groups/${group.id}`);
+    }
+    
     return (
         <div>
             <FitterNavbar />
@@ -104,11 +114,12 @@ const GroupsPage = () => {
             >
                 {groups.map((group, i) => (
                     <Row>
+                        <Button variant='None' onClick={() => pickGroup(group)}>
                         <Col>
                             <Card key={i} border="secondary">
-                                <Link to={`groups/${group.id}`} style={{
+                                {/* <Link to={`groups/${group.id}`} style={{
                                     textDecoration: "none",
-                                }}>
+                                }}> */}
                                     <Card.Img variant="top" src={group.image} />
                                     <Card.Body>
                                         <Card.Title>{group.name}</Card.Title>
@@ -117,9 +128,10 @@ const GroupsPage = () => {
                                     <Card.Footer>
                                         <small className="text-muted">{group.location}</small>
                                     </Card.Footer>
-                                </Link>
+                                {/* </Link> */}
                             </Card>
                         </Col>
+                        </Button>
                     </Row>
                 ))}
             </CardGroup>
