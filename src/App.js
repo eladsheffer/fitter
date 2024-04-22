@@ -7,8 +7,12 @@ import EventsPage from "./pages/EventsPage";
 import GroupPage from "./pages/GroupPage";
 import EventPage from "./pages/EventPage";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useState, useRef, createContext } from "react";
+
+export const AppContext = createContext({});
 
 function App() {
+  const [group, setGroup] = useState(null);
   const router = createBrowserRouter([
     {
       path: "/",
@@ -16,11 +20,14 @@ function App() {
     },
     {
       path: "/groups",
-      element: <GroupsPage />,
+      element: <AppContext.Provider value={{setGroup}}><GroupsPage />
+      </AppContext.Provider>,
     },
     {
       path: "/groups/:id",
-      element: <GroupPage />,
+      element: <AppContext.Provider value={{group}}>
+        <GroupPage />
+      </AppContext.Provider>,
     },
     {
       path: "/events",
