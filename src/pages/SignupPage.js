@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { Form, Alert, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { login } from '../features/user';
+import { useNavigate } from 'react-router-dom';
 
 const SignupPage = () => {
     const nameInput = useRef();
@@ -10,6 +11,7 @@ const SignupPage = () => {
     const addressInput = useRef();
     const cityInput = useRef();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const signup = () => {
 
@@ -20,7 +22,7 @@ const SignupPage = () => {
         };
         
         dispatch(login(newUser));
-
+        navigate("/");
     };
 
     return (

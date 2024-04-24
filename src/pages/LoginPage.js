@@ -2,6 +2,7 @@ import { Form, Alert, Button } from 'react-bootstrap'
 import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from '../features/user';
+import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
     const [invalidLogin, setInvalidLogin] = useState(false);
@@ -9,9 +10,11 @@ function LoginPage() {
     const emailInput = useRef(null);
     const passwordInput = useRef(null);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const loginFunc = () => {
         dispatch(login({ name: "test", email: emailInput.current.value, password: passwordInput.current.value }));
+        navigate("/");
         // const { users } = props;
         // let newActiveUser = null;
         // for (let i = 0; i < users.length && !newActiveUser; i++) {
