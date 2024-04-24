@@ -54,7 +54,7 @@ function App() {
         <Route path="/groups" element={<GroupsPage />} />
         <Route path="/groups/:id" element={<GroupPage />} />
         <Route path="/events" element={<EventsPage />} />
-        <Route path="/event/:id" element={<EventPage />} />
+        <Route path="/events/:id" element={<EventPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
       </Routes>
