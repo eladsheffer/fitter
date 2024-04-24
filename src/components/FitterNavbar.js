@@ -1,14 +1,29 @@
 import React from "react";
 import logo from "@/../../public/icons/fitter-logo.jpg";
 import { Navbar, Nav, Form, Row, Col, Button, Image } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import {Link} from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { logout } from '../features/user';
+
 const FitterNavbar = () => {
+  const dispatch = useDispatch();
+  const activeUser = useSelector((state) => state.user.value);
+  let signupLink = !activeUser ? <Nav.Link as={Link} to="/signup">Signup</Nav.Link> : null;
+  let loginLink = !activeUser ? <Nav.Link as={Link} to="/login">Login</Nav.Link> : null;
+  let logoutLink = activeUser ? <Nav.Link as={Link} to="/" onClick={()=>logoutFunc()}>Logout</Nav.Link> : null;
+  console.log("navbar", activeUser);
+  const logoutFunc = () => {
+    dispatch(logout());
+  }
+
   return (
     <Navbar
       className="bg-body-tertiary justify-content-between"
       bg="dark"
       data-bs-theme="dark"
     >
-      <Navbar.Brand href="/">
+      <Navbar.Brand as={Link} to="/">
         <Image
           src={logo}
           width="100"
@@ -33,12 +48,13 @@ const FitterNavbar = () => {
         </Row>
       </Form>
       <Nav>
-        <Nav.Link href="/groups">Groups</Nav.Link>
-        <Nav.Link href="/events">Events</Nav.Link>
+        <Nav.Link as={Link} to="/groups">Groups</Nav.Link>
+        <Nav.Link as={Link} to="/events">Events</Nav.Link>
       </Nav>
       <Nav>
-        <Nav.Link href="/login">Login</Nav.Link>
-        <Nav.Link href="/signup">Signup</Nav.Link>
+        {signupLink}
+        {loginLink}
+        {logoutLink}
       </Nav>
     </Navbar>
   );

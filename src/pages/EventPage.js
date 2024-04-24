@@ -12,7 +12,6 @@ export default function EventPage() {
 
   return (
     <div>
-      <FitterNavbar />
       <div style={{ width: "70%", marginInline: "auto", marginTop: "4rem" }}>
         <Container>
           <Row className="gap-5">

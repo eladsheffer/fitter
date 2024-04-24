@@ -3,21 +3,16 @@ import { Dropdown, Row, Col, Form, Button, Image, Card, CardGroup } from 'react-
 import groups from "../data-model/groups.json";
 import sports from "../data-model/sports.json";
 import { Link, useNavigate } from "react-router-dom";
-import { useContext } from 'react';
-import { AppContext } from '../App';
 
 const GroupsPage = () => {
     const navigate = useNavigate();
-    const { setGroup } = useContext(AppContext);
 
     const pickGroup = (group) => {
-        setGroup(group);
         navigate(`/groups/${group.id}`);
     }
     
     return (
         <div>
-            <FitterNavbar />
             <div style={{ width: "80%", marginInline: "auto", marginTop: "4rem" }}>
                 <Row>
                     <Col>

@@ -1,16 +1,20 @@
 import FitterNavbar from '../components/FitterNavbar';
-import { AppContext } from '../App';
-import { useContext } from 'react';
+import { useState } from 'react';
 import { Card, Col, Row, Image, CardGroup } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import events from '../data-model/events.json';
+import groups from '../data-model/groups.json';
 import users from '../data-model/users.json';
 
+
 const GroupPage = () => {
-    const { group } = useContext(AppContext);
+
+    let { id } = useParams();
+    let groupData = groups.find((e) => e.id === id);
+    const [group, setGroup] = useState(groupData);
+
     return (
         <div>
-            <FitterNavbar />
             <Row>
             <Col xs="1">
                 </Col>  

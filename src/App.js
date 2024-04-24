@@ -6,39 +6,60 @@ import GroupsPage from "./pages/GroupsPage";
 import EventsPage from "./pages/EventsPage";
 import GroupPage from "./pages/GroupPage";
 import EventPage from "./pages/EventPage";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
+import FitterNavbar from "./components/FitterNavbar";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useState, useRef, createContext } from "react";
-
-export const AppContext = createContext({});
 
 function App() {
-  const [group, setGroup] = useState(null);
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Homepage />,
-    },
-    {
-      path: "/groups",
-      element: <AppContext.Provider value={{setGroup}}><GroupsPage />
-      </AppContext.Provider>,
-    },
-    {
-      path: "/groups/:id",
-      element: <AppContext.Provider value={{group}}>
-        <GroupPage />
-      </AppContext.Provider>,
-    },
-    {
-      path: "/events",
-      element: <EventsPage />,
-    },
-    {
-      path: "/events/:id",
-      element: <EventPage />,
-    },
-  ]);
-  return <RouterProvider router={router} />;
+  // const router = createBrowserRouter([
+  //   {
+  //     path: "/",
+  //     element: <Homepage />,
+  //   },
+  //   {
+  //     path: "/groups",
+  //     element: <GroupsPage />
+  //   },
+  //   {
+  //     path: "/groups/:id",
+  //     element:
+  //       <GroupPage />,
+  //   },
+  //   {
+  //     path: "/events",
+  //     element: <EventsPage />,
+  //   },
+  //   {
+  //     path: "/events/:id",
+  //     element: <EventPage />,
+  //   },
+  //   {
+  //     path: "/login",
+  //     element:
+  //       <LoginPage />
+  //   },
+  //   {
+  //     path: "/signup",
+  //     element:
+  //       <SignupPage />,
+  //   }
+  // ]);
+  return <div>
+
+    <BrowserRouter>
+      <FitterNavbar />
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+        <Route path="/groups" element={<GroupsPage />} />
+        <Route path="/groups/:id" element={<GroupPage />} />
+        <Route path="/events" element={<EventsPage />} />
+        <Route path="/event/:id" element={<EventPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+      </Routes>
+    </BrowserRouter>
+  </div>;
 }
 
 export default App;

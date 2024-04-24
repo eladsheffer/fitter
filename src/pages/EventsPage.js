@@ -27,7 +27,6 @@ const EventsPage = () => {
   // UI
   return (
     <div>
-      <FitterNavbar />
       <div style={{ width: "70%", marginInline: "auto", marginTop: "4rem" }}>
         <h1>Hello Elad 👋</h1>
         <Container>

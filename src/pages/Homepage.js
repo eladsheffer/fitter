@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 const Homepage = () => {
     return (
         <div>
-            <FitterNavbar />
             <Card style={{ width: "40%", marginInline: "auto", marginTop: "4rem" }}>
                 <Card.Body>
                     <Row>
