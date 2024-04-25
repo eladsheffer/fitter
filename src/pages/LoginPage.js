@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from '../features/user';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function LoginPage() {
     const [invalidLogin, setInvalidLogin] = useState(false);
@@ -39,7 +40,7 @@ function LoginPage() {
             <div className="login">
                 <h1>Login</h1>
                 <p>
-                    or <a href="/signup">create an account</a>
+                    or <Link to="/signup">create an account</Link>
                 </p>
                 <Alert variant="danger" show={invalidLogin}>
                     Invalid email or password!

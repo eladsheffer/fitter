@@ -12,7 +12,6 @@ const FitterNavbar = () => {
   let signupLink = !activeUser ? <Nav.Link as={Link} to="/signup">Signup</Nav.Link> : null;
   let loginLink = !activeUser ? <Nav.Link as={Link} to="/login">Login</Nav.Link> : null;
   let logoutLink = activeUser ? <Nav.Link as={Link} to="/" onClick={()=>logoutFunc()}>Logout</Nav.Link> : null;
-  console.log("navbar", activeUser);
   const logoutFunc = () => {
     dispatch(logout());
   }
