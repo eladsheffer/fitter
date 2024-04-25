@@ -42,7 +42,7 @@ const FitterNavbar = () => {
             />
           </Col>
           <Col xs="auto">
-            <Button type="submit">Search</Button>
+            <Button>Search</Button>
           </Col>
         </Row>
       </Form>
