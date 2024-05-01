@@ -108,7 +108,7 @@ const GroupsPage = () => {
                 }}
             >
                 {groups.map((group, i) => (
-                    <Row>
+                    <Row key={i}>
                         <Button variant='None' onClick={() => pickGroup(group)}>
                         <Col>
                             <Card key={i} border="secondary">

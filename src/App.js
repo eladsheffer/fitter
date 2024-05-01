@@ -6,7 +6,7 @@ import GroupsPage from "./pages/GroupsPage";
 import EventsPage from "./pages/EventsPage";
 import GroupPage from "./pages/GroupPage";
 import EventPage from "./pages/EventPage";
-import LoginPage from "./pages/LoginPage";
+import LoginPage from './pages/LoginPage';
 import SignupPage from "./pages/SignupPage";
 import FitterNavbar from "./components/FitterNavbar";
 import "bootstrap/dist/css/bootstrap.min.css";

@@ -40,7 +40,7 @@ const Homepage = () => {
                 }}
             >
                 {events.map((event, i) => (
-                    <Card key={i} border="secondary">
+                    <Card border="secondary">
                         <Link to={`events/${event.id}`} style={{
                             textDecoration: "none",
                         }}>
@@ -74,8 +74,7 @@ const Homepage = () => {
                 }}
             >
                 {groups.map((group, i) => (
-
-                    <Card key={i} border="secondary">
+                    <Card border="secondary">
                         <Link to={`groups/${group.id}`} style={{
                             textDecoration: "none",
                         }}>

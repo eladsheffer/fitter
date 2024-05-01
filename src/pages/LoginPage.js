@@ -1,9 +1,10 @@
 import { Form, Alert, Button } from 'react-bootstrap'
 import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { login } from '../features/user';
+import user, { login } from '../features/user';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { postData } from '../features/apiService';
 
 function LoginPage() {
     const [invalidLogin, setInvalidLogin] = useState(false);
@@ -13,9 +14,46 @@ function LoginPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const loginFunc = () => {
-        dispatch(login({ name: "test", email: emailInput.current.value, password: passwordInput.current.value }));
+    const loginFunc = async () => {
+
+        let userDetails = {
+            email: emailInput.current.value,
+            password: passwordInput.current.value
+        };
+        let path = 'https://fitter-backend.onrender.com/users/login/'
+        let user = await postData(path, userDetails);
+        if (user!=null) {
+        dispatch(login(user)); // dispatch the user object to the store
         navigate("/");
+        } else { 
+            setInvalidLogin(true);
+        }
+        // const location = 'https://fitter-backend.onrender.com/users/login/';
+        // const settings = {
+        //     method: 'POST',
+        //     headers: {
+        //     Accept: 'application/json',
+        //     'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({
+        //     email: "qqq@gmail.com",
+        //     password: "qqq!!!qqq"
+        //     })
+        // };
+        // try {
+        //     const fetchResponse = await fetch(location, settings);
+        //     const data = await fetchResponse.json();
+        //     const status = fetchResponse.status;
+        //     console.log(status);
+        //     console.log(data);
+        //     // handle the response data here
+        //     // dispatch(login({ name: "test", email: emailInput.current.value, password: passwordInput.current.value }));
+        //     // navigate("/");
+        // } catch (e) {
+        //     console.error(e);
+        //     // handle the error here
+        // }
+        
         // const { users } = props;
         // let newActiveUser = null;
         // for (let i = 0; i < users.length && !newActiveUser; i++) {
@@ -48,7 +86,7 @@ function LoginPage() {
                 <Form>
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Email address</Form.Label>
-                        <Form.Control ref={emailInput} type="email" placeholder="Enter email" />
+                        <Form.Control ref={emailInput} type="email" value="qqq@gmail.com" placeholder="Enter email" />
                         <Form.Text className="text-muted">
                             We'll never share your email with anyone else.
                         </Form.Text>
@@ -56,9 +94,9 @@ function LoginPage() {
 
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control ref={passwordInput} type="password" placeholder="Password" />
+                        <Form.Control ref={passwordInput} type="password" value="qqq!!!qqq" placeholder="Password" />
                     </Form.Group>
-                    <Button type="button" block onClick={loginFunc}>
+                    <Button type="button" onClick={loginFunc}>
                         Login
                     </Button>
                 </Form>
