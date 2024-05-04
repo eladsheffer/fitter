@@ -6,10 +6,11 @@ import reportWebVitals from './reportWebVitals';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import userReducer from './features/user';
-import user from './features/user';
+import modalReducer from './features/modal';
 
 const store = configureStore({
-  reducer: {user: userReducer},
+  reducer: {user: userReducer, modal: modalReducer},
+
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

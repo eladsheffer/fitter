@@ -1,10 +1,11 @@
-import FitterNavbar from "../components/FitterNavbar";
 import { Card, Col, Row, CardGroup } from "react-bootstrap";
 import groups from "../data-model/groups.json";
 import events from "../data-model/events.json";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Homepage = () => {
+    const activeUser = useSelector((state) => state.user.value);
     return (
         <div>
             <Card style={{ width: "40%", marginInline: "auto", marginTop: "4rem" }}>

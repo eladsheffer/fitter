@@ -1,18 +1,23 @@
-import FitterNavbar from '../components/FitterNavbar';
 import { Dropdown, Row, Col, Form, Button, Image, Card, CardGroup } from 'react-bootstrap';
 import groups from "../data-model/groups.json";
 import sports from "../data-model/sports.json";
 import { Link, useNavigate } from "react-router-dom";
+import GroupModal from '../components/GroupModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { showModal } from '../features/modal';
 
 const GroupsPage = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const activeUser = useSelector((state) => state.user.value);
 
     const pickGroup = (group) => {
         navigate(`/groups/${group.id}`);
     }
     
     return (
-        <div>
+        <div> 
+           <GroupModal />
             <div style={{ width: "80%", marginInline: "auto", marginTop: "4rem" }}>
                 <Row>
                     <Col>
@@ -32,7 +37,7 @@ const GroupsPage = () => {
                         />
                     </Col>
                     <Col>
-                        <Button type="submit">Search</Button>
+                        <Button>Search</Button>
                     </Col>
                     <Col>
                         <h3>Or</h3>
@@ -41,7 +46,10 @@ const GroupsPage = () => {
                         <p>Start your own group and community!</p>
                     </Col>
                     <Col>
-                        <Image src="icons/add.png" width="40" height="40" className="d-inline-block align-top" alt="add" rounded />
+                        <a href="#">  
+                        <Image src="icons/add.png" width="40" height="40" className="d-inline-block align-top" alt="add" rounded
+                        onClick={()=>{dispatch(showModal())}} />
+                        </a>
                     </Col>
 
                 </Row>
@@ -108,7 +116,7 @@ const GroupsPage = () => {
                 }}
             >
                 {groups.map((group, i) => (
-                    <Row key={i}>
+                    <Row>
                         <Button variant='None' onClick={() => pickGroup(group)}>
                         <Col>
                             <Card key={i} border="secondary">

@@ -1,23 +1,17 @@
 import { useState } from "react";
-import FitterNavbar from "../components/FitterNavbar";
-import {
-  DropdownButton,
-  Button,
-  Dropdown,
-  Row,
-  Col,
-  Container,
-  Image,
-} from "react-bootstrap";
+import {DropdownButton, Button, Dropdown, Row, Col, Container, Image} from "react-bootstrap";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { Link } from "react-router-dom";
 import events from "../data-model/events.json";
+import { useSelector } from "react-redux";
 
 const EventsPage = () => {
   // States
   const [sport, setSport] = useState("Any Sport");
   const [date, setDate] = useState(new Date());
+
+  const activeUser = useSelector((state) => state.user.value);
 
   // Functions
   function onChange(newDate) {

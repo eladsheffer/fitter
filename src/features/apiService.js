@@ -1,11 +1,25 @@
 
 //const baseUrl = 'https://fitter-backend.onrender.com/';
+
+const getAuthToken = () => {
+    // Retrieve the authentication token from wherever you have stored it
+    let x = localStorage.getItem('authToken');
+    console.log(x);
+    return localStorage.getItem('authToken');
+};
+
 const getData = async (url) => {
 
     try {
-        const response = await fetch(url);
+        //const response = await fetch(url);
+        const response = await fetch(url, {
+            headers: {
+                'Authorization': `Bearer ${getAuthToken()}`
+            }
+        });
         const data = await response.json();
         const status = response.status;
+        console.log(data);
         if (status === 200)
             return data;
         return null;
@@ -23,6 +37,7 @@ const postData = async (url, data) => {
         method: 'POST',
         headers: {
             Accept: 'application/json',
+            'Authorization': `Bearer ${getAuthToken()}`,
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(data)
@@ -31,8 +46,9 @@ const postData = async (url, data) => {
         const response = await fetch(url, settings);
         const data = await response.json();
         const status = response.status;
+        localStorage.setItem('authToken', data.token);
         console.log(data);
-        if (status === 200)
+        if (status === 200 || status === 201)
             return data;
         return null;
     } catch (error) {

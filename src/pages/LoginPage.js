@@ -23,6 +23,7 @@ function LoginPage() {
         let path = 'https://fitter-backend.onrender.com/users/login/'
         let user = await postData(path, userDetails);
         if (user!=null) {
+            localStorage.setItem('user', JSON.stringify(user));
         dispatch(login(user)); // dispatch the user object to the store
         navigate("/");
         } else { 

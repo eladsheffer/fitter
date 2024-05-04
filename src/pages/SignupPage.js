@@ -3,8 +3,7 @@ import { Form, Alert, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { login } from '../features/user';
 import { useNavigate } from 'react-router-dom';
-import Calendar from 'react-calendar';
-import { getData, postData, formatDate } from '../features/apiService';
+import { getData, postData } from '../features/apiService';
 
 const SignupPage = () => {
     const firstNameInput = useRef();
@@ -34,7 +33,7 @@ const SignupPage = () => {
             password: passwordInput.current.value,
             //address: addressInput.current.value,
             //city: cityInput.current.value,
-            date_of_birth: formatDate(dateOfBirthInput.current.value),
+            date_of_birth: dateOfBirthInput.current.value,
             gender: maleInput.current.checked ? "male" : "female",
         };
 
@@ -83,7 +82,7 @@ const SignupPage = () => {
                     </Form.Group>
                     <Form.Group controlId="date-of-birth">
                         <Form.Label>Date of Birth</Form.Label>
-                        <Calendar ref={dateOfBirthInput} />
+                        <Form.Control type="date" ref={dateOfBirthInput} />
                     </Form.Group>
                     <Form.Group controlId="gender">
                         <Form.Label>Gender</Form.Label>
@@ -93,6 +92,7 @@ const SignupPage = () => {
                             name="gender"
                             type="radio"
                             id={`inline-radio-1`}
+                            checked
                         />
                         <Form.Check ref={femaleInput}
                             inline

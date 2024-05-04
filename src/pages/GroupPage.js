@@ -5,9 +5,11 @@ import { Link, useParams } from 'react-router-dom';
 import events from '../data-model/events.json';
 import groups from '../data-model/groups.json';
 import users from '../data-model/users.json';
-
+import { useSelector } from 'react-redux';
 
 const GroupPage = () => {
+
+    const activeUser = useSelector((state) => state.user.value);
 
     let { id } = useParams();
     let groupData = groups.find((e) => e.id === id);

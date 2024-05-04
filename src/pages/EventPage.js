@@ -4,8 +4,10 @@ import { Container, Image, Row, Col } from "react-bootstrap";
 import logo from "@/../../public/icons/fitter-logo.jpg";
 import { useParams } from "react-router-dom";
 import events from "../data-model/events.json";
+import { useSelector } from "react-redux";
 
 export default function EventPage() {
+  const activeUser = useSelector((state) => state.user.value);
   let { id } = useParams();
   let eventData = events.find((e) => e.id === id);
   const [event, setEvent] = useState(eventData);
