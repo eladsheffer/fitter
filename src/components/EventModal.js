@@ -9,10 +9,11 @@ import { postData } from '../features/apiService';
 // import DialogContent from '@mui/material/DialogContent';
 // import DialogContentText from '@mui/material/DialogContentText';
 // import DialogTitle from '@mui/material/DialogTitle';
-import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, IconButton, Stack, TextField, InputLabel, Select, MenuItem, FormControl } from "@mui/material";
+import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, IconButton, Stack, TextField, InputLabel, Select, MenuItem, FormControl, Box } from "@mui/material";
 import { DateTimePicker } from '@mui/x-date-pickers';
 import FormControlContext from "@mui/material/FormControl/FormControlContext";
 import CloseIcon from "@mui/icons-material/Close"
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Description } from '@mui/icons-material';
 import dayjs from 'dayjs';
 
@@ -54,9 +55,15 @@ const EventModal = () => {
     }
 
     return (
-        <div style={{ textAlign: 'center' }}>
-            <h1>MUI - DIALOG</h1>
-            <Button onClick={functionopenpopup} color="primary" variant="contained">Open Popup</Button>
+        <div>
+            <Box sx={{ fontSize: 20, textAlign: 'center' }}>
+            Create New Event
+            <a href='#'>
+            <AddCircleIcon color="primary" sx={{fontSize: 100}} onClick={functionopenpopup} variant="contained">
+            {/* <Button onClick={functionopenpopup} color="primary" variant="contained">Create New Event</Button> */}
+            </AddCircleIcon>
+            </a>
+            </Box>
             <Dialog
                 // fullScreen 
                 open={open} onClose={closepopup} fullWidth maxWidth="sm">
@@ -84,7 +91,7 @@ const EventModal = () => {
                         </FormControl>
                         <DateTimePicker required inputRef={eventDateTimeInput}
                             label="Event Date & Time"
-                            format="YYYY-MM-DD hh:mm"
+                            format="YYYY-MM-DD hh:mm A"
                             //value={dayjs()}
                             defaultValue={dayjs()}
                             //onChange={(newValue) => setValue(newValue)}

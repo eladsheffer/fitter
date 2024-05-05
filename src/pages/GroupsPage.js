@@ -19,7 +19,6 @@ const GroupsPage = () => {
     return (
         <div> 
            <GroupModal />
-           <EventModal />
             <div style={{ width: "80%", marginInline: "auto", marginTop: "4rem" }}>
                 <Row>
                     <Col>

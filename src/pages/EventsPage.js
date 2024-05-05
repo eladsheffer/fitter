@@ -5,6 +5,7 @@ import "react-calendar/dist/Calendar.css";
 import { Link } from "react-router-dom";
 import events from "../data-model/events.json";
 import { useSelector } from "react-redux";
+import EventModal from "../components/EventModal";
 
 const EventsPage = () => {
   // States
@@ -22,8 +23,17 @@ const EventsPage = () => {
   return (
     <div>
       <div style={{ width: "70%", marginInline: "auto", marginTop: "4rem" }}>
-        <h1>Hello Elad 👋</h1>
         <Container>
+          <Row className="gap-5">
+            <Col>
+            <h1>Hello Elad 👋</h1>
+            </Col>
+            <Col xs='5'>
+            </Col>
+            <Col>
+              <EventModal />
+            </Col>
+          </Row>
           <Row className="mt-5 gap-5">
             <Col xs="auto" className="p-0">
               <Calendar
