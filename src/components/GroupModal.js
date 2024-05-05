@@ -8,7 +8,7 @@ const GroupModal = () => {
     const [show, setShow] = useState(true);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const showModal = useSelector((state) => state.groupModal.value);
+    const showModal = useSelector((state) => state.modal.value);
     const groupNameInput = React.createRef();
     const groupDescriptionInput = React.createRef();
     const groupVisibilityInput = React.createRef();

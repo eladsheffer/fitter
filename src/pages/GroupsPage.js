@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import GroupModal from '../components/GroupModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { showModal } from '../features/modal';
+import EventModal from '../components/EventModal';
 
 const GroupsPage = () => {
     const navigate = useNavigate();
@@ -18,6 +19,7 @@ const GroupsPage = () => {
     return (
         <div> 
            <GroupModal />
+           <EventModal />
             <div style={{ width: "80%", marginInline: "auto", marginTop: "4rem" }}>
                 <Row>
                     <Col>

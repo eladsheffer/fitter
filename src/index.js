@@ -7,6 +7,9 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import userReducer from './features/user';
 import modalReducer from './features/modal';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+
 
 const store = configureStore({
   reducer: {user: userReducer, modal: modalReducer},
@@ -17,7 +20,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
       <App />
+    </LocalizationProvider>
     </Provider>
   </React.StrictMode>
 );
