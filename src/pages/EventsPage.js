@@ -26,7 +26,7 @@ const EventsPage = () => {
         <Container>
           <Row className="gap-5">
             <Col>
-            <h1>Hello Elad 👋</h1>
+            <h1>Hello {activeUser!=null? activeUser.first_name: null} 👋</h1>
             </Col>
             <Col xs='5'>
             </Col>

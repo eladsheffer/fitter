@@ -3,13 +3,10 @@ import groups from "../data-model/groups.json";
 import sports from "../data-model/sports.json";
 import { Link, useNavigate } from "react-router-dom";
 import GroupModal from '../components/GroupModal';
-import { useDispatch, useSelector } from 'react-redux';
-import { showModal } from '../features/modal';
-import EventModal from '../components/EventModal';
+import { useSelector } from 'react-redux';
 
 const GroupsPage = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
     const activeUser = useSelector((state) => state.user.value);
 
     const pickGroup = (group) => {
@@ -18,7 +15,6 @@ const GroupsPage = () => {
     
     return (
         <div> 
-           <GroupModal />
             <div style={{ width: "80%", marginInline: "auto", marginTop: "4rem" }}>
                 <Row>
                     <Col>
@@ -47,10 +43,7 @@ const GroupsPage = () => {
                         <p>Start your own group and community!</p>
                     </Col>
                     <Col>
-                        <a href="#">  
-                        <Image src="icons/add.png" width="40" height="40" className="d-inline-block align-top" alt="add" rounded
-                        onClick={()=>{dispatch(showModal())}} />
-                        </a>
+                    <GroupModal />
                     </Col>
 
                 </Row>

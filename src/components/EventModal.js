@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { closeModal } from '../features/modal';
-import { postData } from '../features/apiService';
+import { postData, getData } from '../features/apiService';
 // import Button from '@mui/material/Button';
 // import TextField from '@mui/material/TextField';
 // import Dialog from '@mui/material/Dialog';
@@ -39,7 +39,18 @@ const EventModal = () => {
         setFormValues({ ...formValues, [name]: error });
     }
     
-    const createEvent = () => {
+    const createEvent = async () => {
+
+        if (activeUser == null) {
+            alert("Please login to create an event");
+            return;
+        }
+
+        if (!titleEventInput.current.value || !descriptionEventInput.current.value || !locationEventInput.current.value || !eventVisibilityInput.current.value) {
+            setFormValues({ title: !titleEventInput.current.value, description: !descriptionEventInput.current.value, location: !locationEventInput.current.value, visibility: !eventVisibilityInput.current.value });
+            return;
+        }   
+
         let newEvent = {
             title: titleEventInput.current.value,
             description: descriptionEventInput.current.value,
@@ -50,8 +61,14 @@ const EventModal = () => {
         }
         console.log(newEvent);
         let path = 'https://fitter-backend.onrender.com/events/';
-        let event = postData(path, newEvent);
+        let event = await postData(path, newEvent);
         console.log(event);
+        if (event) {
+            closepopup();
+        }
+        else {
+            alert("Error creating event");
+        }
     }
 
     return (
@@ -91,7 +108,7 @@ const EventModal = () => {
                         </FormControl>
                         <DateTimePicker required inputRef={eventDateTimeInput}
                             label="Event Date & Time"
-                            format="YYYY-MM-DD hh:mm A"
+                            format="YYYY-MM-DD hh:mm"
                             //value={dayjs()}
                             defaultValue={dayjs()}
                             //onChange={(newValue) => setValue(newValue)}
