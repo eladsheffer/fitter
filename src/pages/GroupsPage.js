@@ -1,13 +1,22 @@
 import { Dropdown, Row, Col, Form, Button, Image, Card, CardGroup } from 'react-bootstrap';
 import groups from "../data-model/groups.json";
 import sports from "../data-model/sports.json";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import GroupModal from '../components/GroupModal';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import RootModal from '../components/RootModal';
+import { renderModalType } from '../features/modal';
 
 const GroupsPage = () => {
+    
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const activeUser = useSelector((state) => state.user.value);
+    const location = useLocation();
+    
+    const type = activeUser ? 'Group' : 'Signup';
+    
+    dispatch(renderModalType({type: type}));
 
     const pickGroup = (group) => {
         navigate(`/groups/${group.id}`);
@@ -43,7 +52,7 @@ const GroupsPage = () => {
                         <p>Start your own group and community!</p>
                     </Col>
                     <Col>
-                    <GroupModal />
+                    <RootModal />
                     </Col>
 
                 </Row>

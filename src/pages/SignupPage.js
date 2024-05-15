@@ -2,30 +2,36 @@ import React, { useRef } from 'react';
 import { Form, Alert, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { login } from '../features/user';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { getData, postData } from '../features/apiService';
+import { showModal, closeModal } from '../features/modal';
 
-const SignupPage = () => {
-    const firstNameInput = useRef();
-    const lastNameInput = useRef();
-    const emailInput = useRef();
-    const passwordInput = useRef();
-    const addressInput = useRef();
-    const cityInput = useRef();
-    const dateOfBirthInput = useRef();
-    const maleInput = useRef();
-    const femaleInput = useRef();
+const SignupPage = (props) => {
+    const firstNameInput = useRef(null);
+    const lastNameInput = useRef(null);
+    const emailInput = useRef(null);
+    const passwordInput = useRef(null);
+    const addressInput = useRef(null);
+    const cityInput = useRef(null);
+    const dateOfBirthInput = useRef(null);
+    const maleInput = useRef(null);
+    const femaleInput = useRef(null);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [validated, setValidated] = React.useState(false);
 
 
 
     const signup = async () => {
+        if (!firstNameInput.current.checkValidity() || !lastNameInput.current.checkValidity() || !emailInput.current.checkValidity() || !passwordInput.current.checkValidity() || !dateOfBirthInput.current.checkValidity())
+            return;
+
         let user = await getData('https://fitter-backend.onrender.com/users/get_user_by_email?email=' + emailInput.current.value);
 
         if (user != null) {
             return;
         }
+
         let newUser = {
             first_name: firstNameInput.current.value,
             last_name: lastNameInput.current.value,
@@ -45,46 +51,62 @@ const SignupPage = () => {
         }
     };
 
+    const handleChange = (event) => {
+        const control = event.currentTarget;
+
+        if (control.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        setValidated(true);
+    };
+
     return (
         <div>
             <div className="login">
-                <h1>Create a User Account</h1>
-                <Form>
-                    <Form.Group controlId="name">
+
+                {props.modal ? null :
+                    <>
+                        <h1>Create User Account</h1>
+                        <p>
+                            Already a member? <Link to="/login">log in</Link>
+                        </p>
+                    </>
+                }
+                <Form noValidate validated={validated}>
+                    <Form.Group className="mb-3" controlId="name">
                         <Form.Label>First Name</Form.Label>
-                        <Form.Control ref={firstNameInput} type="text" placeholder="Enter your first name" />
+                        <Form.Control ref={firstNameInput} type="text" placeholder="Enter your first name" required onChange={handleChange} />
                     </Form.Group>
-                    <Form.Group controlId="name">
+                    <Form.Group className="mb-3" controlId="name">
                         <Form.Label>Last Name</Form.Label>
-                        <Form.Control ref={lastNameInput} type="text" placeholder="Enter your last name" />
+                        <Form.Control ref={lastNameInput} type="text" placeholder="Enter your last name" required onChange={handleChange} />
                     </Form.Group>
-                    <Form.Group controlId="email">
+                    <Form.Group className="mb-3" controlId="email">
                         <Form.Label>Email address</Form.Label>
-                        <Form.Control ref={emailInput} type="email" placeholder="Enter email" />
-                        <Form.Text className="text-muted">
-                            We'll never share your email with anyone else.
-                        </Form.Text>
+                        <Form.Control ref={emailInput} type="email" placeholder="Enter email" required onChange={handleChange} />
                     </Form.Group>
 
-                    <Form.Group controlId="password">
+                    <Form.Group className="mb-3" controlId="password">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control ref={passwordInput} type="password" placeholder="Password" />
+                        <Form.Control ref={passwordInput} type="password" placeholder="Password" required onChange={handleChange} />
                     </Form.Group>
 
-                    <Form.Group controlId="address">
+                    <Form.Group className="mb-3" controlId="address">
                         <Form.Label>Address</Form.Label>
                         <Form.Control ref={addressInput} type="text" placeholder="Enter address" />
                     </Form.Group>
 
-                    <Form.Group controlId="city">
+                    <Form.Group className="mb-3" controlId="city">
                         <Form.Label>City</Form.Label>
                         <Form.Control ref={cityInput} type="text" placeholder="Enter city" />
                     </Form.Group>
-                    <Form.Group controlId="date-of-birth">
+                    <Form.Group className="mb-3" controlId="date-of-birth">
                         <Form.Label>Date of Birth</Form.Label>
-                        <Form.Control type="date" ref={dateOfBirthInput} />
+                        <Form.Control type="date" ref={dateOfBirthInput} required />
                     </Form.Group>
-                    <Form.Group controlId="gender">
+                    <Form.Group className="mb-3" controlId="gender">
                         <Form.Label>Gender</Form.Label>
                         <Form.Check ref={maleInput}
                             inline
@@ -92,7 +114,7 @@ const SignupPage = () => {
                             name="gender"
                             type="radio"
                             id={`inline-radio-1`}
-                            checked
+                            defaultChecked
                         />
                         <Form.Check ref={femaleInput}
                             inline

@@ -12,7 +12,11 @@ const getData = async (url) => {
 
     try {
         //const response = await fetch(url);
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            headers: {
+                'Authorization': `Bearer ${getAuthToken()}`
+            }
+        });
         const data = await response.json();
         const status = response.status;
         console.log(data);
@@ -43,7 +47,7 @@ const postData = async (url, data) => {
         const data = await response.json();
         const status = response.status;
         localStorage.setItem('authToken', data.token);
-        console.log(data);
+        console.log("api: ",data);
         if (status === 200 || status === 201)
             return data;
         return null;

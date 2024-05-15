@@ -1,5 +1,5 @@
 import React, {useState, useRef} from 'react'
-import { Form, Row, Col, Container, Button, Modal, Image } from 'react-bootstrap'
+import { Form, Row, Col, Container, Button, Modal, Image, Alert } from 'react-bootstrap'
 import { useSelector } from "react-redux";
 import { postData } from '../features/apiService';
 
@@ -8,6 +8,7 @@ const GroupModal = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const [validated, setValidated] = useState(false);
+    const [errorMessages, setErrorMessages] = useState(null)
 
     const groupNameInput = useRef(null);
     const groupDescriptionInput = useRef(null);
@@ -15,16 +16,17 @@ const GroupModal = () => {
     
     const activeUser = useSelector((state) => state.user.value);
 
-    const createGroup = (event) => {
+    const createGroup = () => {
         
         if (activeUser == null) {
             alert("Please login to create a group");
             return;
         }
 
-        handleChange(event);
-
-
+        if (!groupNameInput.current.checkValidity() || !groupDescriptionInput.current.checkValidity() || !groupVisibilityInput.current.checkValidity()) 
+            return;
+        
+        
 
         let newGroup = {
             admin: activeUser.id,
@@ -35,13 +37,20 @@ const GroupModal = () => {
         
         let path = 'https://fitter-backend.onrender.com/groups/';
         let group = postData(path, newGroup);
-        console.log(group);
-        setShow(false);
+        if (group){
+            console.log(group);
+            setShow(false);
+        }
+        else {
+            setErrorMessages("Error creating group");
+        }
+        
     };
 
    
 
     const handleChange = (event) => {
+        setErrorMessages(null);
       const form = event.currentTarget;
       if (form.checkValidity() === false) {
         event.preventDefault();
@@ -66,6 +75,9 @@ const GroupModal = () => {
                     <Modal.Title>Create Group</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                <Alert variant="danger" show={errorMessages}>
+                    {errorMessages}
+                </Alert>
                     <Form noValidate validated={validated}>
                         <Form.Group className="mb-3" controlId="groupName">
                             <Form.Label>Group Name</Form.Label>

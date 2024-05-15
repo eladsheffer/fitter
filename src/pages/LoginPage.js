@@ -1,101 +1,92 @@
 import { Form, Alert, Button } from 'react-bootstrap'
 import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import user, { login } from '../features/user';
+import { login } from '../features/user';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { postData } from '../features/apiService';
+import { showModal, closeModal } from '../features/modal';
 
-function LoginPage() {
+function LoginPage(props) {
+    const [validated, setValidated] = useState(false);
     const [invalidLogin, setInvalidLogin] = useState(false);
-    const [successLogin, setSuccessLogin] = useState(false);
+
     const emailInput = useRef(null);
     const passwordInput = useRef(null);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const loginFunc = async () => {
+    const loginFunc = async (event) => {
+
+        if (!emailInput.current.checkValidity() || !passwordInput.current.checkValidity()) {
+            return;
+        }
 
         let userDetails = {
             email: emailInput.current.value,
             password: passwordInput.current.value
         };
         let path = 'https://fitter-backend.onrender.com/users/login/'
-        let user = await postData(path, userDetails);
-        if (user!=null) {
-            localStorage.setItem('user', JSON.stringify(user));
-        dispatch(login(user)); // dispatch the user object to the store
-        navigate("/");
-        } else { 
+        let data = await postData(path, userDetails);
+        if (!data) {
             setInvalidLogin(true);
+            return;
         }
-        // const location = 'https://fitter-backend.onrender.com/users/login/';
-        // const settings = {
-        //     method: 'POST',
-        //     headers: {
-        //     Accept: 'application/json',
-        //     'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({
-        //     email: "qqq@gmail.com",
-        //     password: "qqq!!!qqq"
-        //     })
-        // };
-        // try {
-        //     const fetchResponse = await fetch(location, settings);
-        //     const data = await fetchResponse.json();
-        //     const status = fetchResponse.status;
-        //     console.log(status);
-        //     console.log(data);
-        //     // handle the response data here
-        //     // dispatch(login({ name: "test", email: emailInput.current.value, password: passwordInput.current.value }));
-        //     // navigate("/");
-        // } catch (e) {
-        //     console.error(e);
-        //     // handle the error here
-        // }
-        
-        // const { users } = props;
-        // let newActiveUser = null;
-        // for (let i = 0; i < users.length && !newActiveUser; i++) {
-        //     if (
-        //         users[i].email === emailInput.current.value &&
-        //         users[i].password === passwordInput.current.value
-        //     ) {
-        //         newActiveUser = users[i];
-        //     }
-        // }
+        let user = data.user;
+        if (!user) {
+            setInvalidLogin(true);
+            return;
+        }
+        console.log(user);
+        dispatch(login(user)); // dispatch the user object to the store
+        //dispatch(closeModal());
+        navigate(-1); // go back to the previous page
+        if (props.modal) {
+        dispatch(showModal());
+    }
+    };
 
-        // if (newActiveUser) {
-        //     props.handleLogin(newActiveUser);
-        //     setSuccessLogin(true);
-        // } else {
-        //     setInvalidLogin(true);
-        // }
+    const handleChange = (event) => {
+        setInvalidLogin(false);
+        const control = event.currentTarget;
+
+        if (control.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        setValidated(true);
     };
 
     return (
         <div>
             <div className="login">
-                <h1>Login</h1>
-                <p>
-                    or <Link to="/signup">create an account</Link>
-                </p>
+
+                {props.modal === true ? null : <>
+                    <h1>Login</h1>
+                    <p>
+                        Not a member yet? <Link to="/signup">sign up</Link>
+                    </p>
+                </>
+                }
                 <Alert variant="danger" show={invalidLogin}>
                     Invalid email or password!
                 </Alert>
-                <Form>
-                    <Form.Group controlId="formBasicEmail">
+                <Form noValidate validated={validated}>
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Email address</Form.Label>
-                        <Form.Control ref={emailInput} type="email" value="qqq@gmail.com" placeholder="Enter email" />
-                        <Form.Text className="text-muted">
-                            We'll never share your email with anyone else.
-                        </Form.Text>
+                        <Form.Control ref={emailInput} type="email" defaultValue="qqq@gmail.com" placeholder="Enter email" required onChange={handleChange} />
+                        <Form.Control.Feedback type="invalid">
+                            required field
+                        </Form.Control.Feedback>
                     </Form.Group>
 
-                    <Form.Group controlId="formBasicPassword">
+                    <Form.Group className="mb-3" controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control ref={passwordInput} type="password" value="qqq!!!qqq" placeholder="Password" />
+                        <Form.Control ref={passwordInput} type="password" defaultValue="qqq!!!qqq" placeholder="Password" required onChange={handleChange} />
+                        <Form.Control.Feedback type="invalid">
+                            required field
+                        </Form.Control.Feedback>
                     </Form.Group>
                     <Button type="button" onClick={loginFunc}>
                         Login

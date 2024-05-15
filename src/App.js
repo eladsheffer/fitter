@@ -9,6 +9,8 @@ import EventPage from "./pages/EventPage";
 import LoginPage from './pages/LoginPage';
 import SignupPage from "./pages/SignupPage";
 import FitterNavbar from "./components/FitterNavbar";
+import NewGroupPage from "./pages/NewGroupPage";
+import NewEventPage from "./pages/NewEventPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
@@ -57,6 +59,8 @@ function App() {
         <Route path="/events/:id" element={<EventPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/new-group" element={<NewGroupPage />} />
+        <Route path="/new-event" element={<NewEventPage />} />
       </Routes>
     </BrowserRouter>
   </div>;
