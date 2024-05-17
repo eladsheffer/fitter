@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Form, Alert, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { login } from '../features/user';
@@ -19,8 +19,24 @@ const SignupPage = (props) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [validated, setValidated] = React.useState(false);
+    const [cities, setCities] = React.useState([]);
 
+    useEffect(() => {
+        const fetchCities = async () => {
+            const path = 'https://data.gov.il/api/3/action/datastore_search?resource_id=d4901968-dad3-4845-a9b0-a57d027f11ab';
+            const data = await getData(path);
+            if (!data) return;
+            const cities = data.result.records.map((city) => city.שם_ישוב.trim().split((')'))[0]);
+            setCities(cities);
+        };
 
+        fetchCities();
+
+        // Cleanup function if needed
+        return () => {
+            // Cleanup code here, if any
+        };
+    }, []);
 
     const signup = async () => {
         if (!firstNameInput.current.checkValidity() || !lastNameInput.current.checkValidity() || !emailInput.current.checkValidity() || !passwordInput.current.checkValidity() || !dateOfBirthInput.current.checkValidity())
@@ -38,7 +54,7 @@ const SignupPage = (props) => {
             email: emailInput.current.value,
             password: passwordInput.current.value,
             //address: addressInput.current.value,
-            //city: cityInput.current.value,
+            city: cityInput.current.value,
             date_of_birth: dateOfBirthInput.current.value,
             gender: maleInput.current.checked ? "male" : "female",
         };
@@ -100,7 +116,9 @@ const SignupPage = (props) => {
 
                     <Form.Group className="mb-3" controlId="city">
                         <Form.Label>City</Form.Label>
-                        <Form.Control ref={cityInput} type="text" placeholder="Enter city" />
+                        <Form.Select aria-label="cities" ref={cityInput}>
+                            {cities.map((city) => <option key={city}>{city}</option>)}
+                        </Form.Select>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="date-of-birth">
                         <Form.Label>Date of Birth</Form.Label>
@@ -124,7 +142,7 @@ const SignupPage = (props) => {
                             id={`inline-radio-2`}
                         />
                     </Form.Group>
-                    <Button type="button" onClick={signup}>
+                    <Button type="button" className="w-100" onClick={signup}>
                         Sign Up
                     </Button>
                 </Form>

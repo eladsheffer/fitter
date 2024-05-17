@@ -93,7 +93,7 @@ const NewGroupPage = () => {
                         required field
                     </Form.Control.Feedback>
                 </Form.Group>
-                <Button variant="primary" onClick={createGroup}>
+                <Button variant="primary" className="w-100" onClick={createGroup}>
                     Create Group
                 </Button>
             </Form>

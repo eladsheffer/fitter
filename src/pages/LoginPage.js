@@ -88,7 +88,7 @@ function LoginPage(props) {
                             required field
                         </Form.Control.Feedback>
                     </Form.Group>
-                    <Button type="button" onClick={loginFunc}>
+                    <Button type="button" className="w-100" onClick={loginFunc}>
                         Login
                     </Button>
                 </Form>
