@@ -26,7 +26,7 @@ const SignupPage = (props) => {
             const path = 'https://data.gov.il/api/3/action/datastore_search?resource_id=d4901968-dad3-4845-a9b0-a57d027f11ab';
             const data = await getData(path);
             if (!data) return;
-            const cities = data.result.records.map((city) => city.שם_ישוב.trim().split((')'))[0]);
+            const cities = data.result.records.map((city) => city.שם_ישוב.trim().replace('(',')').replace(')','('));
             setCities(cities);
         };
 
@@ -54,7 +54,7 @@ const SignupPage = (props) => {
             email: emailInput.current.value,
             password: passwordInput.current.value,
             //address: addressInput.current.value,
-            city: cityInput.current.value,
+            location: cityInput.current.value,
             date_of_birth: dateOfBirthInput.current.value,
             gender: maleInput.current.checked ? "male" : "female",
         };
@@ -116,8 +116,9 @@ const SignupPage = (props) => {
 
                     <Form.Group className="mb-3" controlId="city">
                         <Form.Label>City</Form.Label>
-                        <Form.Select aria-label="cities" ref={cityInput}>
-                            {cities.map((city) => <option key={city}>{city}</option>)}
+                        <Form.Select aria-label="cities" ref={cityInput} required>
+                            <option value="">Choose Location</option>
+                            {cities.map((city) => <option value={city} key={city}>{city}</option>)}
                         </Form.Select>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="date-of-birth">
