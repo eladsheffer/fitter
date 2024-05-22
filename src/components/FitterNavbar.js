@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { logout } from '../features/user';
-import { getData } from "../features/apiService";
+import { getData,postData } from "../features/apiService";
 
 const FitterNavbar = () => {
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ const FitterNavbar = () => {
   let loginLink = !activeUser ? <Nav.Link as={Link} to="/login">Login</Nav.Link> : null;
   let logoutLink = activeUser ? <Nav.Link as={Link} to="/" onClick={() => logoutFunc()}>Logout</Nav.Link> : null;
   const logoutFunc = async () => {
-    let data = await getData('https://fitter-backend.onrender.com/users/logout/');
+    let data = await postData('https://fitter-backend.onrender.com/users/logout/', null, false);
     if (data != null)
       dispatch(logout());
   }
