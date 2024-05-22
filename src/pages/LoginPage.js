@@ -27,7 +27,7 @@ function LoginPage(props) {
             password: passwordInput.current.value
         };
         let path = 'https://fitter-backend.onrender.com/users/login/'
-        let data = await postData(path, userDetails, true);
+        let data = await postData(path, userDetails,true);
         if (!data) {
             setInvalidLogin(true);
             return;

@@ -50,7 +50,7 @@ const postData = async (url, data, login = false) => {
     };
 
     console.log('settings:', settings);
-
+    
     try {
         const response = await fetch(url, settings);
         const responseData = await response.json();
@@ -62,6 +62,7 @@ const postData = async (url, data, login = false) => {
         }
 
         console.log("api: ", responseData);
+        console.log('status:', status);
 
         if (status === 200 || status === 201) {
             return responseData;
@@ -75,7 +76,6 @@ const postData = async (url, data, login = false) => {
         // handle the error here
     }
 };
-
 const putData = async (url, data) => {
     const settings = {
         method: 'PUT',

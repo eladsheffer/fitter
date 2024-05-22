@@ -11,6 +11,7 @@ import SignupPage from "./pages/SignupPage";
 import FitterNavbar from "./components/FitterNavbar";
 import NewGroupPage from "./pages/NewGroupPage";
 import NewEventPage from "./pages/NewEventPage";
+import SearchPage from "./pages/SearchPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
@@ -61,6 +62,7 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/new-group" element={<NewGroupPage />} />
         <Route path="/new-event" element={<NewEventPage />} />
+        <Route path="/search" element={<SearchPage />} />
       </Routes>
     </BrowserRouter>
   </div>;
