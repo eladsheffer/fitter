@@ -25,7 +25,7 @@ const RootDialog = () => {
         dispatch(showModal());
     }
     const closepopup = () => {
-        dispatch(closeModal());
+        dispatch(closeModal()); 
     }
     
     return(

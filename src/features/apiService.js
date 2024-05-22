@@ -31,25 +31,43 @@ const getData = async (url) => {
     }
 };
 
-const postData = async (url, data) => {
+const postData = async (url, data, login = false) => {
+    // console.log('data:', data);
+    const headers = {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+    };
+
+    // Include the Authorization header only if login is true
+    if (!login) {
+        headers['Authorization'] = `Token ${getAuthToken()}`;
+    }
 
     const settings = {
         method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Authorization': `Bearer ${getAuthToken()}`,
-            'Content-Type': 'application/json',
-        },
+        headers: headers,
         body: JSON.stringify(data)
     };
+
+    console.log('settings:', settings);
+    
     try {
         const response = await fetch(url, settings);
-        const data = await response.json();
+        const responseData = await response.json();
         const status = response.status;
-        localStorage.setItem('authToken', data.token);
-        console.log("api: ",data);
-        if (status === 200 || status === 201)
-            return data;
+
+        // Store auth token only if it's present in the response
+        if (responseData.token) {
+            localStorage.setItem('authToken', responseData.token);
+        }
+
+        console.log("api: ", responseData);
+        console.log('status:', status);
+
+        if (status === 200 || status === 201) {
+            return responseData;
+        }
+
         return null;
     } catch (error) {
         console.error('Error posting data:', error);
@@ -58,7 +76,6 @@ const postData = async (url, data) => {
         // handle the error here
     }
 };
-
 const putData = async (url, data) => {
     const settings = {
         method: 'PUT',
