@@ -17,12 +17,13 @@ export default function EventCard({ event }) {
     const handleShow = () => setShowModal(true);
 
     const handleAttend = async (isAttending) => {
+        const serverUrl = process.env.REACT_APP_SERVER_URL;
         let data = {
             user_id: user.id
         };
 
         if (!isAttending) {
-            let url = `https://fitter-backend.onrender.com/events/${event.id}/add_user/`;
+            let url = serverUrl + `events/${event.id}/add_user/`;
             let response = await postData(url, data);
             if (response) {
                 // Update the local state with the new member
@@ -31,7 +32,7 @@ export default function EventCard({ event }) {
                 console.error('Error adding user to group:', response);
             }
         } else {
-            let url = `https://fitter-backend.onrender.com/events/${event.id}/remove_user/`;
+            let url = serverUrl + `events/${event.id}/remove_user/`;
             let response = await postData(url, data);
             if (response) {
                 // Update the local state by removing the member

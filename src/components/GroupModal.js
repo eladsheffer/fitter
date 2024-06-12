@@ -17,7 +17,7 @@ const GroupModal = () => {
     const activeUser = useSelector((state) => state.user.value);
 
     const createGroup = () => {
-        
+        const serverUrl = process.env.REACT_APP_SERVER_URL;
         if (activeUser == null) {
             alert("Please login to create a group");
             return;
@@ -35,7 +35,7 @@ const GroupModal = () => {
             visibility: groupVisibilityInput.current.value
         }
         
-        let path = 'https://fitter-backend.onrender.com/groups/';
+        let path = serverUrl + 'groups/';
         let group = postData(path, newGroup);
         if (group){
             console.log(group);

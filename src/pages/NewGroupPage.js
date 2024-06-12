@@ -5,6 +5,7 @@ import { postData } from '../features/apiService';
 
 const NewGroupPage = () => {
 
+    const serverUrl = process.env.REACT_APP_SERVER_URL;
     const [validated, setValidated] = useState(false);
     const [errorMessages, setErrorMessages] = useState(null);
     const [successMessages, setSuccessMessages] = useState(null);
@@ -35,7 +36,7 @@ const NewGroupPage = () => {
             visibility: groupVisibilityInput.current.value
         }
 
-        let path = 'https://fitter-backend.onrender.com/groups/';
+        let path = serverUrl + 'groups/';
         let group = await postData(path, newGroup);
         if (group && group.name) {
             console.log(group.name);

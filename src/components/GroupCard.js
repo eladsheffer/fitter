@@ -18,12 +18,13 @@ export default function GroupCard({ group }) {
     const [members, setMembers] = useState(group.members);
 
     const handleAttend = async (isAttending) => {
+        const serverUrl = process.env.REACT_APP_SERVER_URL;
         let data = {
             user_id: user.id
         };
 
         if (!isAttending) {
-            let url = `https://fitter-backend.onrender.com/groups/${group.id}/add_user/`;
+            let url = serverUrl + `groups/${group.id}/add_user/`;
             let response = await postData(url, data);
             if (response) {
                 // Update the local state with the new member
@@ -32,7 +33,7 @@ export default function GroupCard({ group }) {
                 console.error('Error adding user to group:', response);
             }
         } else {
-            let url = `https://fitter-backend.onrender.com/groups/${group.id}/remove_user/`;
+            let url = serverUrl + `groups/${group.id}/remove_user/`;
             let response = await postData(url, data);
             if (response) {
                 // Update the local state by removing the member

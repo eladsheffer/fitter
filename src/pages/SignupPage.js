@@ -7,6 +7,8 @@ import { getData, postData } from '../features/apiService';
 import { showModal, closeModal } from '../features/modal';
 
 const SignupPage = (props) => {
+    const serverUrl = process.env.REACT_APP_SERVER_URL;
+    const citiesUrl = process.env.REACT_APP_CITIES_URL;
     const firstNameInput = useRef(null);
     const lastNameInput = useRef(null);
     const emailInput = useRef(null);
@@ -25,8 +27,7 @@ const SignupPage = (props) => {
 
     useEffect(() => {
         const fetchCities = async () => {
-            const path = 'https://data.gov.il/api/3/action/datastore_search?resource_id=d4901968-dad3-4845-a9b0-a57d027f11ab';
-            const data = await getData(path);
+            const data = await getData(citiesUrl);
             if (!data) return;
             const cities = data.result.records.map((city) => city.שם_ישוב.trim().replace('(', ')').replace(')', '('));
             setCities(cities);
@@ -47,7 +48,7 @@ const SignupPage = (props) => {
         if (!firstNameInput.current.checkValidity() || !lastNameInput.current.checkValidity() || !emailInput.current.checkValidity() || !passwordInput.current.checkValidity() || !dateOfBirthInput.current.checkValidity())
             return;
 
-        let user = await getData('https://fitter-backend.onrender.com/users/get_user_by_email?email=' + emailInput.current.value);
+        let user = await getData(serverUrl + 'users/get_user_by_email?email=' + emailInput.current.value);
 
         if (user != null) {
             setErrorMessages("Email already exists. Please login or signup with another email");
@@ -66,7 +67,7 @@ const SignupPage = (props) => {
         };
 
         console.log(newUser);
-        newUser = await postData('https://fitter-backend.onrender.com/users/', newUser);
+        newUser = await postData(serverUrl + 'users/', newUser);
         if (newUser) {
             dispatch(login(newUser));
             setSuccessMessages("User created successfully");

@@ -18,6 +18,7 @@ import { Description } from '@mui/icons-material';
 import dayjs from 'dayjs';
 
 const EventModal = () => {
+    const serverUrl = process.env.REACT_APP_SERVER_URL;
     const activeUser = useSelector((state) => state.user.value);
     const titleEventInput = useRef(null);
     const descriptionEventInput = useRef(null);
@@ -60,7 +61,7 @@ const EventModal = () => {
             organizer: activeUser.id
         }
         console.log(newEvent);
-        let path = 'https://fitter-backend.onrender.com/events/';
+        let path = serverUrl + 'events/';
         let event = await postData(path, newEvent);
         console.log(event);
         if (event) {

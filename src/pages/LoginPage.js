@@ -8,6 +8,8 @@ import { postData } from '../features/apiService';
 import { showModal, closeModal } from '../features/modal';
 
 function LoginPage(props) {
+
+    const serverUrl = process.env.REACT_APP_SERVER_URL;
     const [validated, setValidated] = useState(false);
     const [invalidLogin, setInvalidLogin] = useState(false);
 
@@ -26,7 +28,7 @@ function LoginPage(props) {
             email: emailInput.current.value,
             password: passwordInput.current.value
         };
-        let path = 'https://fitter-backend.onrender.com/users/login/'
+        let path = serverUrl + 'users/login/';
         let data = await postData(path, userDetails,true);
         if (!data) {
             setInvalidLogin(true);
