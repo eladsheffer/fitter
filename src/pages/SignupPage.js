@@ -21,7 +21,7 @@ const SignupPage = (props) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [validated, setValidated] = useState(false);
-    const [cities, setCities] = React.useState([]);
+    const [cities, setCities] = useState([]);
     const [errorMessages, setErrorMessages] = useState(null);
     const [successMessages, setSuccessMessages] = useState(null);
 

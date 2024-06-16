@@ -7,12 +7,15 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import userReducer from './features/user';
 import modalReducer from './features/modal';
+import cardReducer from './features/card';
+import groupsReducer from './features/groups';
+import eventsReducer from './features/events';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 
 const store = configureStore({
-  reducer: {user: userReducer, modal: modalReducer},
+  reducer: {user: userReducer, modal: modalReducer, card: cardReducer, groups: groupsReducer, events: eventsReducer},
 
 });
 
