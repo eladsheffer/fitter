@@ -19,7 +19,7 @@ export const groupsSlice = createSlice({
             state.value.groupsAsMember = action.payload;
         }, 
         addGroup: (state, action) => {
-            state.value.groupsAsMember.push(action.payload);
+            //state.value.groupsAsMember.push(action.payload);
         }, 
         removeGroup: (state, action) => {
             state.value.groupsAsMember = state.value.groupsAsMember.filter((group) => group.id !== action.payload.id);

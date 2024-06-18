@@ -32,24 +32,25 @@ const getData = async (url) => {
 };
 
 const postData = async (url, data, login = false) => {
-    // console.log('data:', data);
     const headers = {
         Accept: 'application/json',
-        'Content-Type': 'application/json',
     };
 
     // Include the Authorization header only if login is true
     if (!login) {
         headers['Authorization'] = `Token ${getAuthToken()}`;
     }
+    
+    if (!(data instanceof FormData)) {
+        headers['Content-Type'] = 'application/json';
+        data = JSON.stringify(data);
+    }
 
     const settings = {
         method: 'POST',
         headers: headers,
-        body: JSON.stringify(data)
+        body: data
     };
-
-    console.log('settings:', settings);
     
     try {
         const response = await fetch(url, settings);
@@ -60,9 +61,6 @@ const postData = async (url, data, login = false) => {
         if (responseData.token) {
             localStorage.setItem('authToken', responseData.token);
         }
-
-        console.log("api: ", responseData);
-        console.log('status:', status);
 
         if (status === 200 || status === 201) {
             return responseData;
@@ -76,6 +74,8 @@ const postData = async (url, data, login = false) => {
         // handle the error here
     }
 };
+
+
 const putData = async (url, data) => {
     const settings = {
         method: 'PUT',

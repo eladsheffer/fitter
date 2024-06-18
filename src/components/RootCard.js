@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Card, Button, Row, Col, Image } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { postData } from '../features/apiService';
 import RemoveModal from '../components/RemoveModal';
 import { renderCardType, makeAdmin, makeMember, removeAdmin, removeMember } from '../features/card';
 import { setGroupsAsAdmin, setGroupsAsMember, addGroup, removeGroup } from '../features/groups';
+import { showModal, closeModal, renderModalType } from '../features/modal';
+import RootModal from './RootModal';
 
 const RootCard = (props) => {
     const dispatch = useDispatch();
@@ -14,9 +16,13 @@ const RootCard = (props) => {
     const group = props.group;
     const key = props.key;
     const [members, setMembers] = useState(group.members);
+    const navigate = useNavigate();
 
 
     const joinGroup = async () => {
+        if (!activeUser) 
+            navigate('/login');
+
         let url = serverUrl + `groups/${group.id}/add_user/`;
         let data = {
             user_id: activeUser.id
@@ -75,7 +81,7 @@ const RootCard = (props) => {
     };
 
     const createEvent = () => {
-        console.log('Create event for group:', group);
+      //dispatch(renderModalType({ type: 'Event' }));
     };
 
     // const removeGroup = () => {
@@ -110,7 +116,7 @@ const RootCard = (props) => {
         }
     };
 
-    const footer = group.admin === activeUser.id ? (<>
+    const footer = activeUser && group.admin === activeUser.id ? (<>
         <Button variant="warning" onClick={editGroup}>Edit Group</Button>
         <Button variant="info" onClick={createEvent}>Create New Event</Button>
     </>) : group.members.includes(activeUser.id) ? (<>

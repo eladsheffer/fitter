@@ -52,7 +52,7 @@ function LoginPage(props) {
         }
         console.log("groupsAsAdmin: ",user);
 
-        path = serverUrl + 'users/get_user_groups_not_as_admin/?email=' + user.email;
+        path = serverUrl + 'users/get_user_groups_as_member_not_as_admin/?email=' + user.email;
         data = await getData(path);
         if (data) {
             dispatch(setGroupsAsMember(data));

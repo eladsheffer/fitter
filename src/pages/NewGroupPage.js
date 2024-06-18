@@ -63,7 +63,7 @@ const NewGroupPage = () => {
         newGroup.append('location', cityInput.current.value ? cityInput.current.value : null);
         newGroup.append('min_age', disabledAgeSlider ? null : ageRange[0]);
         newGroup.append('max_age', disabledAgeSlider? null : ageRange[1]);
-        newGroup.append('profile_picture', groupProfilePicture);
+        //newGroup.append('profile_picture', groupProfilePicture);
         newGroup.append('gender', genderInput.current.value);
         //newGroup.append('preferred_sports', sportsInput.current.selectedOptions.length>0 ? Array.from(sportsInput.current.selectedOptions).map(option => option.value) : null);
 
@@ -78,11 +78,11 @@ const NewGroupPage = () => {
         //     max_age: disabledAgeSlider? null : ageRange[1],
         //     profile_picture: groupProfilePicture,
         //     gender: genderInput.current.value,
-        //     preferred_sports: sportsInput.current.selectedOptions.length>0 ? Array.from(sportsInput.current.selectedOptions).map(option => option.value) : null,
+        //     //preferred_sports: sportsInput.current.selectedOptions.length>0 ? Array.from(sportsInput.current.selectedOptions).map(option => option.value) : null,
         // }
 
         console.log(newGroup);
-        console.log(newGroup.get('profile_picture'))
+        //console.log(newGroup.get('profile_picture'))
 
         let path = serverUrl + 'groups/';
         let group = await postData(path, newGroup);
