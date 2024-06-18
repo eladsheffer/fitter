@@ -20,6 +20,7 @@ const GroupsPage = () => {
 
     const [groupsOfUserAsAdmin, setGroupsOfUserAsAdmin] = useState([]);
     const [groupsOfUserAsMember, setGroupsOfUserAsMember] = useState([]);
+    const [groupsUserNotIn, setGroupsUserNotIn] = useState([]);
 
     const type = activeUser ? 'Group' : 'Signup';
 
@@ -37,9 +38,14 @@ const GroupsPage = () => {
             if (!data) return;
             setGroupsOfUserAsAdmin(data);
 
-            data = await getData(serverUrl + 'users/get_user_groups_not_as_admin/?email=' + activeUser.email);
+            data = await getData(serverUrl + 'users/get_user_groups_as_member_not_as_admin/?email=' + activeUser.email);
             if (!data) return;
             setGroupsOfUserAsMember(data);
+
+            data = await getData(serverUrl + 'users/get_groups_user_not_in/?email=' + activeUser.email);
+            console.log("offer: ",data);
+            if (!data) return;
+            setGroupsUserNotIn(data);
 
 
         }
@@ -221,6 +227,29 @@ const GroupsPage = () => {
                 }}
             >
                 {groups.groupsAsMember.map((group, i) => (
+                    <Col sm={4}>
+                        <RootCard group={group} key={i}/>
+                    </Col>
+                ))}
+            </Row>
+
+             <h1
+                style={{
+                    width: "70%",
+                    marginInline: "auto",
+                    marginTop: "4rem",
+                }}
+            >
+                Groups You can Join:
+            </h1>
+            <Row className='d-flex flex-wrap'
+                style={{
+                    width: "70%",
+                    marginInline: "auto",
+                    marginTop: "4rem",
+                }}
+            >
+                {groupsUserNotIn.map((group, i) => (
                     <Col sm={4}>
                         <RootCard group={group} key={i}/>
                     </Col>

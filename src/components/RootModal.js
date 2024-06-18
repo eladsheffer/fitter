@@ -27,7 +27,7 @@ const RootModal = () => {
             <p>
                 Not a member yet? <Button className="btn btn-link" variant="outline-none" role="link" onClick={handleChange}>signup</Button>
             </p>
-            <LoginPage modal={true} />
+            <LoginPage />
         </>
     } : type==='Signup' ? {
         title: 'Signup', body: <>
