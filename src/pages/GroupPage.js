@@ -6,6 +6,8 @@ import events from '../data-model/events.json';
 import groups from '../data-model/groups.json';
 import users from '../data-model/users.json';
 import { useSelector } from 'react-redux';
+import User from '../features/user';
+import UserCard from '../components/UserCard';
 
 const GroupPage = () => {
 
@@ -111,6 +113,7 @@ const GroupPage = () => {
                     </Card>
                 ))}
             </CardGroup>
+            <UserCard />
         </div>
     );
 }

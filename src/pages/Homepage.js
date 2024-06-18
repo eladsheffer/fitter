@@ -3,6 +3,8 @@ import groups from "../data-model/groups.json";
 import events from "../data-model/events.json";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import UserCard from '../components/UserCard';
+
 
 const Homepage = () => {
     const activeUser = useSelector((state) => state.user.value);
@@ -91,6 +93,7 @@ const Homepage = () => {
                     </Card>
                 ))}
             </CardGroup>
+            <UserCard />
         </div>
     );
 };

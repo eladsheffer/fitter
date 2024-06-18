@@ -5,6 +5,7 @@ import EventCard from '../components/EventCard';
 import { Button, Row, Col, Container, ToggleButton, ButtonGroup } from 'react-bootstrap';
 import { getData } from '../features/apiService';
 import SearchFilter from '../components/SearchFilter';
+import { Visibility } from '@mui/icons-material';
 
 export default function SearchPage() {
     const location = useLocation();
@@ -17,20 +18,77 @@ export default function SearchPage() {
     const key = queryParams.get('key');
     const [searchType, setSearchType] = useState('groups');
     const [selectedGroupFilters, setSelectedGroupFilters] = useState({
+        name: [],
         location: [],
-        gender : [],
+        preferred_sports: [],
+        visibility: [],
+        min_age: [],
+        max_age: [],
+        gender: [],
     });
     const [selectedEventFilters, setSelectedEventFilters] = useState({
         location: [],
         sport_type: [],
         gender: [],
     });
+    // const [groupFilters , setGroupFilters] = useState({
+    //     name: [],
+    //     location: [],
+    //     preferred_sports: [],
+    //     visibility: [],
+    //     min_age: [],
+    //     max_age: [],
+    //     gender: [],
+    // });
+
+    // const [eventFilters , setEventFilters] = useState({
+    //     location: [],
+    //     sport_type: [],
+    // });
+
+    function createGroupFiltersURL() {
+        let url = `https://fitter-backend.onrender.com/groups/?`;
+        let firstFilter = true;
+        Object.keys(selectedGroupFilters).forEach(filterType => {
+            if (selectedGroupFilters[filterType].length > 0) {
+                const encodedValues = selectedGroupFilters[filterType].map(value => encodeURIComponent(value));
+                if (firstFilter) {
+                    url += `${filterType}=${encodedValues.join(',')}`;
+                    firstFilter = false;
+                } else {
+                    url += `&${filterType}=${encodedValues.join(',')}`;
+                }
+            }
+        });
+        return url;
+    }
+
+    function createEventFiltersURL() {
+        let url = `https://fitter-backend.onrender.com/events/?`;
+        let firstFilter = true;
+        Object.keys(selectedEventFilters).forEach(filterType => {
+            if (selectedEventFilters[filterType].length > 0) {
+                const encodedValues = selectedEventFilters[filterType].map(value => encodeURIComponent(value));
+                if (firstFilter) {
+                    url += `${filterType}=${encodedValues.join(',')}`;
+                    firstFilter = false;
+                } else {
+                    url += `&${filterType}=${encodedValues.join(',')}`;
+                }
+            }
+        });
+        return url;
+    }
+
+
 
     // Group filters
     const groupLocationsArray = groups.map(group => group.location).filter(location => location !== null && location !== '');
     const groupLocations = [...new Set(groupLocationsArray)];
     const groupGendersArray = groups.map(group => group.gender)
     const groupGenders = [...new Set(groupGendersArray)];
+    const groupSportsArray = groups.map(group => group.preferred_sports).flat().filter(sport => sport !== null && sport !== '');
+    const groupSports = [...new Set(groupSportsArray)];
 
     // Event filters
     const eventLocationsArray = events.map(event => event.location).filter(location => location !== null && location !== '');
@@ -39,6 +97,8 @@ export default function SearchPage() {
     const eventSportsTypes = [...new Set(eventSportsTypesArray)];
     const eventGendersArray = events.map(event => event.gender)
     const eventGenders = [...new Set(eventGendersArray)];
+    const eventSportsArray = events.map(event => event.sport_type).filter(sport => sport !== null && sport !== '');
+    const eventSports = [...new Set(eventSportsArray)];
 
     const fetchGroups = async () => {
         let groupsData = await getData(`https://fitter-backend.onrender.com/groups/?search=${key}`);
@@ -52,6 +112,26 @@ export default function SearchPage() {
         setFilteredEvents(eventsData.results);
     };
 
+    const resetGroupFilters = () => {
+        setSelectedGroupFilters({
+            name: [],
+            location: [],
+            preferred_sports: [],
+            visibility: [],
+            min_age: [],
+            max_age: [],
+            gender: [],
+        });
+    }
+
+    const resetEventFilters = () => {
+        setSelectedEventFilters({
+            location: [],
+            sport_type: [],
+        });
+    }
+
+
     useEffect(() => {
         if (searchType === 'groups') {
             fetchGroups();
@@ -62,6 +142,7 @@ export default function SearchPage() {
 
     useEffect(() => {
         applyFilters();
+        console.log('selectedGroupFilters:', selectedGroupFilters);
     }, [selectedGroupFilters, selectedEventFilters, groups, events]);
 
     const handleFilterChange = (filterType, value) => {
@@ -74,6 +155,7 @@ export default function SearchPage() {
                 } else {
                     updatedFilters[filterType].push(value);
                 }
+                // console.log('url:', createGroupFiltersURL());
                 return updatedFilters;
             });
         } else {
@@ -90,27 +172,41 @@ export default function SearchPage() {
         }
     };
 
-    const applyFilters = () => {
+    const applyFilters = async () => {
         if (searchType === 'groups') {
-            let filtered = groups;
-            // Apply group filters
-            Object.keys(selectedGroupFilters).forEach(filterType => {
-                if (selectedGroupFilters[filterType].length > 0) {
-                    filtered = filtered.filter(group => selectedGroupFilters[filterType].includes(group[filterType]));
-                }
-            });
-            setFilteredGroups(filtered);
+            const url = createGroupFiltersURL();
+            console.log('url:', url);
+            const data = await getData(url);
+            console.log('filtered data:', data.results);
+            setFilteredGroups(data.results);
         } else {
-            let filtered = events;
-            // Apply event filters
-            Object.keys(selectedEventFilters).forEach(filterType => {
-                if (selectedEventFilters[filterType].length > 0) {
-                    filtered = filtered.filter(event => selectedEventFilters[filterType].includes(event[filterType]));
-                }
-            });
-            setFilteredEvents(filtered);
+            const url = createEventFiltersURL();
+            const data = await getData(url);
+            setFilteredEvents(data.results);
         }
     };
+
+    // const applyFilters = () => {
+    //     if (searchType === 'groups') {
+    //         let filtered = groups;
+    //         // Apply group filters
+    //         Object.keys(selectedGroupFilters).forEach(filterType => {
+    //             if (selectedGroupFilters[filterType].length > 0) {
+    //                 filtered = filtered.filter(group => selectedGroupFilters[filterType].includes(group[filterType]));
+    //             }
+    //         });
+    //         setFilteredGroups(filtered);
+    //     } else {
+    //         let filtered = events;
+    //         // Apply event filters
+    //         Object.keys(selectedEventFilters).forEach(filterType => {
+    //             if (selectedEventFilters[filterType].length > 0) {
+    //                 filtered = filtered.filter(event => selectedEventFilters[filterType].includes(event[filterType]));
+    //             }
+    //         });
+    //         setFilteredEvents(filtered);
+    //     }
+    // };
 
     // const resetFilters = () => {
     //     if (searchType === 'groups') {
@@ -173,6 +269,7 @@ export default function SearchPage() {
                             <>
                                 {groupLocations.length > 0 && <SearchFilter title="Locations" data={groupLocations} filterType="location" onFilterChange={handleFilterChange} />}
                                 {groupGenders.length > 0 && <SearchFilter title="Gender" data={groupGenders} filterType="gender" onFilterChange={handleFilterChange} />}
+                                {groupSports.length > 0 && <SearchFilter title="Sports" data={groupSports} filterType="preferred_sports" onFilterChange={handleFilterChange} />}
                             </>
                         ) :
                         (
@@ -180,8 +277,10 @@ export default function SearchPage() {
                                 {eventLocations.length > 0 && <SearchFilter title="Locations" data={eventLocations} filterType="location" onFilterChange={handleFilterChange} />}
                                 {eventSportsTypes.length > 0 && <SearchFilter title="Sport Types" data={eventSportsTypes} filterType="sport_type" onFilterChange={handleFilterChange} />}
                                 {eventGenders.length > 0 && <SearchFilter title="Gender" data={eventGenders} filterType="gender" onFilterChange={handleFilterChange} />}
+                                {eventSports.length > 0 && <SearchFilter title="Sports" data={eventSports} filterType="sport" onFilterChange={handleFilterChange} />}
                             </>
                         )}
+
                 </Col>
                 <Col xs="auto" style={{ width: '65%' }}>
                     <h2>Search Results</h2>

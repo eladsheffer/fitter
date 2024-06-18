@@ -97,7 +97,7 @@ export default function GroupCard({ group }) {
                                         />
                                     </Col>
                                     <Col className="text-start" xs="auto" style={{ paddingLeft: '0', display: 'flex', alignItems: 'center' }}>
-                                        <h5 style={{ color: 'green', marginLeft: '5px', marginTop: '6px' }}>Attending</h5>
+                                        <h5 style={{ color: 'green', marginLeft: '5px', marginTop: '6px' }}>Member</h5>
                                     </Col>
                                     <Col className='text-end'>
                                         <Button variant="outline-danger" onClick={handleShow}>Leave</Button>

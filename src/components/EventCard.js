@@ -12,6 +12,8 @@ export default function EventCard({ event }) {
     const user = useSelector((state) => state.user.value);
     const [attendees, setAttendees] = useState(event.users_attended);
     const [showModal, setShowModal] = useState(false);
+    const event_date = new Date(event.date_and_time).toLocaleDateString();
+    const event_time = new Date(event.date_and_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
     const handleClose = () => setShowModal(false);
     const handleShow = () => setShowModal(true);
@@ -71,6 +73,9 @@ export default function EventCard({ event }) {
                     </Link>
                     <h5>{event.date}</h5>
                     <p>{event.description}</p>
+                    <Row>
+                        <h6>{event_date} - {event_time}</h6>
+                    </Row>
                     <Row className="justify-content-between">
                         <Col xs="auto">
                             <h6>{`${attendees.length}${event.max_participants ? `/${event.max_participants}` : ''} Attendees`}</h6>
@@ -79,6 +84,7 @@ export default function EventCard({ event }) {
                             <h6>{event.location}</h6>
                         </Col>
                     </Row>
+                    
                     {user ? (
                         <Row>
                             {attendees.includes(user.id) ? (
