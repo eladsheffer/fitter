@@ -1,31 +1,71 @@
 import { useState } from "react";
-import {DropdownButton, Button, Dropdown, Row, Col, Container, Image} from "react-bootstrap";
+import {
+  DropdownButton,
+  Button,
+  Dropdown,
+  Row,
+  Col,
+  Container,
+  Image,
+} from "react-bootstrap";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { Link } from "react-router-dom";
-import events from "../data-model/events.json";
+//import events from "../data-model/events.json";
 import { useSelector, useDispatch } from "react-redux";
 import EventModal from "../components/EventModal";
 import RootDialog from "../components/RootDialog";
 import RootModal from "../components/RootModal";
 import { renderModalType } from "../features/modal";
+import { useEffect } from "react";
 
 const EventsPage = () => {
   // States
   const [sport, setSport] = useState("Any Sport");
   const [date, setDate] = useState(new Date());
+  const [events, setEvents] = useState([]);
   const dispatch = useDispatch();
 
   const activeUser = useSelector((state) => state.user.value);
 
-  const type = activeUser ? 'Event' : 'Signup';
-    
+  const type = activeUser ? "Event" : "Signup";
+
   // Functions
-  dispatch(renderModalType({type: type}));
-  
+  dispatch(renderModalType({ type: type }));
+
   function onChange(newDate) {
     setDate(newDate);
   }
+
+  async function getEvents() {
+    const url = `${process.env.REACT_APP_SERVER_URL}events`;
+    const req = await fetch(url);
+    const res = await req.json();
+    console.log(res.results);
+    setEvents(res.results);
+  }
+
+  function formatFriendlyDate(isoDateString) {
+    // Creating a date object from the ISO string
+    const date = new Date(isoDateString);
+
+    // Converting to a more readable format
+    const friendlyDate = date.toLocaleString("en-US", {
+      weekday: "long", // long name of the day
+      year: "numeric", // numeric year
+      month: "2-digit", // two digit month
+      day: "2-digit", // two digit day
+      hour: "numeric", // numeric hour (12-hour clock)
+      minute: "2-digit", // two digit minutes
+      hour12: true, // use 12-hour clock
+    });
+
+    return friendlyDate;
+  }
+
+  useEffect(() => {
+    getEvents();
+  }, []);
 
   // UI
   return (
@@ -34,13 +74,12 @@ const EventsPage = () => {
         <Container>
           <Row className="gap-5">
             <Col>
-            <h1>Hello {activeUser!=null? activeUser.first_name: null} 👋</h1>
+              <h1>
+                Hello {activeUser !== null ? activeUser.first_name : "guest"} 👋
+              </h1>
             </Col>
-            <Col xs='5'>
-            </Col>
-            <Col>
-            {activeUser? <RootDialog /> : <RootModal />}
-            </Col>
+            <Col xs="5"></Col>
+            <Col>{activeUser ? <RootDialog /> : <RootModal />}</Col>
           </Row>
           <Row className="mt-5 gap-5">
             <Col xs="auto" className="p-0">
@@ -123,13 +162,18 @@ const EventsPage = () => {
                       </Col>
                       <Col>
                         <Link to={`${event.id}`}>
-                          <h3>{event.name}</h3>
+                          <h3>{event.title}</h3>
                         </Link>
-                        <h5>{event.date}</h5>
+                        <h5>{formatFriendlyDate(event.date_and_time)}</h5>
                         <p>{event.description}</p>
                         <Row className="justify-between gap-5">
                           <Col xs={4}>
-                            <h6>{`${event.attendees}/${event.maxAttendees} Attendees`}</h6>
+                            {event.max_participants !== null &&
+                            typeof event.max_participants === "number" ? (
+                              <h6>{`${event.users_attended.length}/${event.max_participants} Attendees`}</h6>
+                            ) : (
+                              <h6>{`${event.users_attended.length} Attendees`}</h6>
+                            )}
                           </Col>
                           <Col xs={{ span: 4, offset: 2 }}>
                             <h6>{event.location}</h6>

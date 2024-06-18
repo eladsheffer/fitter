@@ -1,15 +1,14 @@
-import React from "react";
+import React, {useState} from "react";
 import logo from "@/../../public/icons/fitter-logo.jpg";
 import { Navbar, Nav, Form, Row, Col, Button, Image } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link , useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { logout } from '../features/user';
-import { getData , postData } from "../features/apiService";
-import { useState } from "react";
-import { colors } from "@mui/material";
+import { getData,postData } from "../features/apiService";
 
 const FitterNavbar = () => {
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [searchKey , setSearchKey] = useState('');
   const [radioValue, setRadioValue] = useState('1');
   const navigate = useNavigate();
@@ -22,15 +21,15 @@ const FitterNavbar = () => {
 
   const logoutFunc = async () => {
 
-    let data = await postData('https://fitter-backend.onrender.com/users/logout/', null);
+    let data = await postData(serverUrl + 'users/logout/', null);
     if (data != null)
       dispatch(logout()); 
   }
 
   const handleSearch = async () => {
     console.log('searchKey:', searchKey);
-    let groupsData = await getData(`https://fitter-backend.onrender.com/groups/?search=${searchKey}`);
-    let eventsData = await getData(`https://fitter-backend.onrender.com/events/?search=${searchKey}`);
+    let groupsData = await getData(serverUrl + `groups/?search=${searchKey}`);
+    let eventsData = await getData(serverUrl + `events/?search=${searchKey}`);
     console.log('groupsData:', groupsData.results);
     console.log('eventsData:', eventsData.results);
 

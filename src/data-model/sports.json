@@ -5,22 +5,133 @@
     },
     {
         "id": 2,
-        "name": "Football"
-    },
-    {
-        "id": 3,
         "name": "Soccer"
     },
     {
+        "id": 3,
+        "name": "Football"
+    },
+    {
         "id": 4,
-        "name": "Tennis"
+        "name": "Running"
     },
     {
         "id": 5,
-        "name": "Volleyball"
+        "name": "Biking"
+    },
+    {
+        "id": 6,
+        "name": "Yoga"
     },
     {   
-        "id": 6,
+        "id": 7,
+        "name": "Pilates"
+    },
+    {
+        "id": 8,
+        "name": "Tennis"
+    },
+    {
+        "id": 9,
+        "name": "Table tennis"
+    },
+    {
+        "id": 10,
+        "name": "Beach Volleyball"
+    },
+    {
+        "id": 11,
+        "name": "Volleyball"
+    },
+    {
+        "id": 12,
+        "name": "Parkour"
+    },
+    {
+        "id": 13,
+        "name": "Skateboarding"
+    },
+    {
+        "id": 14,
         "name": "Baseball"
+    },
+    {
+        "id": 15,
+        "name": "Swimming"
+    },
+    {
+        "id": 16,
+        "name": "Boxing"
+    },
+    {
+        "id": 17,
+        "name": "Rugby"
+    },
+    {
+        "id": 18,
+        "name": "Judo"
+    },
+    {
+        "id": 19,
+        "name": "Karate"
+    },
+    {
+        "id": 20,
+        "name": "Taekwondo"
+    },
+    {
+        "id": 21,
+        "name": "Cricket"
+    },
+    {
+        "id": 22,
+        "name": "Golf"
+    },
+    {
+        "id": 23,
+        "name": "Wrestling"
+    },
+    {
+        "id": 24,
+        "name": "Badminton"
+    },
+    {
+        "id": 25,
+        "name": "Ice hockey"
+    },
+    {
+        "id": 26,
+        "name": "Skiing"
+    },
+    {
+        "id": 27,
+        "name": "Sportech"
+    },
+    {
+        "id": 28,
+        "name": "Surfing"
+    },
+    {
+        "id": 29,
+        "name": "Gymnastics"
+    },
+    {
+        "id": 30,
+        "name": "Fencing"
+    },
+    {
+        "id": 31,
+        "name": "Archery"
+    },
+    {
+        "id": 32,
+        "name": "Rowing"
+    },
+    {
+        "id": 33,
+        "name": "Sailing"},
+    {   
+        "id": 34,
+        "name": "Weightlifting"
     }
 ]

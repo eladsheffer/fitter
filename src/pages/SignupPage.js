@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Form, Alert, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { login } from '../features/user';
@@ -7,6 +7,8 @@ import { getData, postData } from '../features/apiService';
 import { showModal, closeModal } from '../features/modal';
 
 const SignupPage = (props) => {
+    const serverUrl = process.env.REACT_APP_SERVER_URL;
+    const citiesUrl = process.env.REACT_APP_CITIES_URL;
     const firstNameInput = useRef(null);
     const lastNameInput = useRef(null);
     const emailInput = useRef(null);
@@ -18,15 +20,16 @@ const SignupPage = (props) => {
     const femaleInput = useRef(null);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [validated, setValidated] = React.useState(false);
-    const [cities, setCities] = React.useState([]);
+    const [validated, setValidated] = useState(false);
+    const [cities, setCities] = useState([]);
+    const [errorMessages, setErrorMessages] = useState(null);
+    const [successMessages, setSuccessMessages] = useState(null);
 
     useEffect(() => {
         const fetchCities = async () => {
-            const path = 'https://data.gov.il/api/3/action/datastore_search?resource_id=d4901968-dad3-4845-a9b0-a57d027f11ab';
-            const data = await getData(path);
+            const data = await getData(citiesUrl);
             if (!data) return;
-            const cities = data.result.records.map((city) => city.שם_ישוב.trim().replace('(',')').replace(')','('));
+            const cities = data.result.records.map((city) => city.שם_ישוב.trim().replace('(', ')').replace(')', '('));
             setCities(cities);
         };
 
@@ -39,12 +42,16 @@ const SignupPage = (props) => {
     }, []);
 
     const signup = async () => {
+        setErrorMessages(null);
+        setSuccessMessages(null);
+
         if (!firstNameInput.current.checkValidity() || !lastNameInput.current.checkValidity() || !emailInput.current.checkValidity() || !passwordInput.current.checkValidity() || !dateOfBirthInput.current.checkValidity())
             return;
 
-        let user = await getData('https://fitter-backend.onrender.com/users/get_user_by_email?email=' + emailInput.current.value);
+        let user = await getData(serverUrl + 'users/get_user_by_email?email=' + emailInput.current.value);
 
         if (user != null) {
+            setErrorMessages("Email already exists. Please login or signup with another email");
             return;
         }
 
@@ -60,10 +67,14 @@ const SignupPage = (props) => {
         };
 
         console.log(newUser);
-        newUser = await postData('https://fitter-backend.onrender.com/users/', newUser);
+        newUser = await postData(serverUrl + 'users/', newUser);
         if (newUser) {
             dispatch(login(newUser));
+            setSuccessMessages("User created successfully");
             navigate("/");
+        }
+        else {
+            setErrorMessages("Error creating user");
         }
     };
 
@@ -81,7 +92,6 @@ const SignupPage = (props) => {
     return (
         <div>
             <div className="login">
-
                 {props.modal ? null :
                     <>
                         <h1>Create User Account</h1>
@@ -90,23 +100,42 @@ const SignupPage = (props) => {
                         </p>
                     </>
                 }
+                <Alert variant="danger" show={errorMessages}>
+                    {errorMessages}
+                </Alert>
+                <Alert variant="success" show={successMessages}>
+                    {successMessages}
+                </Alert>
                 <Form noValidate validated={validated}>
                     <Form.Group className="mb-3" controlId="name">
                         <Form.Label>First Name</Form.Label>
                         <Form.Control ref={firstNameInput} type="text" placeholder="Enter your first name" required onChange={handleChange} />
+                        <Form.Control.Feedback type="invalid">
+                            required field
+                        </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="name">
                         <Form.Label>Last Name</Form.Label>
                         <Form.Control ref={lastNameInput} type="text" placeholder="Enter your last name" required onChange={handleChange} />
+                        <Form.Control.Feedback type="invalid">
+                            required field
+                        </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="email">
                         <Form.Label>Email address</Form.Label>
                         <Form.Control ref={emailInput} type="email" placeholder="Enter email" required onChange={handleChange} />
+                        <Form.Control.Feedback type="invalid">
+                            required field
+                            {errorMessages}
+                        </Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="password">
                         <Form.Label>Password</Form.Label>
                         <Form.Control ref={passwordInput} type="password" placeholder="Password" required onChange={handleChange} />
+                        <Form.Control.Feedback type="invalid">
+                            required field
+                        </Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="address">
@@ -124,6 +153,9 @@ const SignupPage = (props) => {
                     <Form.Group className="mb-3" controlId="date-of-birth">
                         <Form.Label>Date of Birth</Form.Label>
                         <Form.Control type="date" ref={dateOfBirthInput} required />
+                        <Form.Control.Feedback type="invalid">
+                            required field
+                        </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="gender">
                         <Form.Label>Gender</Form.Label>
@@ -142,6 +174,9 @@ const SignupPage = (props) => {
                             type="radio"
                             id={`inline-radio-2`}
                         />
+                        <Form.Control.Feedback type="invalid">
+                            required field
+                        </Form.Control.Feedback>
                     </Form.Group>
                     <Button type="button" className="w-100" onClick={signup}>
                         Sign Up

@@ -18,7 +18,9 @@ import { Description } from '@mui/icons-material';
 import dayjs from 'dayjs';
 
 
-const NewEventPage = () => {
+const NewEventPage = (props) => {
+
+    const serverUrl = process.env.REACT_APP_SERVER_URL;
 
     const activeUser = useSelector((state) => state.user.value);
     const titleEventInput = useRef(null);
@@ -53,16 +55,19 @@ const NewEventPage = () => {
             return;
         }
 
-        let newEvent = {
-            title: titleEventInput.current.value,
-            description: descriptionEventInput.current.value,
-            location: locationEventInput.current.value,
-            visibility: eventVisibilityInput.current.value,
-            date_and_time: eventDateTimeInput.current.value,
-            organizer: activeUser.id
-        }
+        console.log(props.group);
+        let newEvent = new FormData();
+        newEvent.append('title', titleEventInput.current.value);
+        newEvent.append('description', descriptionEventInput.current.value);
+        newEvent.append('location', locationEventInput.current.value);
+        newEvent.append('visibility', eventVisibilityInput.current.value);
+        newEvent.append('date_and_time', eventDateTimeInput.current.value);
+        newEvent.append('organizer', activeUser.id);
+        if (props.group)
+            newEvent.append('group_organized', props.group);
+
         console.log(newEvent);
-        let path = 'https://fitter-backend.onrender.com/events/';
+        let path = serverUrl + 'events/';
         let event = await postData(path, newEvent);
         console.log(event);
         if (event && event.title) {

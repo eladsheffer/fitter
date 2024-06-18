@@ -8,6 +8,7 @@ import SearchFilter from '../components/SearchFilter';
 import { Visibility } from '@mui/icons-material';
 
 export default function SearchPage() {
+    const serverUrl = process.env.REACT_APP_SERVER_URL;
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const { groupsData = [], eventsData = [] } = location.state || {};
@@ -101,13 +102,13 @@ export default function SearchPage() {
     const eventSports = [...new Set(eventSportsArray)];
 
     const fetchGroups = async () => {
-        let groupsData = await getData(`https://fitter-backend.onrender.com/groups/?search=${key}`);
+        let groupsData = await getData(serverUrl + `groups/?search=${key}`);
         setGroups(groupsData.results);
         setFilteredGroups(groupsData.results);
     };
 
     const fetchEvents = async () => {
-        let eventsData = await getData(`https://fitter-backend.onrender.com/events/?search=${key}`);
+        let eventsData = await getData(serverUrl + `events/?search=${key}`);
         setEvents(eventsData.results);
         setFilteredEvents(eventsData.results);
     };

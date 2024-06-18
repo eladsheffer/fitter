@@ -1,13 +1,17 @@
 import { Form, Alert, Button } from 'react-bootstrap'
 import React, { useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../features/user';
+import {setGroupsAsAdmin, setGroupsAsMember} from '../features/groups'
+import {setEventsAsHost, setEventsAsParticipant } from '../features/events'
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { postData } from '../features/apiService';
+import { getData, postData } from '../features/apiService';
 import { showModal, closeModal } from '../features/modal';
 
 function LoginPage(props) {
+
+    const serverUrl = process.env.REACT_APP_SERVER_URL;
     const [validated, setValidated] = useState(false);
     const [invalidLogin, setInvalidLogin] = useState(false);
 
@@ -26,7 +30,7 @@ function LoginPage(props) {
             email: emailInput.current.value,
             password: passwordInput.current.value
         };
-        let path = 'https://fitter-backend.onrender.com/users/login/'
+        let path = serverUrl + 'users/login/';
         let data = await postData(path, userDetails,true);
         if (!data) {
             setInvalidLogin(true);
@@ -39,10 +43,39 @@ function LoginPage(props) {
         }
         console.log(user);
         dispatch(login(user)); // dispatch the user object to the store
+
+        // get the groups of the user
+        path = serverUrl + 'users/get_user_groups_as_admin/?email=' + user.email;
+        data = await getData(path);
+        if (data) {
+            dispatch(setGroupsAsAdmin(data));
+        }
+        console.log("groupsAsAdmin: ",user);
+
+        path = serverUrl + 'users/get_user_groups_as_member_not_as_admin/?email=' + user.email;
+        data = await getData(path);
+        if (data) {
+            dispatch(setGroupsAsMember(data));
+        }
+
+        // get the events of the user
+        path = serverUrl + 'users/get_user_events_as_host/?email=' + user.email;
+        data = await getData(path);
+        if (data) {
+            dispatch(setEventsAsHost(data));
+        }
+
+        path = serverUrl + 'users/get_user_events_as_participant/?email=' + user.email;
+        data = await getData(path);
+        if (data) {
+            dispatch(setEventsAsParticipant(data));
+        }
         //dispatch(closeModal());
         navigate(-1); // go back to the previous page
         if (props.modal) {
         dispatch(showModal());
+
+        
     }
     };
 

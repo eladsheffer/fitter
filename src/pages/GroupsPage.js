@@ -2,67 +2,106 @@ import { Dropdown, Row, Col, Form, Button, Image, Card, CardGroup } from 'react-
 import groups from "../data-model/groups.json";
 import sports from "../data-model/sports.json";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import GroupModal from '../components/GroupModal';
+import GroupCard from '../components/GroupCard';
+import RootCard from '../components/RootCard';
 import { useSelector, useDispatch } from 'react-redux';
 import RootModal from '../components/RootModal';
 import { renderModalType } from '../features/modal';
+import { useState, useEffect } from 'react';
+import { getData } from '../features/apiService';
 
 const GroupsPage = () => {
-    
+    const serverUrl = process.env.REACT_APP_SERVER_URL;
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const activeUser = useSelector((state) => state.user.value);
+    const groups = useSelector((state) => state.groups.value);
     const location = useLocation();
-    
+
+    const [groupsOfUserAsAdmin, setGroupsOfUserAsAdmin] = useState([]);
+    const [groupsOfUserAsMember, setGroupsOfUserAsMember] = useState([]);
+    const [groupsUserNotIn, setGroupsUserNotIn] = useState([]);
+
     const type = activeUser ? 'Group' : 'Signup';
-    
-    dispatch(renderModalType({type: type}));
+
+    dispatch(renderModalType({ type: type }));
 
     const pickGroup = (group) => {
         navigate(`/groups/${group.id}`);
     }
-    
+
+    useEffect(() => {
+        const fetchGroups = async () => {
+            if (!activeUser) return;
+
+            let data = await getData(serverUrl + 'users/get_user_groups_as_admin/?email=' + activeUser.email);
+            if (!data) return;
+            setGroupsOfUserAsAdmin(data);
+
+            data = await getData(serverUrl + 'users/get_user_groups_as_member_not_as_admin/?email=' + activeUser.email);
+            if (!data) return;
+            setGroupsOfUserAsMember(data);
+
+            data = await getData(serverUrl + 'users/get_groups_user_not_in/?email=' + activeUser.email);
+            console.log("offer: ",data);
+            if (!data) return;
+            setGroupsUserNotIn(data);
+
+
+        }
+        fetchGroups();
+        console.log(groupsOfUserAsMember);
+        console.log(groupsOfUserAsAdmin);
+
+        // Cleanup function if needed
+        return () => {
+            // Cleanup code here, if any
+        };
+    }, []);
+
+
     return (
-        <div> 
+        <div>
             <div style={{ width: "80%", marginInline: "auto", marginTop: "4rem" }}>
-                <Row>
+                {/* <Row>
                     <Col>
                     </Col>
                     <Col xs="10">
                         <h1>Find Your Group</h1>
                     </Col>
-                </Row>
+                </Row> */}
                 <Row>
                     <Col>
                     </Col>
                     <Col>
-                        <Form.Control
+                        {/* <Form.Control
                             type="text"
                             placeholder="Search"
                             className="mr-sm-2 rounded-pill"
-                        />
+                        /> */}
                     </Col>
                     <Col>
-                        <Button>Search</Button>
+                        {/* <Button>Search</Button> */}
                     </Col>
                     <Col>
-                        <h3>Or</h3>
+                        {/* <h3>Or</h3> */}
                     </Col>
                     <Col>
-                        <p>Start your own group and community!</p>
+                        <p>Start your group and community!</p>
                     </Col>
                     <Col>
-                    <RootModal />
+                        <RootModal />
                     </Col>
 
                 </Row>
 
-                <Row>
+                {/* <Row>
                     <Col>
                         <h3>Search By Filters</h3>
                     </Col>
-                </Row>
-                <div className="d-flex justify-content-between"> {/* Modified line */}
+                </Row> */}
+
+                {/* <div className="d-flex justify-content-between"> 
                     <Dropdown>
                         <Dropdown.Toggle variant="primary" id="dropdown1" style={{ borderRadius: "20px" }}>
                             Any Sports
@@ -79,7 +118,7 @@ const GroupsPage = () => {
                             Any Location
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            {/* Dropdown 2 menu items */}
+                           
                         </Dropdown.Menu>
                     </Dropdown>
                     &nbsp;&nbsp;&nbsp;&nbsp;
@@ -88,7 +127,7 @@ const GroupsPage = () => {
                             Any Proficiency
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            {/* Dropdown 3 menu items */}
+                           
                         </Dropdown.Menu>
                     </Dropdown>
                     &nbsp;&nbsp;&nbsp;&nbsp;
@@ -97,10 +136,10 @@ const GroupsPage = () => {
                             Any Rating
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            {/* Dropdown 4 menu items */}
+                           
                         </Dropdown.Menu>
                     </Dropdown>
-                </div>
+                </div> */}
             </div>
             <h1
                 style={{
@@ -109,7 +148,7 @@ const GroupsPage = () => {
                     marginTop: "4rem",
                 }}
             >
-                Results
+                Groups You Admin
             </h1>
             <CardGroup
                 style={{
@@ -118,29 +157,104 @@ const GroupsPage = () => {
                     marginTop: "4rem",
                 }}
             >
-                {groups.map((group, i) => (
-                    <Row>
-                        <Button variant='None' onClick={() => pickGroup(group)}>
-                        <Col>
-                            <Card key={i} border="secondary">
-                                {/* <Link to={`groups/${group.id}`} style={{
-                                    textDecoration: "none",
-                                }}> */}
-                                    <Card.Img variant="top" src={group.image} />
-                                    <Card.Body>
-                                        <Card.Title>{group.name}</Card.Title>
-                                        <Card.Text>{group.description}</Card.Text>
-                                    </Card.Body>
-                                    <Card.Footer>
-                                        <small className="text-muted">{group.location}</small>
-                                    </Card.Footer>
-                                {/* </Link> */}
-                            </Card>
-                        </Col>
-                        </Button>
-                    </Row>
+                {groupsOfUserAsAdmin.map((group, i) => (
+                    <GroupCard key={i} group={group} />
                 ))}
             </CardGroup>
+            <h1
+                style={{
+                    width: "70%",
+                    marginInline: "auto",
+                    marginTop: "4rem",
+                }}
+            >
+                Groups You Are A Member Of
+            </h1>
+            <CardGroup
+                style={{
+                    width: "30%",
+                    marginInline: "auto",
+                    marginTop: "4rem",
+                }}
+            >
+                {groupsOfUserAsMember.map((group, i) => (
+                    <GroupCard key={i} group={group} />
+                ))}
+            </CardGroup>
+            
+
+
+
+
+            <h1
+                style={{
+                    width: "70%",
+                    marginInline: "auto",
+                    marginTop: "4rem",
+                }}
+            >
+                Groups You Admin
+            </h1>
+            <Row
+                style={{
+                    width: "70%",
+                    marginInline: "auto",
+                    marginTop: "4rem",
+                }}
+            >
+                {groups.groupsAsAdmin.map((group, i) => (
+                    <Col sm={4}>
+                        <RootCard group={group} key={i}/>
+                    </Col>
+                ))}
+            </Row>
+
+
+            <h1
+                style={{
+                    width: "70%",
+                    marginInline: "auto",
+                    marginTop: "4rem",
+                }}
+            >
+                Groups You Are A Member Of
+            </h1>
+            <Row className='d-flex flex-wrap'
+                style={{
+                    width: "70%",
+                    marginInline: "auto",
+                    marginTop: "4rem",
+                }}
+            >
+                {groups.groupsAsMember.map((group, i) => (
+                    <Col sm={4}>
+                        <RootCard group={group} key={i}/>
+                    </Col>
+                ))}
+            </Row>
+
+             <h1
+                style={{
+                    width: "70%",
+                    marginInline: "auto",
+                    marginTop: "4rem",
+                }}
+            >
+                Groups You can Join:
+            </h1>
+            <Row className='d-flex flex-wrap'
+                style={{
+                    width: "70%",
+                    marginInline: "auto",
+                    marginTop: "4rem",
+                }}
+            >
+                {groupsUserNotIn.map((group, i) => (
+                    <Col sm={4}>
+                        <RootCard group={group} key={i}/>
+                    </Col>
+                ))}
+            </Row>
         </div>
     );
 }
