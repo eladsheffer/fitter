@@ -147,6 +147,7 @@ const GroupsPage = () => {
                     </Dropdown>
                 </div> */}
             </div>
+            {groupsOfUserAsAdmin.length===0? null : <>
             <h1
                 style={{
                     width: "70%",
@@ -167,6 +168,8 @@ const GroupsPage = () => {
                     <GroupCard key={i} group={group} />
                 ))}
             </CardGroup>
+            </>}
+            {groupsOfUserAsMember.length===0? null : <>
             <h1
                 style={{
                     width: "70%",
@@ -187,11 +190,12 @@ const GroupsPage = () => {
                     <GroupCard key={i} group={group} />
                 ))}
             </CardGroup>
+            </>}
             
 
 
 
-
+            {groupsOfUserAsAdmin.length===0? null : <>
             <h1
                 style={{
                     width: "70%",
@@ -214,8 +218,9 @@ const GroupsPage = () => {
                     </Col>
                 ))}
             </Row>
+            </>}
 
-
+            {groupsOfUserAsMember.length===0? null : <>
             <h1
                 style={{
                     width: "70%",
@@ -238,7 +243,9 @@ const GroupsPage = () => {
                     </Col>
                 ))}
             </Row>
+            </>}
 
+            {groupsUserNotIn.length===0? null : <>
              <h1
                 style={{
                     width: "70%",
@@ -261,6 +268,7 @@ const GroupsPage = () => {
                     </Col>
                 ))}
             </Row>
+            </>}
         </div>
     );
 }
