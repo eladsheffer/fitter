@@ -32,7 +32,12 @@ const GroupsPage = () => {
 
     useEffect(() => {
         const fetchGroups = async () => {
-            if (!activeUser) return;
+            if (!activeUser){
+                let data = await getData(serverUrl + 'groups');
+                if (!data) return;
+                setGroupsUserNotIn(data.results);
+            }
+            else{
 
             let data = await getData(serverUrl + 'users/get_user_groups_as_admin/?email=' + activeUser.email);
             if (!data) return;
@@ -46,6 +51,7 @@ const GroupsPage = () => {
             console.log("offer: ",data);
             if (!data) return;
             setGroupsUserNotIn(data);
+            }
 
 
         }
