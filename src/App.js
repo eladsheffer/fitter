@@ -13,6 +13,7 @@ import NewGroupPage from "./pages/NewGroupPage";
 import NewEventPage from "./pages/NewEventPage";
 import SearchPage from "./pages/SearchPage";
 import "bootstrap/dist/css/bootstrap.min.css";
+import UserPage from "./pages/UserPage";
 
 function App() {
   // const router = createBrowserRouter([
@@ -63,6 +64,7 @@ function App() {
         <Route path="/new-group" element={<NewGroupPage />} />
         <Route path="/new-event" element={<NewEventPage />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="/users/:id" element={<UserPage />} />
       </Routes>
     </BrowserRouter>
   </div>;
