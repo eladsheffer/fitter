@@ -20,7 +20,7 @@ const RootCard = (props) => {
 
 
     const joinGroup = async () => {
-        if (!activeUser) 
+        if (!activeUser)
             navigate('/login');
 
         let url = serverUrl + `groups/${group.id}/add_user/`;
@@ -81,12 +81,16 @@ const RootCard = (props) => {
     };
 
     const createEvent = () => {
-      //dispatch(renderModalType({ type: 'Event' }));
+        //dispatch(renderModalType({ type: 'Event' }));
     };
 
     // const removeGroup = () => {
     //     console.log('Remove group:', group);
     // };
+
+    const login = () => {
+        navigate('/login');
+    };
 
     const handleAction = (action) => {
         switch (action) {
@@ -116,7 +120,9 @@ const RootCard = (props) => {
         }
     };
 
-    const footer = activeUser && group.admin === activeUser.id ? (<>
+    const footer = activeUser === null ? (<>
+        <Button variant="warning" onClick={login}>Login</Button>
+    </>) : group.admin === activeUser.id ? (<>
         <Button variant="warning" onClick={editGroup}>Edit Group</Button>
         <Button variant="info" onClick={createEvent}>Create New Event</Button>
     </>) : group.members.includes(activeUser.id) ? (<>
