@@ -2,13 +2,14 @@ import { Dropdown, Row, Col, Form, Button, Image, Card, CardGroup } from 'react-
 import groups from "../data-model/groups.json";
 import sports from "../data-model/sports.json";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import GroupCard from '../components/GroupCard';
+import GroupCard2 from '../components/GroupCard2';
 import RootCard from '../components/RootCard';
 import { useSelector, useDispatch } from 'react-redux';
 import RootModal from '../components/RootModal';
 import { renderModalType } from '../features/modal';
 import { useState, useEffect } from 'react';
 import { getData } from '../features/apiService';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const GroupsPage = () => {
     const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -68,7 +69,7 @@ const GroupsPage = () => {
 
     return (
         <div>
-            <div style={{ width: "80%", marginInline: "auto", marginTop: "4rem" }}>
+            <div style={{ width: "95%", marginInline: "auto", marginTop: "4rem" }}>
                 {/* <Row>
                     <Col>
                     </Col>
@@ -146,60 +147,12 @@ const GroupsPage = () => {
                         </Dropdown.Menu>
                     </Dropdown>
                 </div> */}
-            </div>
-            {groupsOfUserAsAdmin.length===0? null : <>
-            <h1
-                style={{
-                    width: "70%",
-                    marginInline: "auto",
-                    marginTop: "4rem",
-                }}
-            >
-                Groups You Admin
-            </h1>
-            <CardGroup
-                style={{
-                    width: "30%",
-                    marginInline: "auto",
-                    marginTop: "4rem",
-                }}
-            >
-                {groupsOfUserAsAdmin.map((group, i) => (
-                    <GroupCard key={i} group={group} />
-                ))}
-            </CardGroup>
-            </>}
-            {groupsOfUserAsMember.length===0? null : <>
-            <h1
-                style={{
-                    width: "70%",
-                    marginInline: "auto",
-                    marginTop: "4rem",
-                }}
-            >
-                Groups You Are A Member Of
-            </h1>
-            <CardGroup
-                style={{
-                    width: "30%",
-                    marginInline: "auto",
-                    marginTop: "4rem",
-                }}
-            >
-                {groupsOfUserAsMember.map((group, i) => (
-                    <GroupCard key={i} group={group} />
-                ))}
-            </CardGroup>
-            </>}
             
-
-
-
+            
+            {groupsOfUserAsAdmin.length===0 && groupsOfUserAsMember.length===0 && groupsUserNotIn.length===0? <CircularProgress/> : null}
             {groupsOfUserAsAdmin.length===0? null : <>
             <h1
                 style={{
-                    width: "70%",
-                    marginInline: "auto",
                     marginTop: "4rem",
                 }}
             >
@@ -207,14 +160,12 @@ const GroupsPage = () => {
             </h1>
             <Row
                 style={{
-                    width: "70%",
                     marginInline: "auto",
-                    marginTop: "4rem",
                 }}
             >
                 {groups.groupsAsAdmin.map((group, i) => (
-                    <Col sm={4}>
-                        <RootCard group={group} key={i}/>
+                    <Col lg={4} md={6} sm={12}>
+                        <GroupCard2 group={group} key={i}/>
                     </Col>
                 ))}
             </Row>
@@ -223,8 +174,6 @@ const GroupsPage = () => {
             {groupsOfUserAsMember.length===0? null : <>
             <h1
                 style={{
-                    width: "70%",
-                    marginInline: "auto",
                     marginTop: "4rem",
                 }}
             >
@@ -232,14 +181,12 @@ const GroupsPage = () => {
             </h1>
             <Row className='d-flex flex-wrap'
                 style={{
-                    width: "70%",
                     marginInline: "auto",
-                    marginTop: "4rem",
                 }}
             >
                 {groups.groupsAsMember.map((group, i) => (
-                    <Col sm={4}>
-                        <RootCard group={group} key={i}/>
+                    <Col lg={4} md={6} sm={12}>
+                        <GroupCard2 group={group} key={i}/>
                     </Col>
                 ))}
             </Row>
@@ -248,8 +195,6 @@ const GroupsPage = () => {
             {groupsUserNotIn.length===0? null : <>
              <h1
                 style={{
-                    width: "70%",
-                    marginInline: "auto",
                     marginTop: "4rem",
                 }}
             >
@@ -257,18 +202,17 @@ const GroupsPage = () => {
             </h1>
             <Row className='d-flex flex-wrap'
                 style={{
-                    width: "70%",
                     marginInline: "auto",
-                    marginTop: "4rem",
                 }}
             >
                 {groupsUserNotIn.map((group, i) => (
-                    <Col sm={4}>
-                        <RootCard group={group} key={i}/>
+                    <Col lg={4} md={6} sm={12}>
+                        <GroupCard2 group={group} key={i}/>
                     </Col>
                 ))}
             </Row>
             </>}
+            </div>
         </div>
     );
 }

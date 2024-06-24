@@ -9,7 +9,7 @@ import { setGroupsAsAdmin, setGroupsAsMember, addGroup, removeGroup } from '../f
 import { showModal, closeModal, renderModalType } from '../features/modal';
 import RootModal from './RootModal';
 
-const RootCard = (props) => {
+const GroupCard2= (props) => {
     const dispatch = useDispatch();
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const activeUser = useSelector((state) => state.user.value);
@@ -124,7 +124,7 @@ const RootCard = (props) => {
         <Button variant="warning" onClick={login}>Login</Button>
     </>) : group.admin === activeUser.id ? (<>
         <Button variant="primary" onClick={editGroup} style={{ height:"50%", marginBottom: '5px' }}>Edit Group</Button>
-        <Button variant="danger" onClick={createEvent} style={{ height:"50%" }}>Create New Event</Button>
+        <Button variant="danger" onClick={createEvent} style={{ height:"50%",whiteSpace: 'nowrap' }}>Create New Event</Button>
     </>) : group.members.includes(activeUser.id) ? (<>
         <Button variant="info" onClick={leaveGroup}>Leave</Button>
     </>) : (<>
@@ -137,40 +137,43 @@ const RootCard = (props) => {
 
     return (
         <div>
-            <Card className="flex-fill d-flex flex-column m-2" >
-                <Card.Header className='text-center' style={{display: 'flex', justifyContent: 'center', overflow: 'hidden', width: '100%' }}>
-                    <Link to={`${group.id}`} className='text-decoration-none'>
-
-                        <Card.Title style={{ marginTop: 'auto' }}>{group.name}</Card.Title>
-                            <Card.Img variant="top" src={profile_picture} style={{ width: '300px', height: '200px', objectFit: 'contain' }} />
-
+            <Card className="flex-fill d-flex flex-column m-2" style={{}}>
+            <Link to={`${group.id}`}>
+                <Card.Title className="text-center align-self-center" style={{ whiteSpace: 'nowrap', overflow: 'hidden',  }}>{group.name}</Card.Title>
+            </Link>
+                <div className="flex-fill d-flex flex-row m-2" style={{width: '100%'}}>
+                    <Card.Header className="d-flex justify-content-center align-items-center">
+                        <Link to={`${group.id}`}>
+                            <Card.Img src={profile_picture} style={{ width: '100%', objectFit: 'contain' }} />
+                        </Link>
+                    </Card.Header>
+                    <Card.Body className="flex-fill d-flex flex-column m-2" style={{width: '200px', }}>
+                    <Link to={`${group.id}`}>
+                        {/* <Card.Title>{group.name}</Card.Title> */}
+                        <Card.Text>
+                            Gender: {group.gender}
+                        </Card.Text>
+                        <Card.Text>
+                            Members: {group.members.length}
+                        </Card.Text>
+                        <Card.Text>
+                            {group.location}
+                        </Card.Text>
                     </Link>
-                </Card.Header>
-                <Card.Body>
-                    <Card.Text>
-                        Gender: {group.gender}
-                    </Card.Text>
-                    <Card.Text>
-                        Members: {group.members.length}
-                    </Card.Text>
-                    <Card.Text>
-                        {group.location}
-                    </Card.Text>
-                    <Accordion>
-                        <Accordion.Item eventKey="0">
-                            <Accordion.Header>Description</Accordion.Header>
-                            <Accordion.Body>
-                                {group.description}
-                            </Accordion.Body>
-                        </Accordion.Item>
-                    </Accordion>
-                </Card.Body>
-                <Card.Footer className="mt-auto d-flex justify-content-center"  style={{display: 'flex', 'flex-direction': 'column','align-items': 'stretch',width: '100%', height: '5em'}}>
-                    {footer}
-                </Card.Footer>
+                        <Accordion>
+                            <Accordion.Item eventKey="0">
+                                <Accordion.Header>Description</Accordion.Header>
+                                <Accordion.Body>
+                                    {group.description}
+                                </Accordion.Body>
+                            </Accordion.Item>
+                        </Accordion>
+                        {footer}
+                    </Card.Body>
+                </div>
             </Card>
         </div>
     );
 }
 
-export default RootCard;
+export default GroupCard2;

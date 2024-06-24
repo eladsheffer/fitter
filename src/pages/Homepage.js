@@ -5,8 +5,10 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getData } from "../features/apiService";
-import GroupCard from "../components/GroupCard";
-import EventCard from "../components/EventCard";
+import GroupCard2 from "../components/GroupCard2";
+import EventCard2 from "../components/EventCard2";
+import RootCard from "../components/RootCard";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Homepage = () => {
     const activeUser = useSelector((state) => state.user.value);
@@ -52,6 +54,7 @@ const Homepage = () => {
     return (
         
         <div>
+             <div style={{ width: "95%", marginInline: "auto", marginTop: "4rem" }}>
                 <div style={{ backgroundColor: "#f8f9fa", padding: "2rem" }}>
                     <h1 style={{ textAlign: "center" }}>Welcome to Fitter</h1>
                     <p style={{ textAlign: "center" }}>
@@ -75,14 +78,12 @@ const Homepage = () => {
                     </Card.Body>
                 </Card>
 
-                {groups === null || events === null ? (
-                    <h1>Loading...</h1>
+                {groups.length===0 && events.length === 0 ? (
+                    <CircularProgress style={{ marginTop: "4rem" }} />
                 ) : (
                     <>
                         <h1
                             style={{
-                                width: "70%",
-                                marginInline: "auto",
                                 marginTop: "4rem",
                             }}
                         >
@@ -91,22 +92,18 @@ const Homepage = () => {
                         <Row
                             className="d-flex flex-wrap"
                             style={{
-                                width: "70%",
                                 marginInline: "auto",
-                                marginTop: "4rem",
                             }}
                         >
                             {events.map((event, i) => (
-                                <Col sm={4}>
-                                    <EventCard event={event} key={i} />
+                                <Col lg={4}  md={6} sm={12}>
+                                    <EventCard2 event={event} key={i} />
                                 </Col>
                             ))}
                         </Row>
 
                         <h1
                             style={{
-                                width: "70%",
-                                marginInline: "auto",
                                 marginTop: "4rem",
                             }}
                         >
@@ -115,19 +112,18 @@ const Homepage = () => {
                         <Row
                             className="d-flex flex-wrap"
                             style={{
-                                width: "70%",
                                 marginInline: "auto",
-                                marginTop: "4rem",
                             }}
                         >
                             {groups.map((group, i) => (
-                                <Col sm={4}>
-                                    <GroupCard group={group} key={i} />
+                                <Col lg={4}  md={6} sm={12}>
+                                    <GroupCard2 group={group} key={i} />
                                 </Col>
                             ))}
                         </Row>
                     </>
                 )}
+                </div>
         </div>
     );
 };
