@@ -9,7 +9,7 @@ import RootModal from '../components/RootModal';
 import { renderModalType } from '../features/modal';
 import { useState, useEffect } from 'react';
 import { getData } from '../features/apiService';
-import CircularProgress from '@mui/material/CircularProgress';
+import LinearProgress from '@mui/material/LinearProgress';
 
 const GroupsPage = () => {
     const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -149,7 +149,7 @@ const GroupsPage = () => {
                 </div> */}
             
             
-            {groupsOfUserAsAdmin.length===0 && groupsOfUserAsMember.length===0 && groupsUserNotIn.length===0? <CircularProgress/> : null}
+            {groupsOfUserAsAdmin.length===0 && groupsOfUserAsMember.length===0 && groupsUserNotIn.length===0? <LinearProgress/> : null}
             {groupsOfUserAsAdmin.length===0? null : <>
             <h1
                 style={{

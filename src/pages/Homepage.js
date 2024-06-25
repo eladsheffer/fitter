@@ -8,7 +8,7 @@ import { getData } from "../features/apiService";
 import GroupCard2 from "../components/GroupCard2";
 import EventCard2 from "../components/EventCard2";
 import RootCard from "../components/RootCard";
-import CircularProgress from '@mui/material/CircularProgress';
+import LinearProgress from '@mui/material/LinearProgress';
 
 const Homepage = () => {
     const activeUser = useSelector((state) => state.user.value);
@@ -79,7 +79,7 @@ const Homepage = () => {
                 </Card>
 
                 {groups.length===0 && events.length === 0 ? (
-                    <CircularProgress style={{ marginTop: "4rem" }} />
+                    <LinearProgress style={{ marginTop: "4rem" }} />
                 ) : (
                     <>
                         <h1
