@@ -61,28 +61,14 @@ const NewGroupPage = () => {
         newGroup.append('description', groupDescriptionInput.current.value);
         newGroup.append('visibility', groupVisibilityInput.current.value);
         newGroup.append('location', cityInput.current.value ? cityInput.current.value : null);
-        newGroup.append('min_age', disabledAgeSlider ? null : ageRange[0]);
-        newGroup.append('max_age', disabledAgeSlider? null : ageRange[1]);
-        //newGroup.append('profile_picture', groupProfilePicture);
+        newGroup.append('min_age', disabledAgeSlider ? 0 : ageRange[0]);
+        newGroup.append('max_age', disabledAgeSlider? 120 : ageRange[1]);
+        newGroup.append('profile_picture', groupProfilePicture);
         newGroup.append('gender', genderInput.current.value);
-        //newGroup.append('preferred_sports', sportsInput.current.selectedOptions.length>0 ? Array.from(sportsInput.current.selectedOptions).map(option => option.value) : null);
-
-
-        // let newGroup = {
-        //     admin: activeUser.id,
-        //     name: groupNameInput.current.value,
-        //     description: groupDescriptionInput.current.value,
-        //     visibility: groupVisibilityInput.current.value,
-        //     location: cityInput.current.value ? cityInput.current.value : null,
-        //     min_age: disabledAgeSlider ? null : ageRange[0],
-        //     max_age: disabledAgeSlider? null : ageRange[1],
-        //     profile_picture: groupProfilePicture,
-        //     gender: genderInput.current.value,
-        //     //preferred_sports: sportsInput.current.selectedOptions.length>0 ? Array.from(sportsInput.current.selectedOptions).map(option => option.value) : null,
-        // }
+        const preferred_sports = sportsInput.current.selectedOptions.length>0 ? Array.from(sportsInput.current.selectedOptions).map((option) => option.value) : null;
+        preferred_sports.forEach((sport,i)=>newGroup.append(`preferred_sports[${i}]`,sport));
 
         console.log(newGroup);
-        //console.log(newGroup.get('profile_picture'))
 
         let path = serverUrl + 'groups/';
         let group = await postData(path, newGroup);

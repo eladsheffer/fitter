@@ -66,6 +66,8 @@ const postData = async (url, data, login = false) => {
             return responseData;
         }
 
+        console.log("API SERVICE - FAILED: ", responseData);
+
         return null;
     } catch (error) {
         console.error('Error posting data:', error);
@@ -75,22 +77,69 @@ const postData = async (url, data, login = false) => {
     }
 };
 
+const patchData = async (url, data) => {
 
-const putData = async (url, data) => {
-    const settings = {
-        method: 'PUT',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
+    const headers = {
+        Accept: 'application/json',
     };
+
+    if (!(data instanceof FormData)) {
+        headers['Content-Type'] = 'application/json';
+        data = JSON.stringify(data);
+    }
+
+    const settings = {
+        method: 'PATCH',
+        headers: headers,
+        body: data
+    };
+
     try {
         const response = await fetch(url, settings);
-        const data = await response.json();
+        const responseData = await response.json();
         const status = response.status;
         if (status === 200)
-            return data;
+            return responseData;
+
+        console.log("API SERVICE - FAILED: ", responseData);
+
+        
+        return null;
+    } catch (error) {
+        console.error('Error updating data:', error);
+        return null;
+        //throw error;
+        // handle the error here
+    }
+}
+
+
+const putData = async (url, data) => {
+    const headers = {
+        Accept: 'application/json',
+    };
+
+    if (!(data instanceof FormData)) {
+        headers['Content-Type'] = 'application/json';
+        data = JSON.stringify(data);
+    }
+
+    const settings = {
+        method: 'PUT',
+        headers: headers,
+        body: data
+    };
+
+    try {
+        const response = await fetch(url, settings);
+        const responseData = await response.json();
+        const status = response.status;
+        if (status === 200)
+            return responseData;
+
+        console.log("API SERVICE - FAILED: ", responseData);
+
+        
         return null;
     } catch (error) {
         console.error('Error updating data:', error);
