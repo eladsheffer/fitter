@@ -170,7 +170,7 @@ const NewGroupPage = () => {
                             <Form.Control type="file" accept='image/*' ref={groupProfilePictureInput} onChange={(e)=>setGroupProfilePicture((e.target.files[0]))}/>
                         </Col>
                         <Col sm={3}>
-                        <Image src={groupProfilePicture} ref={groupProfileImg} fluid/>
+                        <Image src={URL.createObjectURL(groupProfilePicture)} ref={groupProfileImg} fluid/>
                         </Col>
                     </Row>
                 </Form.Group>
