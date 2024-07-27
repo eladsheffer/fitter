@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { Form, Row, Col, Container, Button, Modal, Image, Alert } from 'react-bootstrap'
 import { useSelector } from "react-redux";
 import { getData, postData } from '../features/apiService';
-import {Box, Slider} from '@mui/material';
+import { Box, Slider } from '@mui/material';
 import sports from "../data-model/sports.json";
 
 const NewGroupPage = () => {
@@ -62,11 +62,11 @@ const NewGroupPage = () => {
         newGroup.append('visibility', groupVisibilityInput.current.value);
         newGroup.append('location', cityInput.current.value ? cityInput.current.value : null);
         newGroup.append('min_age', disabledAgeSlider ? 0 : ageRange[0]);
-        newGroup.append('max_age', disabledAgeSlider? 120 : ageRange[1]);
+        newGroup.append('max_age', disabledAgeSlider ? 120 : ageRange[1]);
         newGroup.append('profile_picture', groupProfilePicture);
         newGroup.append('gender', genderInput.current.value);
-        const preferred_sports = sportsInput.current.selectedOptions.length>0 ? Array.from(sportsInput.current.selectedOptions).map((option) => option.value) : null;
-        preferred_sports.forEach((sport,i)=>newGroup.append(`preferred_sports[${i}]`,sport));
+        const preferred_sports = Array.from(sportsInput.current.selectedOptions).map((option) => option.value);
+        preferred_sports.forEach((sport, i) => newGroup.append(`preferred_sports[${i}]`, sport));
 
         console.log(newGroup);
 
@@ -94,17 +94,17 @@ const NewGroupPage = () => {
 
     const handleSliderChange = (event, newValue, activeThumb) => {
         if (!Array.isArray(newValue)) {
-          return;
+            return;
         }
-    
+
         if (activeThumb === 0) {
-          setAgeRange([Math.min(newValue[0], ageRange[1]), ageRange[1]]);
+            setAgeRange([Math.min(newValue[0], ageRange[1]), ageRange[1]]);
         } else {
-          setAgeRange([ageRange[0], Math.max(newValue[1], ageRange[0])]);
+            setAgeRange([ageRange[0], Math.max(newValue[1], ageRange[0])]);
         }
-      };
-    
-      let groupProfilePictureToShow = groupProfilePicture ? URL.createObjectURL(groupProfilePicture) : null;
+    };
+
+    let groupProfilePictureToShow = groupProfilePicture ? URL.createObjectURL(groupProfilePicture) : null;
 
 
     return (
@@ -145,7 +145,7 @@ const NewGroupPage = () => {
                 <Form.Group className="mb-3" controlId="city">
                     <Form.Label>City</Form.Label>
                     <Form.Select aria-label="cities" ref={cityInput}>
-                        <option value="">Choose Location</option>
+                        <option value="" disabled>Choose Location</option>
                         {cities.map((city) => <option value={city} key={city}>{city}</option>)}
                     </Form.Select>
                 </Form.Group>
@@ -168,29 +168,29 @@ const NewGroupPage = () => {
                     <Row>
                         <Col sm={9}>
                             <Form.Label>Group Profile Picture</Form.Label>
-                            <Form.Control type="file" accept='image/*' ref={groupProfilePictureInput} onChange={(e)=>setGroupProfilePicture((e.target.files[0]))}/>
+                            <Form.Control type="file" accept='image/*' ref={groupProfilePictureInput} onChange={(e) => setGroupProfilePicture((e.target.files[0]))} />
                         </Col>
                         <Col sm={3}>
-                        <Image src={groupProfilePictureToShow} ref={groupProfileImg} fluid/>
+                            <Image src={groupProfilePictureToShow} ref={groupProfileImg} fluid />
                         </Col>
                     </Row>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="min-max">
-                    <Form.Check type="checkbox" label="Group Age Range (Optional)" onChange={()=>setDisabledAgeSlider(!disabledAgeSlider)}/>
+                    <Form.Check type="checkbox" label="Group Age Range (Optional)" onChange={() => setDisabledAgeSlider(!disabledAgeSlider)} />
                     <Slider ref={ageSliderInput}
-        getAriaLabel={() => 'Minimum distance'}
-        value={ageRange}
-        onChange={handleSliderChange}
-        valueLabelDisplay="auto"
-        // getAriaValueText={valuetext}
-        disableSwap
-        disabled={disabledAgeSlider}
-        max={120}
-      />
+                        getAriaLabel={() => 'Minimum distance'}
+                        value={ageRange}
+                        onChange={handleSliderChange}
+                        valueLabelDisplay="auto"
+                        // getAriaValueText={valuetext}
+                        disableSwap
+                        disabled={disabledAgeSlider}
+                        max={120}
+                    />
                 </Form.Group>
                 <Box sx={{ width: 300 }}>
-      
-    </Box>
+
+                </Box>
                 <Button variant="primary" className="w-100" onClick={createGroup}>
                     Create Group
                 </Button>

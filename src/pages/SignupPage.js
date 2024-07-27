@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Form, Alert, Button } from 'react-bootstrap';
+import { Form, Alert, Button, Row, Col, Image } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { login } from '../features/user';
 import { useNavigate, Link } from 'react-router-dom';
 import { getData, postData } from '../features/apiService';
 import { showModal, closeModal } from '../features/modal';
+import { Box, Slider } from '@mui/material';
+import sports from "../data-model/sports.json";
 
 const SignupPage = (props) => {
     const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -13,17 +15,28 @@ const SignupPage = (props) => {
     const lastNameInput = useRef(null);
     const emailInput = useRef(null);
     const passwordInput = useRef(null);
-    const addressInput = useRef(null);
     const cityInput = useRef(null);
     const dateOfBirthInput = useRef(null);
     const maleInput = useRef(null);
     const femaleInput = useRef(null);
+    const sportsInput = useRef(null);
+    const userProfilePictureInput = useRef(null);
+    const userProfileImg = useRef(null);
+    const weightSliderInput = useRef(null);
+    const heightSliderInput = useRef(null);
+    const bioInput = useRef(null);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [validated, setValidated] = useState(false);
     const [cities, setCities] = useState([]);
     const [errorMessages, setErrorMessages] = useState(null);
     const [successMessages, setSuccessMessages] = useState(null);
+    const [userProfilePicture, setUserProfilePicture] = useState(null);
+    const [disabledWeightSlider, setDisabledWeightSlider] = useState(true);
+    const [disabledHeightSlider, setDisabledHeightSlider] = useState(true);
+    const [height, setHeight] = useState(165);
+    const [weight, setWeight] = useState(60);
 
     useEffect(() => {
         const fetchCities = async () => {
@@ -55,19 +68,23 @@ const SignupPage = (props) => {
             return;
         }
 
-        let newUser = {
-            first_name: firstNameInput.current.value,
-            last_name: lastNameInput.current.value,
-            email: emailInput.current.value,
-            password: passwordInput.current.value,
-            //address: addressInput.current.value,
-            location: cityInput.current.value,
-            date_of_birth: dateOfBirthInput.current.value,
-            gender: maleInput.current.checked ? "male" : "female",
-        };
+        let newUser = new FormData();
+        newUser.append('first_name', firstNameInput.current.value);
+        newUser.append('last_name', lastNameInput.current.value);
+        newUser.append('email', emailInput.current.value);
+        newUser.append('password', passwordInput.current.value);
+        newUser.append('location', cityInput.current.value);
+        newUser.append('date_of_birth', dateOfBirthInput.current.value);
+        newUser.append('gender', maleInput.current.checked ? "male" : "female")
+        const preferred_sports = Array.from(sportsInput.current.selectedOptions).map((option) => option.value);
+        preferred_sports.forEach((sport, i) => newUser.append(`preferred_sports[${i}]`, sport));
+        newUser.append('profile_picture', userProfilePicture);
+        newUser.append('weight', disabledWeightSlider ? null : weight);
+        newUser.append('height', disabledHeightSlider ? null : height);
+        newUser.append('bio', bioInput.current.value);
 
         console.log(newUser);
-        newUser = await postData(serverUrl + 'users/', newUser);
+        newUser = await postData(serverUrl + 'users/', newUser, true);
         if (newUser) {
             dispatch(login(newUser));
             setSuccessMessages("User created successfully");
@@ -88,6 +105,16 @@ const SignupPage = (props) => {
 
         setValidated(true);
     };
+
+    const handleWeightChange = (event, value) => {
+        setWeight(value);
+    };
+
+    const handleHeightChange = (event, value) => {
+        setHeight(value);
+    };
+
+    let userProfilePictureToShow = userProfilePicture ? URL.createObjectURL(userProfilePicture) : null;
 
     return (
         <div>
@@ -137,12 +164,6 @@ const SignupPage = (props) => {
                             required field
                         </Form.Control.Feedback>
                     </Form.Group>
-
-                    <Form.Group className="mb-3" controlId="address">
-                        <Form.Label>Address</Form.Label>
-                        <Form.Control ref={addressInput} type="text" placeholder="Enter address" />
-                    </Form.Group>
-
                     <Form.Group className="mb-3" controlId="city">
                         <Form.Label>City</Form.Label>
                         <Form.Select aria-label="cities" ref={cityInput} required>
@@ -177,6 +198,46 @@ const SignupPage = (props) => {
                         <Form.Control.Feedback type="invalid">
                             required field
                         </Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="sports">
+                        <Form.Label>Sports</Form.Label>
+                        <Form.Select multiple aria-label="sports" ref={sportsInput}>
+                            <option value="" disabled>Choose Sports</option>
+                            {sports.map((sport) => <option value={sport.name} key={sport.id}>{sport.name}</option>)}
+                        </Form.Select>
+                    </Form.Group>
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Row>
+                            <Col sm={9}>
+                                <Form.Label>User Profile Picture</Form.Label>
+                                <Form.Control type="file" accept='image/*' ref={userProfilePictureInput} onChange={(e) => setUserProfilePicture((e.target.files[0]))} />
+                            </Col>
+                            <Col sm={3}>
+                                <Image src={userProfilePictureToShow} ref={userProfileImg} fluid />
+                            </Col>
+                        </Row>
+                    </Form.Group>
+                    <Form.Group className='mb-3' controlId='height'>
+                        <Form.Check type="checkbox" label="Height (cm) Optional" onChange={() => setDisabledHeightSlider(!disabledHeightSlider)} />
+                        <Slider ref={heightSliderInput} disabled={disabledHeightSlider}
+                            min={100}
+                            max={220}
+                            value={height}
+                            onChange={(event, value) => handleHeightChange(event, value)}
+                            defaultValue={170} aria-label="Default" valueLabelDisplay="auto" />
+                    </Form.Group>
+                    <Form.Group className='mb-3' controlId='weight'>
+                        <Form.Check type="checkbox" label="Weight (Kg.) Optional" onChange={() => setDisabledWeightSlider(!disabledWeightSlider)} />
+                        <Slider ref={weightSliderInput} disabled={disabledWeightSlider}
+                            min={10}
+                            max={150}
+                            value={weight}
+                            onChange={(event, value) => handleWeightChange(event, value)}
+                            defaultValue={50} aria-label="Default" valueLabelDisplay="auto" />
+                    </Form.Group>
+                    <Form.Group className='mb-3' controlId='bio'>
+                        <Form.Label>Bio (Optional)</Form.Label>
+                        <Form.Control as="textarea" placeholder="Tell us about yourself" rows={3} ref={bioInput} />
                     </Form.Group>
                     <Button type="button" className="w-100" onClick={signup}>
                         Sign Up
