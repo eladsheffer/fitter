@@ -145,7 +145,7 @@ const NewGroupPage = () => {
                 <Form.Group className="mb-3" controlId="city">
                     <Form.Label>City</Form.Label>
                     <Form.Select aria-label="cities" ref={cityInput}>
-                        <option value="" disabled>Choose Location</option>
+                        <option value="" disabled checked>Choose Location</option>
                         {cities.map((city) => <option value={city} key={city}>{city}</option>)}
                     </Form.Select>
                 </Form.Group>

@@ -17,8 +17,7 @@ const SignupPage = (props) => {
     const passwordInput = useRef(null);
     const cityInput = useRef(null);
     const dateOfBirthInput = useRef(null);
-    const maleInput = useRef(null);
-    const femaleInput = useRef(null);
+    const genderInput = useRef(null);
     const sportsInput = useRef(null);
     const userProfilePictureInput = useRef(null);
     const userProfileImg = useRef(null);
@@ -75,7 +74,7 @@ const SignupPage = (props) => {
         newUser.append('password', passwordInput.current.value);
         newUser.append('location', cityInput.current.value);
         newUser.append('date_of_birth', dateOfBirthInput.current.value);
-        newUser.append('gender', maleInput.current.checked ? "male" : "female")
+        newUser.append('gender', genderInput.current.value);
         const preferred_sports = Array.from(sportsInput.current.selectedOptions).map((option) => option.value);
         preferred_sports.forEach((sport, i) => newUser.append(`preferred_sports[${i}]`, sport));
         newUser.append('profile_picture', userProfilePicture);
@@ -167,7 +166,7 @@ const SignupPage = (props) => {
                     <Form.Group className="mb-3" controlId="city">
                         <Form.Label>City</Form.Label>
                         <Form.Select aria-label="cities" ref={cityInput} required>
-                            <option value="">Choose Location</option>
+                            <option value="" disabled checked>Choose Location</option>
                             {cities.map((city) => <option value={city} key={city}>{city}</option>)}
                         </Form.Select>
                     </Form.Group>
@@ -178,27 +177,12 @@ const SignupPage = (props) => {
                             required field
                         </Form.Control.Feedback>
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="gender">
-                        <Form.Label>Gender</Form.Label>
-                        <Form.Check ref={maleInput}
-                            inline
-                            label="male"
-                            name="gender"
-                            type="radio"
-                            id={`inline-radio-1`}
-                            defaultChecked
-                        />
-                        <Form.Check ref={femaleInput}
-                            inline
-                            label="female"
-                            name="gender"
-                            type="radio"
-                            id={`inline-radio-2`}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            required field
-                        </Form.Control.Feedback>
-                    </Form.Group>
+                    <Form.Select aria-label="gender" ref={genderInput}>
+                                <option value="" disabled checked>Your Gender</option>
+                                <option value="male">male</option>
+                                <option value="female">female</option>
+                                <option value="prefer not to say">prefer not to say</option>
+                            </Form.Select>
                     <Form.Group className="mb-3" controlId="sports">
                         <Form.Label>Sports</Form.Label>
                         <Form.Select multiple aria-label="sports" ref={sportsInput}>

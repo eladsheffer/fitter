@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import logo from "@/../../public/icons/fitter-logo.jpg";
+import user from "@/../../public/icons/user.png";
 import { Navbar, Nav, Form, Row, Col, Button, Image } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link , useNavigate } from "react-router-dom";
@@ -9,6 +10,7 @@ import { getData,postData } from "../features/apiService";
 
 const FitterNavbar = () => {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
+  const default_profile_picture = user;
   const [searchKey , setSearchKey] = useState('');
   const [radioValue, setRadioValue] = useState('1');
   const navigate = useNavigate();
@@ -18,6 +20,7 @@ const FitterNavbar = () => {
   let signupLink = !activeUser ? <Nav.Link as={Link} to="/signup">Signup</Nav.Link> : null;
   let loginLink = !activeUser ? <Nav.Link as={Link} to="/login">Login</Nav.Link> : null;
   let logoutLink = activeUser ? <Nav.Link as={Link} to="/" onClick={() => logoutFunc()}>Logout</Nav.Link> : null;
+  let profile = activeUser ? <Nav.Link as={Link} to="/edit-profile"><Image src={activeUser.profile_picture ? activeUser.profile_picture : default_profile_picture} width="30" height="30" roundedCircle /></Nav.Link> : null;
 
   const logoutFunc = async () => {
 
@@ -90,6 +93,7 @@ const FitterNavbar = () => {
         {signupLink}
         {loginLink}
         {logoutLink}
+        {profile}
       </Nav>
     </Navbar>
   );

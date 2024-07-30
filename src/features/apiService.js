@@ -63,6 +63,7 @@ const postData = async (url, data, login = false) => {
         }
 
         if (status === 200 || status === 201) {
+            console.log("API SERVICE - SUCCESS: ", responseData);
             return responseData;
         }
 
@@ -77,11 +78,15 @@ const postData = async (url, data, login = false) => {
     }
 };
 
-const patchData = async (url, data) => {
+const patchData = async (url, data, login = false) => {
 
     const headers = {
         Accept: 'application/json',
     };
+
+    if (!login) {
+        headers['Authorization'] = `Token ${getAuthToken()}`;
+    }
 
     if (!(data instanceof FormData)) {
         headers['Content-Type'] = 'application/json';
@@ -114,10 +119,14 @@ const patchData = async (url, data) => {
 }
 
 
-const putData = async (url, data) => {
+const putData = async (url, data, login = false) => {
     const headers = {
         Accept: 'application/json',
     };
+
+    if (!login) {
+        headers['Authorization'] = `Token ${getAuthToken()}`;
+    }
 
     if (!(data instanceof FormData)) {
         headers['Content-Type'] = 'application/json';
@@ -183,4 +192,4 @@ const formatDate = (date)=> {
     return [year, month, day].join('-');
 };
 
-export { postData, putData, deleteData, getData, formatDate };
+export { postData, putData, patchData, deleteData, getData, formatDate };
