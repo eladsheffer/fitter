@@ -126,7 +126,7 @@ const NewGroupPage = () => {
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="groupDescription">
                     <Form.Label>Group Description</Form.Label>
-                    <Form.Control type="text" placeholder="Enter group description" required ref={groupDescriptionInput} onChange={handleChange} />
+                    <Form.Control as="textarea" placeholder="Enter group description" required ref={groupDescriptionInput} onChange={handleChange} />
                     <Form.Control.Feedback type="invalid">
                         required field
                     </Form.Control.Feedback>
@@ -160,8 +160,8 @@ const NewGroupPage = () => {
                     <Form.Label>Gender of the Group</Form.Label>
                     <Form.Select aria-label="gender" ref={genderInput}>
                         <option value="mixed">mixed</option>
-                        <option value="male">male</option>
-                        <option value="female">female</option>
+                        <option value="men">male</option>
+                        <option value="women">female</option>
                     </Form.Select>
                 </Form.Group>
                 <Form.Group controlId="formFile" className="mb-3">

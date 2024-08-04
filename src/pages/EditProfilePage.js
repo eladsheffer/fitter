@@ -40,7 +40,7 @@ const EditProfilePage = (props) => {
     const [weight, setWeight] = useState(activeUser && activeUser.weight ? activeUser.weight : 60);
     const [location, setLocation] = useState(activeUser ? activeUser.location : "");
     const [gender, setGender] = useState(activeUser ? activeUser.gender : "");
-    const [preferredSports, setPreferredSports] = useState(activeUser ? activeUser.preferred_sports[0].split(",") : []);
+    const [preferredSports, setPreferredSports] = useState(activeUser && activeUser.preferred_sports.length > 0 ? activeUser.preferred_sports[0].split(",") : []);
 
 
     useEffect(() => {
@@ -76,11 +76,19 @@ const EditProfilePage = (props) => {
         let newUser = new FormData();
         // newUser.append("user_groups",[121,122, 124, 125, 126, 143, 144, 145, 146, 147, 148, 149, 150, 155,156, 157, 161]);
         // newUser.append("user_groups_as_admin",[121,122, 124, 143, 144, 145, 146, 147, 148, 149, 151, 155, 156, 157, 161]);
-        newUser.append('first_name', firstNameInput.current.value);
-        newUser.append('last_name', lastNameInput.current.value);
-        newUser.append('email', emailInput.current.value);
-        if (passwordInput.current.value)
+
+        if (firstNameInput.current.value) {
+            newUser.append('first_name', firstNameInput.current.value);
+        }
+        if (lastNameInput.current.value) {
+            newUser.append('last_name', lastNameInput.current.value);
+        }
+        if (emailInput.current.value) {
+            newUser.append('email', emailInput.current.value);
+        }
+        if (passwordInput.current.value) {
             newUser.append('password', passwordInput.current.value);
+        }
         newUser.append('location', cityInput.current.value);
         newUser.append('date_of_birth', dateOfBirthInput.current.value);
         newUser.append('gender', genderInput.current.value);
@@ -91,9 +99,9 @@ const EditProfilePage = (props) => {
         if (userProfilePicture)
             newUser.append('profile_picture', userProfilePicture);
         if (!disabledHeightSlider)
-            newUser.append('height', disabledHeightSlider ? null : height);
+            newUser.append('height', height);
         if (!disabledWeightSlider)
-            newUser.append('weight', disabledWeightSlider ? null : weight);
+            newUser.append('weight', weight);
 
         newUser.append('bio', bioInput.current.value);
 
@@ -140,19 +148,19 @@ const EditProfilePage = (props) => {
                     <Form noValidate validated={validated}>
                         <Form.Group className="mb-3" controlId="name">
                             <Form.Label>First Name</Form.Label>
-                            <Form.Control ref={firstNameInput} type="text" placeholder="Enter your first name" onChange={handleChange}
+                            <Form.Control ref={firstNameInput} type="text" placeholder="First name is empty and will not be altered" onChange={handleChange}
                                 defaultValue={activeUser ? activeUser.first_name : ""}
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="name">
                             <Form.Label>Last Name</Form.Label>
-                            <Form.Control ref={lastNameInput} type="text" placeholder="Enter your last name" onChange={handleChange}
+                            <Form.Control ref={lastNameInput} type="text" placeholder="Last name is empty and will not be altered" onChange={handleChange}
                                 defaultValue={activeUser ? activeUser.last_name : ""}
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="email">
                             <Form.Label>Email address</Form.Label>
-                            <Form.Control ref={emailInput} type="email" placeholder="Enter email" onChange={handleChange}
+                            <Form.Control ref={emailInput} type="email" placeholder="email is empty and will not be altered" onChange={handleChange}
                                 defaultValue={activeUser ? activeUser.email : ""}
                             />
                             <Form.Control.Feedback type="invalid">
@@ -163,7 +171,7 @@ const EditProfilePage = (props) => {
 
                         <Form.Group className="mb-3" controlId="password">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control ref={passwordInput} type="password" placeholder="Password" onChange={handleChange}
+                            <Form.Control ref={passwordInput} type="password" placeholder="Password is empty and will not be altered" onChange={handleChange}
                                 defaultValue={activeUser ? activeUser.password : ""}
                             />
                         </Form.Group>
@@ -186,7 +194,7 @@ const EditProfilePage = (props) => {
                                 <option value="" disabled>Your Gender</option>
                                 <option value="male">male</option>
                                 <option value="female">female</option>
-                                <option value="prefer not to say">prefer not to say</option>
+                                <option value="prefer_not_to_say">prefer not to say</option>
                             </Form.Select>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="sports">

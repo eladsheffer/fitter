@@ -181,7 +181,7 @@ const SignupPage = (props) => {
                                 <option value="" disabled checked>Your Gender</option>
                                 <option value="male">male</option>
                                 <option value="female">female</option>
-                                <option value="prefer not to say">prefer not to say</option>
+                                <option value="prefer_not_to_say">prefer not to say</option>
                             </Form.Select>
                     <Form.Group className="mb-3" controlId="sports">
                         <Form.Label>Sports</Form.Label>

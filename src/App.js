@@ -15,6 +15,7 @@ import SearchPage from "./pages/SearchPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import UserPage from "./pages/UserPage";
 import EditProfilePage from "./pages/EditProfilePage";
+import EditGroupPage from "./pages/EditGroupPage";
 
 function App() {
   // const router = createBrowserRouter([
@@ -67,6 +68,7 @@ function App() {
         <Route path="/search" element={<SearchPage />} />
         <Route path="/users/:id" element={<UserPage />} />
         <Route path="/edit-profile" element={<EditProfilePage />} />
+        <Route path="/edit-group/:id/" element={<EditGroupPage />} />
       </Routes>
     </BrowserRouter>
   </div>;

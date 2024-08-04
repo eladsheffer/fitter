@@ -78,6 +78,7 @@ const GroupCard2= (props) => {
 
     const editGroup = () => {
         console.log('Edit group:', group);
+        navigate(`/edit-group/${group.id}`);
     };
 
     const createEvent = () => {
