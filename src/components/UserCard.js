@@ -2,12 +2,13 @@ import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 
 export default function UserCard({ user }) {
-    const DEFAULT_USER_IMG = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGsNv23K5shKblMsKePA8o6M2kqBH39PZqA&s';
+    const DEFAULT_USER_IMG = '/icons/user.png';
+    let userImg = user.profile_picture ? user.profile_picture : DEFAULT_USER_IMG;
     return (
         <div style={{ width: "23%", margin: "1%" }}>
             <Card border="secondary">
                 <Link to={`/users/${user.id}`} style={{ textDecoration: "none" }}>
-                    <Card.Img variant="top" src={DEFAULT_USER_IMG} />
+                    <Card.Img variant="top" src={userImg} style={{width:"243px", height: "250px"}} />
                 </Link>
                 <Card.Body>
                     <Link to={`/users/${user.id}`} style={{ textDecoration: "none" }}>

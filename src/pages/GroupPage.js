@@ -66,19 +66,24 @@ const GroupPage = () => {
                                             </Card.Text>
                                         </Col>
                                         <Col>
-                                            <Card.Img src={"../icons/rating-5-stars.png"} />
+                                        <Card.Img src={profile_picture} />
                                         </Col>
                                         <Col>
-                                            <Card.Img src={profile_picture} />
+                                            
                                         </Col>
                                     </Row>
                                 </Card.Body>
                             </Card>
                         </Col>
                         <Col xs="1"></Col>
+                        {
+                        activeUser && group.admin === activeUser.id &&
                         <Col xs="2">
-                            <Image width={50} height={50} src="../icons/settings.png" />
+                        <Link to={`/edit-group/${group.id}/`}>
+                            <Image width={50} height={50} src="/icons/settings.png" />
+                        </Link>
                         </Col>
+                        }
                     </Row>
 
                     <h1
