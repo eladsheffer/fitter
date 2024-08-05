@@ -9,6 +9,7 @@ import User from '../features/user';
 import UserCard from '../components/UserCard';
 import { getData, postData } from '../features/apiService';
 import EventCard from '../components/EventCard';
+import LinearProgress from '@mui/material/LinearProgress';
 
 
 const GroupPage = () => {
@@ -22,7 +23,6 @@ const GroupPage = () => {
 
     useEffect(() => {
         const fetchGroupAndUsers = async () => {
-            if (!activeUser) return;
 
             // Fetch group data
             const groupData = await getData(`${serverUrl}groups/${id}/`);
@@ -48,12 +48,12 @@ const GroupPage = () => {
     let profile_picture = group?.profile_picture || "https://res.cloudinary.com/djud4xysp/image/upload/v1716159438/groups/group_img_b9v9za.png";
 
     return (
-        <div> 
+        <div>
             {!group ? (
-                <><h1>There is no such group</h1></>
+                <LinearProgress style={{ marginTop: "4rem" }} />
             ) : (
                 <>
-                    <Row style={{marginTop:"3em"}}>
+                    <Row style={{ marginTop: "3em" }}>
                         <Col xs="1"></Col>
                         <Col xs="8">
                             <Card>
@@ -66,10 +66,10 @@ const GroupPage = () => {
                                             </Card.Text>
                                         </Col>
                                         <Col>
-                                        <Card.Img src={profile_picture} />
+                                            <Card.Img src={profile_picture} />
                                         </Col>
                                         <Col>
-                                            
+
                                         </Col>
                                     </Row>
                                 </Card.Body>
@@ -77,35 +77,38 @@ const GroupPage = () => {
                         </Col>
                         <Col xs="1"></Col>
                         {
-                        activeUser && group.admin === activeUser.id &&
-                        <Col xs="2">
-                        <Link to={`/edit-group/${group.id}/`}>
-                            <Image width={50} height={50} src="/icons/settings.png" />
-                        </Link>
-                        </Col>
+                            activeUser && group.admin === activeUser.id &&
+                            <Col xs="2">
+                                <Link to={`/edit-group/${group.id}/`}>
+                                    <Image width={50} height={50} src="/icons/settings.png" />
+                                </Link>
+                            </Col>
                         }
                     </Row>
-
-                    <h1
-                        style={{
-                            width: "70%",
-                            marginInline: "auto",
-                            marginTop: "4rem",
-                        }}
-                    > 
-                        Group's upcoming Events 
-                    </h1>
-                    <CardGroup
-                        style={{
-                            width: "70%",
-                            marginInline: "auto",
-                            marginTop: "4rem",
-                        }}
-                    >
-                        {events.map((event) => (
-                            <EventCard key={event.id} event={event} />
-                        ))}
-                    </CardGroup>
+                    {events.length > 0 &&
+                        <>
+                            <h1
+                                style={{
+                                    width: "70%",
+                                    marginInline: "auto",
+                                    marginTop: "4rem",
+                                }}
+                            >
+                                Group's upcoming Events
+                            </h1>
+                            <CardGroup
+                                style={{
+                                    width: "70%",
+                                    marginInline: "auto",
+                                    marginTop: "4rem",
+                                }}
+                            >
+                                {events.map((event) => (
+                                    <EventCard key={event.id} event={event} />
+                                ))}
+                            </CardGroup>
+                        </>
+                    }
 
                     <h1
                         style={{
@@ -116,7 +119,7 @@ const GroupPage = () => {
                     >
                         Members
                     </h1>
-                
+
 
                     <CardGroup
                         style={{
@@ -130,9 +133,9 @@ const GroupPage = () => {
                                 <UserCard key={i} user={user} />
                             ))
                         ) : (
-                            <p style={{color:"red"}}>No members found.</p>
+                            <p style={{ color: "red" }}>No members found.</p>
                         )}
-                    </CardGroup> 
+                    </CardGroup>
                 </>
             )}
         </div>
