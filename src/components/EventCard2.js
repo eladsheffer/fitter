@@ -91,17 +91,17 @@ const EventCard2 = (props) => {
     return (
         <div>
             <Card className="flex-fill d-flex flex-column m-2" style={{}}>
-            <Link to={`${event.id}`} className='text-decoration-none'>
+            <Link to={`${event.id}`}>
                 <Card.Title className="text-center align-self-center" style={{ whiteSpace: 'nowrap', overflow: 'hidden',  }}>{event.title}</Card.Title>
             </Link>
                 <div className="flex-fill d-flex flex-row m-2" style={{width: '100%'}}>
                     <Card.Header className="d-flex justify-content-center align-items-center">
-                        <Link to={`${event.id}`} className='text-decoration-none'>
+                        <Link to={`${event.id}`}>
                             <Card.Img src={profile_picture} style={{ width: '100%', objectFit: 'contain' }} />
                         </Link>
                     </Card.Header>
                     <Card.Body className="flex-fill d-flex flex-column m-2" style={{width: '200px', }}>
-                    <Link to={`${event.id}`} className='text-decoration-none'>
+                    <Link to={`${event.id}`}>
                         <Card.Text>
                             Date: {eventDate}
                         </Card.Text>
