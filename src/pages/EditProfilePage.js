@@ -3,10 +3,11 @@ import { Form, Alert, Button, Row, Col, Image } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { login } from '../features/user';
 import { useNavigate, Link } from 'react-router-dom';
-import { getData, putData, patchData } from '../features/apiService';
+import { getData, putData, patchData, deleteData } from '../features/apiService';
 import { Slider } from '@mui/material';
 import sports from "../data-model/sports.json";
 import { useSelector } from 'react-redux';
+import RemoveModal from '../components/RemoveModal';
 
 const EditProfilePage = (props) => {
     const activeUser = useSelector((state) => state.user.value);
@@ -28,6 +29,7 @@ const EditProfilePage = (props) => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [deleteProfileModalShow, setDeleteProfileModalShow] = useState(false);
     const [validated, setValidated] = useState(false);
     const [cities, setCities] = useState([]);
     const [errorMessages, setErrorMessages] = useState(null);
@@ -135,10 +137,22 @@ const EditProfilePage = (props) => {
         setHeight(value);
     };
 
+    const handleDelete = async () => {
+        const user = await deleteData(`${serverUrl}users/${activeUser.id}/`);
+        if (user) {
+            dispatch(logout());
+            navigate('/');
+        }
+        else {
+            setErrorMessages("Error deleting user profile");
+        }
+    }
+
     return (
         <div>
             {!activeUser ? <Alert variant="danger">You must be logged in to view this page. <Link to="/login">Login</Link></Alert> :
                 <div className="login">
+                    <RemoveModal show={deleteProfileModalShow} handleClose={() => setDeleteProfileModalShow(false)} title="Delete Profile" message="Are you sure you want to delete your profile?" handleRemove={handleDelete} />
                     <Alert variant="danger" show={errorMessages}>
                         {errorMessages}
                     </Alert>
@@ -241,6 +255,11 @@ const EditProfilePage = (props) => {
                         </Form.Group>
                         <Button type="button" className="w-100" onClick={updateProfile}>
                             Update Profile
+                        </Button>
+                        <br />
+                        <br />
+                        <Button type="button" variant='danger'  className="w-100" onClick={()=>setDeleteProfileModalShow(true)}>
+                            Delete Profile
                         </Button>
                     </Form>
                 </div>}

@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Form, Row, Col, Container, Button, Modal, Image, Alert } from 'react-bootstrap'
 import { useSelector } from "react-redux";
-import { getData, patchData, putData } from '../features/apiService';
+import { getData, patchData, putData, deleteData } from '../features/apiService';
 import { Box, Slider } from '@mui/material';
 import sports from "../data-model/sports.json";
 import { Link, useParams, useNavigate } from "react-router-dom";
+import RemoveModal from '../components/RemoveModal';
 
 const EditGroupPage = (props) => {
     const navigate = useNavigate();
@@ -13,6 +14,7 @@ const EditGroupPage = (props) => {
     const citiesUrl = process.env.REACT_APP_CITIES_URL;
     //const path = serverUrl + 'groups/' + props.id;
     const path = `${serverUrl}groups/${id}/`;
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [validated, setValidated] = useState(false);
     const [errorMessages, setErrorMessages] = useState(null);
     const [successMessages, setSuccessMessages] = useState(null);
@@ -141,12 +143,25 @@ const EditGroupPage = (props) => {
         }
     };
 
+    const deleteGroup = async () => {
+        const deleted = await deleteData(path);
+
+        if (deleted) {
+            navigate(-1);   
+        }
+        else {
+            setErrorMessages("Error deleting user profile");
+        }
+    };
+
+
     return (
         <div>
             {!activeUser ? <Alert variant="danger">You must be logged in to view this page. <Link to="/login">Login</Link></Alert> :
                 activeUser.id !== group.admin ? <Alert variant="danger">You are not the admin of this group. <Button variant='link' onClick={() => navigate(-1)} >Go Back</Button> </Alert> :
 
                     <div className="login">
+                        <RemoveModal show={showDeleteModal} handleClose={() => setShowDeleteModal(false)} title="Delete Group" message="Are you sure you want to delete this group?" handleRemove={deleteGroup} />
                         <Alert variant="danger" show={errorMessages}>
                             {errorMessages}
                         </Alert>
@@ -226,6 +241,12 @@ const EditGroupPage = (props) => {
                             <Button variant="primary" className="w-100" onClick={editGroup}>
                                 Edit Group
                             </Button>
+                            <br />
+                            <br />
+                            <Button variant="primary" className="w-100" onClick={()=>setShowDeleteModal(true)}>
+                                Delete Group
+                            </Button>
+                            
                         </Form>
                     </div>}
         </div>

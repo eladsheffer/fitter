@@ -160,8 +160,14 @@ const putData = async (url, data, login = false) => {
 
 const deleteData = async (url) => {
 
+    const headers = {
+        Accept: 'application/json',
+        'Authorization': `Token ${getAuthToken()}`
+    };
+
     const settings = {
         method: 'DELETE',
+        headers: headers
     };
 
     try {
@@ -169,6 +175,7 @@ const deleteData = async (url) => {
         const status = response.status;
         if (status === 200)
             return true;
+        console.log("API SERVICE - FAILED: ", response);
         return false;
     } catch (error) {
         console.error('Error deleting data:', error);
