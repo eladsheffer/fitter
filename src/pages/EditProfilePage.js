@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Form, Alert, Button, Row, Col, Image } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { login } from '../features/user';
+import { login, logout } from '../features/user';
 import { useNavigate, Link } from 'react-router-dom';
 import { getData, putData, patchData, deleteData } from '../features/apiService';
 import { Slider } from '@mui/material';
