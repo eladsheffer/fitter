@@ -243,7 +243,7 @@ const EditGroupPage = (props) => {
                             </Button>
                             <br />
                             <br />
-                            <Button variant="primary" className="w-100" onClick={()=>setShowDeleteModal(true)}>
+                            <Button variant="danger" className="w-100" onClick={()=>setShowDeleteModal(true)}>
                                 Delete Group
                             </Button>
                             
