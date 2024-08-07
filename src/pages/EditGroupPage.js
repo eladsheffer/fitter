@@ -158,7 +158,7 @@ const EditGroupPage = (props) => {
     return (
         <div>
             {!activeUser ? <Alert variant="danger">You must be logged in to view this page. <Link to="/login">Login</Link></Alert> :
-                activeUser.id !== group.admin ? <Alert variant="danger">You are not the admin of this group. <Button variant='link' onClick={() => navigate(-1)} >Go Back</Button> </Alert> :
+                // activeUser.id !== group.admin ? <Alert variant="danger">You are not the admin of this group. <Button variant='link' onClick={() => navigate(-1)} >Go Back</Button> </Alert> :
 
                     <div className="login">
                         <RemoveModal show={showDeleteModal} handleClose={() => setShowDeleteModal(false)} title="Delete Group" message="Are you sure you want to delete this group?" handleRemove={deleteGroup} />
