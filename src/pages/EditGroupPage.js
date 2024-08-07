@@ -49,28 +49,38 @@ const EditGroupPage = (props) => {
             setCities(cities);
         };
 
-        const fetchGroup = async () => {
-            const groupData = await getData(path);
-            console.log(groupData);
-            if (!groupData) return;
-            setGroup(groupData);
-            setLocation(groupData.location);
-            setPreferredSports(groupData.preferred_sports[0].split(","));
-            setGroupProfilePictureToShow(groupData.profile_picture);
-            setVisibility(groupData.visibility);
-            setGender(groupData.gender);
-            if (groupData.min || groupData.max)
-                setAgeRange([groupData.min_age, groupData.max_age]);
-        };
-
         // Cleanup function if needed
         return () => {
             // cleanup
             fetchCities();
-            fetchGroup();
         };
 
     }, []);
+
+    useEffect(() => {
+    const fetchGroup = async () => {
+        const groupData = await getData(path);
+        console.log(groupData);
+        if (!groupData) return;
+        setGroup(groupData);
+        setLocation(groupData.location);
+        setPreferredSports(groupData.preferred_sports[0].split(","));
+        setGroupProfilePictureToShow(groupData.profile_picture);
+        setVisibility(groupData.visibility);
+        setGender(groupData.gender);
+        if (groupData.min || groupData.max)
+            setAgeRange([groupData.min_age, groupData.max_age]);
+    };
+
+    fetchGroup();
+
+    // Cleanup function if needed
+    return () => {
+        // cleanup
+        
+    };
+
+}, []);
 
     const editGroup = async () => {
         setErrorMessages(null);
@@ -158,9 +168,13 @@ const EditGroupPage = (props) => {
     return (
         <div>
             {!activeUser ? <Alert variant="danger">You must be logged in to view this page. <Link to="/login">Login</Link></Alert> :
-                activeUser.id !== group.admin ? <Alert variant="danger">You are not the admin of this group. <Button variant='link' onClick={() => navigate(-1)} >Go Back</Button> </Alert> :
+                activeUser.id !== group.admin ?
+                <>
+                {console.log("BEFORE: "+ activeUser.id, " | "+ group.admin)}
+                 <Alert variant="danger">You are not the admin of this group. <Button variant='link' onClick={() => navigate(-1)} >Go Back</Button> </Alert> </> :
 
                     <div className="login">
+                         {console.log("AFTER: "+ activeUser.id, " | "+ group.admin)}
                         <RemoveModal show={showDeleteModal} handleClose={() => setShowDeleteModal(false)} title="Delete Group" message="Are you sure you want to delete this group?" handleRemove={deleteGroup} />
                         <Alert variant="danger" show={errorMessages}>
                             {errorMessages}
