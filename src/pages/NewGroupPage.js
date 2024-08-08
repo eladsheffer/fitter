@@ -152,7 +152,7 @@ const NewGroupPage = () => {
                 <Form.Group className="mb-3" controlId="sports">
                     <Form.Label>Sports</Form.Label>
                     <Form.Select multiple aria-label="sports" ref={sportsInput}>
-                        <option value="">Choose Sports</option>
+                        <option value="" disabled>Choose Sports</option>
                         {sports.map((sport) => <option value={sport.name} key={sport.id}>{sport.name}</option>)}
                     </Form.Select>
                 </Form.Group>
