@@ -6,12 +6,15 @@ import { useParams, Link } from "react-router-dom";
 import events from "../data-model/events.json";
 import { useSelector } from "react-redux";
 import { green } from "@mui/material/colors";
+import { formatDate } from "../features/apiService";
 
 export default function EventPage() {
   const activeUser = useSelector((state) => state.user.value);
   let { id } = useParams();
   const [event, setEvent] = useState(null);
   const [organizer, setOrganizer] = useState(null);
+  const defaultEventImage = "/icons/event.png";
+  const [eventImage, setEventImage] = useState(defaultEventImage);
 
   async function getEvent() {
     // Fetch event data
@@ -20,6 +23,9 @@ export default function EventPage() {
     const reqBodyEvent = await reqEvent.json();
     const organizerID = reqBodyEvent.organizer;
     setEvent(reqBodyEvent);
+    if (reqBodyEvent.image) {
+      setEventImage(reqBodyEvent.image);
+    }
 
     // Fetch organizer data
     if (organizerID) {
@@ -35,7 +41,7 @@ export default function EventPage() {
     const date = new Date(isoDateString);
 
     // Converting to a more readable format
-    const friendlyDate = date.toLocaleString("en-US", {
+    const friendlyDate = date.toLocaleString("en-GB", {
       weekday: "long", // long name of the day
       year: "numeric", // numeric year
       month: "2-digit", // two digit month
@@ -59,7 +65,7 @@ export default function EventPage() {
           <Container fluid="md">
             <Row className="mb-4">
               <Col md={6}>
-                <Image src={event.image} alt="Event Banner" fluid />
+                <Image src={eventImage} alt="Event Banner" fluid />
               </Col>
               <Col md={5}>
                 <h1>{`${event.title} - ${event.location}`}</h1>
