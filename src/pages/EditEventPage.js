@@ -211,8 +211,8 @@ const EditEventPage = (props) => {
                         {successMessages && (<Alert severity='success' >{successMessages}</Alert>)}
                         {errorMessages && (<Alert severity='error'>{errorMessages}</Alert>)}
                         <Stack spacing={2} margin={2}>
-                            <TextField variant="outlined" inputRef={titleEventInput} name="title" defaultValue={event.title} label="Title"></TextField>
-                            <TextField variant="outlined" inputRef={descriptionEventInput} name="description" defaultValue={event.description} label="Description"></TextField>
+                            <TextField variant="outlined" inputRef={titleEventInput} name="title" placeholder='Event title is empty and will not be altered'  defaultValue={event.title} label="Title"></TextField>
+                            <TextField variant="outlined" inputRef={descriptionEventInput} name="description" placeholder='Event description is empty and will not be altered' defaultValue={event.description} label="Description"></TextField>
                             <FormControl fullWidth>
                                 <InputLabel id="demo-simple-select-label">Location</InputLabel>
                                 <Select inputRef={locationEventInput} value={location} onChange={(e) => setLocation(e.target.value)}
@@ -296,7 +296,7 @@ const EditEventPage = (props) => {
                             </FormControl>
                             <TextField
                                 label="Maximum participants (if empty, unlimited)"
-                                placeholder='Maximum participants. If empty, unlimited'
+                                placeholder='Maximum participants is empty and will not be altered'
                                 value={maxParticipants}
                                 onChange={handleNumberInputChanged}
                                 variant="outlined"
