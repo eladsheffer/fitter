@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import FitterNavbar from "../components/FitterNavbar";
 import { Container, Image, Row, Col } from "react-bootstrap";
 import logo from "@/../../public/icons/fitter-logo.jpg";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import events from "../data-model/events.json";
 import { useSelector } from "react-redux";
 import { green } from "@mui/material/colors";
@@ -57,11 +57,11 @@ export default function EventPage() {
       {event ? (
         <div style={{ width: "80%", margin: "4rem auto" }}>
           <Container fluid="md">
-            <Row className="align-items-center mb-4">
+            <Row className="mb-4">
               <Col md={6}>
                 <Image src={event.image} alt="Event Banner" fluid />
               </Col>
-              <Col md={6}>
+              <Col md={5}>
                 <h1>{`${event.title} - ${event.location}`}</h1>
                 <h2>{formatFriendlyDate(event.date_and_time)}</h2>
                 {organizer ? (
@@ -94,7 +94,7 @@ export default function EventPage() {
                   </p>
                 )}
                 {event.max_participants !== null &&
-                typeof event.max_participants === "number" ? (
+                  typeof event.max_participants === "number" ? (
                   <h6
                     style={{ color: green }}
                   >{`${event.users_attended.length}/${event.max_participants} Attendees`}</h6>
@@ -104,6 +104,14 @@ export default function EventPage() {
                   >{`${event.users_attended.length} Attendees`}</h6>
                 )}
               </Col>
+              {
+                activeUser && event.organizer === activeUser.id &&
+                <Col xs="1">
+                  <Link to={`/edit-event/${event.id}/`}>
+                    <Image width={50} height={50} src="/icons/settings.png" />
+                  </Link>
+                </Col>
+              }
             </Row>
             <Row>
               <Col>

@@ -39,6 +39,7 @@ const EventCard2 = (props) => {
 
     const editEvent = () => {
         console.log('Edit event:', event);
+        navigate(`/edit-event/${event.id}`);
     };
 
     const removeEvent = () => {

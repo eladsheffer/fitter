@@ -68,7 +68,7 @@ const EditGroupPage = (props) => {
         setGroupProfilePictureToShow(groupData.profile_picture);
         setVisibility(groupData.visibility);
         setGender(groupData.gender);
-        if (groupData.min || groupData.max)
+        if (groupData.min_age || groupData.max_age)
             setAgeRange([groupData.min_age, groupData.max_age]);
     };
 

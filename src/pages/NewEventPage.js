@@ -66,15 +66,15 @@ const NewEventPage = (props) => {
         setFormValues({ ...formValues, [name]: error });
     }
 
-    const x = (event) => {
+    const handleNumberInputChanged = (event) => {
         // Extract the new value from the event
         const newValue = event.target.value;
-        if (newValue.split('')[0]<'1' || newValue.split('')[0]>'9') {
+        if (newValue.split('')[0] < '1' || newValue.split('')[0] > '9') {
             return;
         }
         // Filter out non-numeric characters and ensure it's non-negative
         setValue(newValue.replace(/[^0-9]/g, ''));
-      };
+    };
 
     const createEvent = async () => {
 
@@ -155,7 +155,7 @@ const NewEventPage = (props) => {
                         {cities.map((city) => <MenuItem key={city} value={city}>{city}</MenuItem>)}
                     </Select>
                 </FormControl>
-                <FormControl fullWidth required>
+                <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label" error={formValues.visibility}>Visibility</InputLabel>
                     <Select inputRef={eventVisibilityInput}
                         labelId="demo-simple-select-label"
@@ -189,20 +189,20 @@ const NewEventPage = (props) => {
                     </Select>
                 </FormControl>
                 <FormControl fullWidth>
-                <TextField type="file" inputProps={{ accept: 'image/*' }} ref={eventProfilePictureInput} onChange={(e)=> setEventProfilePicture(e.target.files[0])} />
-                <Box
-                    component="img"
-                    sx={{
-                        height: 233,
-                        width: 350,
-                        maxHeight: { xs: 233, md: 167 },
-                        maxWidth: { xs: 350, md: 250 },
-                    }}
-                    src={eventProfilePictureToShow}
-                />
+                    <TextField type="file" inputProps={{ accept: 'image/*' }} ref={eventProfilePictureInput} onChange={(e) => setEventProfilePicture(e.target.files[0])} />
+                    <Box
+                        component="img"
+                        sx={{
+                            height: 233,
+                            width: 350,
+                            maxHeight: { xs: 233, md: 167 },
+                            maxWidth: { xs: 350, md: 250 },
+                        }}
+                        src={eventProfilePictureToShow}
+                    />
                 </FormControl>
-                 <FormControl fullWidth>
-                 <FormControlLabel control={<Checkbox />} label="Event Age Range (Optional)" onChange={() => setDisabledAgeSlider(!disabledAgeSlider)} />
+                <FormControl fullWidth>
+                    <FormControlLabel control={<Checkbox />} label="Event Age Range (Optional)" onChange={() => setDisabledAgeSlider(!disabledAgeSlider)} />
                     <Slider ref={ageSliderInput}
                         getAriaLabel={() => 'Minimum distance'}
                         value={ageRange}
@@ -228,14 +228,14 @@ const NewEventPage = (props) => {
                     </Select>
                 </FormControl>
                 <TextField
-      label="Maximum participants (if empty, unlimited)"
-      placeholder='Maximum participants. If empty, unlimited'
-      value={value}
-      onChange={x}
-      variant="outlined"
-        //type="number"
-        inputMode='numeric'
-    />
+                    label="Maximum participants (if empty, unlimited)"
+                    placeholder='Maximum participants. If empty, unlimited'
+                    value={value}
+                    onChange={handleNumberInputChanged}
+                    variant="outlined"
+                    type="number"
+                    inputMode='numeric'
+                />
 
                 <Button color="primary" variant="contained" onClick={createEvent}>Create Event</Button>
             </Stack>
