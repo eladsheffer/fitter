@@ -24,7 +24,7 @@ const NewEventPage = (props) => {
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const citiesUrl = process.env.REACT_APP_CITIES_URL;
 
-    const activeUser = useSelector((state) => (state.user? state.user.value: null));
+    const activeUser = useSelector((state) => state.user.value);
     const titleEventInput = useRef(null);
     const descriptionEventInput = useRef(null);
     const locationEventInput = useRef(null);

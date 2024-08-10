@@ -8,7 +8,7 @@ import RemoveModal from '../components/RemoveModal';
 export default function GroupCard({ group }) {
     const success_img = 'https://res.cloudinary.com/djud4xysp/image/upload/v1716200974/utils/success_fpryzq.png';
     const default_group_img = 'https://res.cloudinary.com/djud4xysp/image/upload/v1716159438/groups/group_img_b9v9za.png';
-    const user = useSelector((state) => (state.user? state.user.value: null));
+    const user = useSelector((state) => state.user.value);
     const [showModal, setShowModal] = useState(false);
 
     const handleClose = () => setShowModal(false);

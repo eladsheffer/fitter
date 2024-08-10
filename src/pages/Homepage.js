@@ -11,7 +11,7 @@ import RootCard from "../components/RootCard";
 import LinearProgress from '@mui/material/LinearProgress';
 
 const Homepage = () => {
-    const activeUser = useSelector((state) => (state.user ? state.user.value: null));
+    const activeUser = useSelector((state) => state.user.value);
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const [groups, setGroups] = useState([]);
     const [events, setEvents] = useState([]);
@@ -30,19 +30,15 @@ const Homepage = () => {
             }
             else{
                 let data = await getData(serverUrl + 'users/get_groups_user_not_in/?email=' + activeUser.email);
-                console.log("offer: ",data);
                 if (!data) return;
                 setGroups(data);
 
                 data = await getData(serverUrl + 'users/get_events_user_not_in/?email=' + activeUser.email);
-                console.log("offer: ",data);
                 if (!data) return;
                 setEvents(data);
             }
         }
         fetchGroupsAndEvents();
-        console.log(groups);
-        console.log(events);
 
         // Cleanup function if needed
         return () => {

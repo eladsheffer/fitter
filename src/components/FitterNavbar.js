@@ -75,7 +75,7 @@ function FitterNavbar() {
   const default_profile_picture = user;
 
   const dispatch = useDispatch();
-  const activeUser = useSelector((state) => (state.user? state.user.value: null));
+  const activeUser = useSelector((state) => state.user.value);
 
   const [searchKey , setSearchKey] = useState('');
   const [radioValue, setRadioValue] = useState('1');
@@ -117,7 +117,6 @@ function FitterNavbar() {
   };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
-    console.log('event:', event.target.value);
   };
 
   const handleCloseNavMenu = (event) => {
@@ -128,7 +127,7 @@ function FitterNavbar() {
 
   const handleCloseUserMenu = (event) => {
     setAnchorElUser(null);
-    console.log('event:');
+
   };
 
   return (

@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import RemoveModal from '../components/RemoveModal';
 
 const EditProfilePage = (props) => {
-    const activeUser = useSelector((state) => (state.user? state.user.value: null));
+    const activeUser = useSelector((state) => state.user.value);
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const citiesUrl = process.env.REACT_APP_CITIES_URL;
     const firstNameInput = useRef(null);

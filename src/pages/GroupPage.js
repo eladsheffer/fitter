@@ -13,7 +13,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 
 
 const GroupPage = () => {
-    const activeUser = useSelector((state) => (state.user? state.user.value: null));
+    const activeUser = useSelector((state) => state.user.value);
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const [group, setGroup] = useState(null);
     const [users, setUsers] = useState([]);

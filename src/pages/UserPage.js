@@ -11,7 +11,7 @@ import GroupCard from '../components/GroupCard';
 import LinearProgress from '@mui/material/LinearProgress';
 
 const UserPage = () => {
-    const activeUser = useSelector((state) => (state.user? state.user.value: null));
+    const activeUser = useSelector((state) => state.user.value);
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const [user, setUser] = useState(null);
     const [profilePicture, setProfilePicture] = useState("/icons/user.png");

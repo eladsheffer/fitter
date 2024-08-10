@@ -11,7 +11,7 @@ import RootModal from './RootModal';
 const EventCard2 = (props) => {
     const dispatch = useDispatch();
     const serverUrl = process.env.REACT_APP_SERVER_URL;
-    const activeUser = useSelector((state) => (state.user? state.user.value: null));
+    const activeUser = useSelector((state) => state.user.value);
     const event = props.event;
     const key = props.key;
     const [participants, setParticpants] = useState(event.users_attended);

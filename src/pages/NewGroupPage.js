@@ -27,7 +27,7 @@ const NewGroupPage = () => {
     const ageSliderInput = useRef(null);
     const sportsInput = useRef(null);
 
-    const activeUser = useSelector((state) => (state.user? state.user.value: null));
+    const activeUser = useSelector((state) => state.user.value);
 
     useEffect(() => {
         const fetchCities = async () => {

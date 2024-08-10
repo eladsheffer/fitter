@@ -23,16 +23,16 @@ const persistedState = {
 
 const store = configureStore({
   reducer: {user: userReducer, modal: modalReducer, card: cardReducer, groups: groupsReducer, events: eventsReducer},
-  preloadedState: persistedState
+  // preloadedState: persistedState
 
 });
 
-store.subscribe(() => {
-  const state = store.getState();
-  saveState('user', state.user);
-  // saveState('groups', state.groups);
-  // saveState('events',state.events);
-});
+// store.subscribe(() => {
+//   const state = store.getState();
+//   saveState('user', state.user);
+//   // saveState('groups', state.groups);
+//   // saveState('events',state.events);
+// });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

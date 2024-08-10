@@ -33,7 +33,7 @@ const EditEventPage = (props) => {
     //const path = `${serverUrl}events/${id}/`;
     const path = `${serverUrl}events/70/`;
 
-    const activeUser = useSelector((state) => (state.user? state.user.value: null));
+    const activeUser = useSelector((state) => state.user.value);
     const titleEventInput = useRef(null);
     const descriptionEventInput = useRef(null);
     const locationEventInput = useRef(null);

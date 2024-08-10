@@ -9,7 +9,7 @@ import RemoveModal from '../components/RemoveModal';
 export default function EventCard({ event }) {
     const success_img = 'https://res.cloudinary.com/djud4xysp/image/upload/v1716200974/utils/success_fpryzq.png';
     const default_event_img = 'https://res.cloudinary.com/djud4xysp/image/upload/v1716159396/events/event_img_qjeqvp.png';
-    const user = useSelector((state) => (state.user? state.user.value: null));
+    const user = useSelector((state) => state.user.value);
     const [attendees, setAttendees] = useState(event.users_attended);
     const [showModal, setShowModal] = useState(false);
     const event_date = new Date(event.date_and_time).toLocaleDateString();
