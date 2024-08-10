@@ -84,11 +84,6 @@ function FitterNavbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  let signupLink = !activeUser ? <Link to="/signup">Signup</Link> : null;
-  let loginLink = !activeUser ? <Link to="/login">Login</Link> : null;
-  let logoutLink = activeUser ? <Link to="/" onClick={() => logoutFunc()}>Logout</Link> : null;
-  let profile = activeUser ? <Link to="/edit-profile"><img src={activeUser.profile_picture ? activeUser.profile_picture : default_profile_picture} width="30" height="30" roundedCircle /></Link> : null;
-
   const logoutFunc = async () => {
 
     let data = await postData(serverUrl + 'users/logout/', null);
@@ -140,33 +135,7 @@ function FitterNavbar() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            noWrap
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <img src={logo} alt="Fitter" width="100" height="50" />
-            </Link>
-          </Typography>
-          <Search>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-              onChange={(e) => setSearchKey(e.target.value)}
-            />
-          </Search>
-          <IconButton size="large" aria-label="search" color="inherit" onClick={handleSearch}><SearchIcon /></IconButton>
-
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+        <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -204,7 +173,7 @@ function FitterNavbar() {
           </Box>
           <Typography
             variant="h5"
-            noWrap
+            //noWrap
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -217,9 +186,36 @@ function FitterNavbar() {
             }}
           >
             <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <img src={logo } alt="Fitter" width="100" height="50" />
+            <img src={logo } alt="Fitter" height="50" />
             </Link>
           </Typography>
+          <Typography
+            variant="h6"
+            noWrap
+            sx={{
+              mr: 2,
+              display: { xs: 'none', md: 'flex' },
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
+          >
+            <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <img src={logo} alt="Fitter" width="100" height="50" />
+            </Link>
+          </Typography>
+          <Search>
+            <StyledInputBase
+              placeholder="Search…"
+              inputProps={{ 'aria-label': 'search' }}
+              onChange={(e) => setSearchKey(e.target.value)}
+            />
+          </Search>
+          <IconButton size="large" aria-label="search" color="inherit" onClick={handleSearch}><SearchIcon /></IconButton>
+
+          
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
