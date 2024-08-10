@@ -89,6 +89,7 @@ function FitterNavbar() {
     let data = await postData(serverUrl + 'users/logout/', null);
       dispatch(logout()); 
     handleCloseUserMenu();
+    navigate('/');
   }
 
   const handleSearch = async () => {
