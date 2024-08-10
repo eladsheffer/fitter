@@ -89,6 +89,7 @@ function FitterNavbar() {
     let data = await postData(serverUrl + 'users/logout/', null);
     if (data != null)
       dispatch(logout()); 
+    handleCloseUserMenu();
   }
 
   const handleSearch = async () => {
@@ -246,8 +247,8 @@ function FitterNavbar() {
               onClose={handleCloseUserMenu}
             >
 
-              {activeUser && <MenuItem key="logout" onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" onClick={() => logoutFunc()}>Logout</Typography>
+              {activeUser && <MenuItem key="logout" onClick={logoutFunc}>
+                  <Typography textAlign="center">Logout</Typography>
                 </MenuItem>}
                 
                 {activeUser && <Link to="/edit-profile/" style={{textDecoration: "none"}}><MenuItem key="profile" onClick={handleCloseUserMenu}>
