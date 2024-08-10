@@ -44,7 +44,6 @@ const EventsPage = () => {
     const url = `${process.env.REACT_APP_SERVER_URL}events`;
     const req = await fetch(url);
     const res = await req.json();
-    console.log(res.results);
     setEvents(res.results);
   }
 
@@ -73,16 +72,13 @@ const EventsPage = () => {
   // UI
   return (
     <div>
-      <div style={{ width: "70%", marginInline: "auto", marginTop: "4rem" }}>
+      <div style={{ width: "95%", marginInline: "auto", marginTop: "4rem" }}>
         <Container>
-          <Row className="gap-5">
-            <Col>
-              <h1>
-                Hello {activeUser !== null ? activeUser.first_name : "guest"} 👋
-              </h1>
+          <Row>
+            <Col xs="8">
             </Col>
-            <Col xs="5"></Col>
-            <Col>{activeUser ? <RootDialog /> : <RootModal />}</Col>
+            <Col xs="2"></Col>
+            <Col xs="2">{activeUser ? <RootDialog /> : <RootModal />}</Col>
           </Row>
           <Row className="mt-5 gap-5">
             <Col xs="auto" className="p-0">

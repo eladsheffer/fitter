@@ -92,11 +92,8 @@ function FitterNavbar() {
   }
 
   const handleSearch = async () => {
-    console.log('searchKey:', searchKey);
     let groupsData = await getData(serverUrl + `groups/?search=${searchKey}`);
     let eventsData = await getData(serverUrl + `events/?search=${searchKey}`);
-    console.log('groupsData:', groupsData.results);
-    console.log('eventsData:', eventsData.results);
 
     let searchResults = {
       groupsData: groupsData.results,
@@ -108,7 +105,6 @@ function FitterNavbar() {
   
 
   const handleSearchToggle = async (e) => {
-    console.log('radioValue:', e.target.value);
     setRadioValue(e.target.value);
   }
 
@@ -117,7 +113,6 @@ function FitterNavbar() {
   };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
-    console.log('event:', event.target.value);
   };
 
   const handleCloseNavMenu = (event) => {
@@ -128,7 +123,6 @@ function FitterNavbar() {
 
   const handleCloseUserMenu = (event) => {
     setAnchorElUser(null);
-    console.log('event:');
   };
 
   return (
@@ -253,19 +247,19 @@ function FitterNavbar() {
             >
 
               {activeUser && <MenuItem key="logout" onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" onClick={() => logoutFunc()}>logout</Typography>
+                  <Typography textAlign="center" onClick={() => logoutFunc()}>Logout</Typography>
                 </MenuItem>}
                 
                 {activeUser && <Link to="/edit-profile/" style={{textDecoration: "none"}}><MenuItem key="profile" onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">profile</Typography>
+                  <Typography textAlign="center">Settings</Typography>
                   
                 </MenuItem></Link>}
 
                 {!activeUser &&  <Link style={{textDecoration: "none"}} to="/login"><MenuItem key="login" onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">login</Typography>
+                  <Typography textAlign="center">Login</Typography>
                 </MenuItem></Link>}
                 {!activeUser &&<Link to="/signup" style={{textDecoration: "none"}}> <MenuItem key="signup" onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">signup</Typography>
+                  <Typography textAlign="center">Signup</Typography>
                   
                 </MenuItem></Link>}
 

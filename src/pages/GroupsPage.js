@@ -16,7 +16,7 @@ const GroupsPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const activeUser = useSelector((state) => state.user.value);
-    //const groups = useSelector((state) => state.groups.value);
+    const groups = useSelector((state) => state.groups.value);
     const location = useLocation();
 
     const [groupsOfUserAsAdmin, setGroupsOfUserAsAdmin] = useState([]);
@@ -49,7 +49,6 @@ const GroupsPage = () => {
             setGroupsOfUserAsMember(data);
 
             data = await getData(serverUrl + 'users/get_groups_user_not_in/?email=' + activeUser.email);
-            console.log("offer: ",data);
             if (!data) return;
             setGroupsUserNotIn(data);
             }
@@ -57,8 +56,6 @@ const GroupsPage = () => {
 
         }
         fetchGroups();
-        console.log(groupsOfUserAsMember);
-        console.log(groupsOfUserAsAdmin);
 
         // Cleanup function if needed
         return () => {
@@ -163,7 +160,7 @@ const GroupsPage = () => {
                     marginInline: "auto",
                 }}
             >
-                {groupsOfUserAsAdmin.map((group, i) => (
+                {groups.groupsAsAdmin.map((group, i) => (
                     <Col lg={4} md={6} sm={12}>
                         <GroupCard2 group={group} key={i}/>
                     </Col>
@@ -171,7 +168,7 @@ const GroupsPage = () => {
             </Row>
             </>}
 
-            {groupsOfUserAsMember.length===0? null : <>
+            {groups.groupsAsMember.length===0? null : <>
             <h1
                 style={{
                     marginTop: "4rem",
