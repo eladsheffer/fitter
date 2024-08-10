@@ -16,7 +16,7 @@ const GroupsPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const activeUser = useSelector((state) => state.user.value);
-    const groups = useSelector((state) => state.groups.value);
+    //const groups = useSelector((state) => state.groups.value);
     const location = useLocation();
 
     const [groupsOfUserAsAdmin, setGroupsOfUserAsAdmin] = useState([]);
@@ -163,7 +163,7 @@ const GroupsPage = () => {
                     marginInline: "auto",
                 }}
             >
-                {groups.groupsAsAdmin.map((group, i) => (
+                {groupsOfUserAsAdmin.map((group, i) => (
                     <Col lg={4} md={6} sm={12}>
                         <GroupCard2 group={group} key={i}/>
                     </Col>
@@ -184,7 +184,7 @@ const GroupsPage = () => {
                     marginInline: "auto",
                 }}
             >
-                {groups.groupsAsMember.map((group, i) => (
+                {groupsOfUserAsMember.map((group, i) => (
                     <Col lg={4} md={6} sm={12}>
                         <GroupCard2 group={group} key={i}/>
                     </Col>

@@ -50,7 +50,6 @@ function LoginPage(props) {
         if (data) {
             dispatch(setGroupsAsAdmin(data));
         }
-        console.log("groupsAsAdmin: ",user);
 
         path = serverUrl + 'users/get_user_groups_as_member_not_as_admin/?email=' + user.email;
         data = await getData(path);
