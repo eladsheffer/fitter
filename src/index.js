@@ -16,7 +16,7 @@ import { loadState, saveState } from './features/localStorageUtil';
 
 const persistedState = {
   user: loadState('user'),
-  groups: loadState('groups'),  
+  // groups: loadState('groups'),  
   // events: loadState('events'),
 };
 
@@ -30,7 +30,7 @@ const store = configureStore({
 store.subscribe(() => {
   const state = store.getState();
   saveState('user', state.user);
-  saveState('groups', state.groups);
+  // saveState('groups', state.groups);
   // saveState('events',state.events);
 });
 

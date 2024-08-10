@@ -50,7 +50,7 @@ const Homepage = () => {
     return (
         
         <div>
-             <div style={{ width: "95%", marginInline: "auto", marginTop: "4rem" }}>
+             <div style={{ width: "95%", marginInline: "auto", marginTop: "1rem" }}>
              <h1>
                 Hello {activeUser !== null ? activeUser.first_name : "Guest"} 👋
               </h1>

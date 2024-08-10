@@ -77,8 +77,8 @@ const EventsPage = () => {
           <Row>
             <Col xs="8">
             </Col>
-            <Col xs="2"></Col>
-            <Col xs="2">{activeUser ? <RootDialog /> : <RootModal />}</Col>
+            <Col xs="1">Create New Event</Col>
+            <Col xs="3">{activeUser ? <RootDialog /> : <RootModal />}</Col>
           </Row>
           <Row className="mt-5 gap-5">
             <Col xs="auto" className="p-0">
