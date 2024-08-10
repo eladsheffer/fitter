@@ -11,7 +11,7 @@ import RootCard from "../components/RootCard";
 import LinearProgress from '@mui/material/LinearProgress';
 
 const Homepage = () => {
-    const activeUser = useSelector((state) => state.user.value);
+    const activeUser = useSelector((state) => (state.user ? state.user.value: null));
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const [groups, setGroups] = useState([]);
     const [events, setEvents] = useState([]);
