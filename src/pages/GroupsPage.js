@@ -15,7 +15,7 @@ const GroupsPage = () => {
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const activeUser = useSelector((state) => state.user.value);
+    const activeUser = useSelector((state) => (state.user? state.user.value: null));
     //const groups = useSelector((state) => state.groups.value);
     const location = useLocation();
 

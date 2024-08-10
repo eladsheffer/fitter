@@ -40,7 +40,7 @@ const EditGroupPage = (props) => {
     const ageSliderInput = useRef(null);
     const sportsInput = useRef(null);
 
-    const activeUser = useSelector((state) => state.user.value);
+    const activeUser = useSelector((state) => (state.user? state.user.value: null));
 
     useEffect(() => {
         const fetchCities = async () => {

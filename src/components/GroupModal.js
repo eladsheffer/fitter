@@ -14,7 +14,7 @@ const GroupModal = () => {
     const groupDescriptionInput = useRef(null);
     const groupVisibilityInput = useRef(null);
     
-    const activeUser = useSelector((state) => state.user.value);
+    const activeUser = useSelector((state) => (state.user? state.user.value: null));
 
     const createGroup = () => {
         const serverUrl = process.env.REACT_APP_SERVER_URL;

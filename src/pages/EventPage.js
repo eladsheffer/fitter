@@ -9,7 +9,7 @@ import { green } from "@mui/material/colors";
 import { formatDate } from "../features/apiService";
 
 export default function EventPage() {
-  const activeUser = useSelector((state) => state.user.value);
+  const activeUser = useSelector((state) => (state.user? state.user.value: null));
   let { id } = useParams();
   const [event, setEvent] = useState(null);
   const [organizer, setOrganizer] = useState(null);

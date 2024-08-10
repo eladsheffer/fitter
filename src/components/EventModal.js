@@ -19,7 +19,7 @@ import dayjs from 'dayjs';
 
 const EventModal = () => {
     const serverUrl = process.env.REACT_APP_SERVER_URL;
-    const activeUser = useSelector((state) => state.user.value);
+    const activeUser = useSelector((state) => (state.user? state.user.value: null));
     const titleEventInput = useRef(null);
     const descriptionEventInput = useRef(null);
     const locationEventInput = useRef(null);

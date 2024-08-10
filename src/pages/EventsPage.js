@@ -29,7 +29,7 @@ const EventsPage = () => {
 
   const defaultEventImage = "/icons/event.png";
 
-  const activeUser = useSelector((state) => state.user.value);
+  const activeUser = useSelector((state) => (state.user? state.user.value: null));
 
   const type = activeUser ? "Event" : "Signup";
 

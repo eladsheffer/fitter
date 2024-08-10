@@ -12,7 +12,7 @@ import RootModal from './RootModal';
 const GroupCard2= (props) => {
     const dispatch = useDispatch();
     const serverUrl = process.env.REACT_APP_SERVER_URL;
-    const activeUser = useSelector((state) => state.user.value);
+    const activeUser = useSelector((state) => (state.user? state.user.value: null));
     const group = props.group;
     const key = props.key;
     const [members, setMembers] = useState(group.members);
