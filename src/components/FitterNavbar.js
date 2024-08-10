@@ -87,7 +87,6 @@ function FitterNavbar() {
   const logoutFunc = async () => {
 
     let data = await postData(serverUrl + 'users/logout/', null);
-    if (data != null)
       dispatch(logout()); 
     handleCloseUserMenu();
   }
