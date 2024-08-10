@@ -58,7 +58,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    paddingLeft: `calc(${theme.spacing(1)})`,
     transition: theme.transitions.create('width'),
     [theme.breakpoints.up('sm')]: {
       width: '12ch',
@@ -75,7 +75,7 @@ function FitterNavbar() {
   const default_profile_picture = user;
 
   const dispatch = useDispatch();
-  const activeUser = useSelector((state) => state.user.value);
+  const activeUser = useSelector((state) => (state.user? state.user.value: null));
 
   const [searchKey , setSearchKey] = useState('');
   const [radioValue, setRadioValue] = useState('1');
@@ -117,6 +117,7 @@ function FitterNavbar() {
   };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
+    console.log('event:', event.target.value);
   };
 
   const handleCloseNavMenu = (event) => {
@@ -127,7 +128,7 @@ function FitterNavbar() {
 
   const handleCloseUserMenu = (event) => {
     setAnchorElUser(null);
-
+    console.log('event:');
   };
 
   return (
