@@ -51,7 +51,7 @@ const RootModal = () => {
             <Row>
                 <Col>
                     <a href="#">
-                        <Image src="icons/add.png" width="40" height="40" className="d-inline-block align-top" alt="add" rounded
+                        <Image src="/icons/add.png" width="40" height="40" className="d-inline-block align-top" alt="add" rounded
                             onClick={handleShow} />
                     </a>
                 </Col>
