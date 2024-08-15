@@ -130,7 +130,9 @@ const GroupPage = () => {
                     >
                         {users.length > 0 ? (
                             users.map((user, i) => (
-                                <UserCard key={i} user={user} />
+                                <Col lg={4} md={6} sm={12}>
+                                    <UserCard key={i} user={user} />
+                                </Col>
                             ))
                         ) : (
                             <p style={{ color: "red" }}>No members found.</p>
