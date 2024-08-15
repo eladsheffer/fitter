@@ -66,19 +66,23 @@ const UserPage = () => {
         <div style={{ width: "95%", marginInline: "auto", marginTop: "4rem" }}>
             <Row style={{ marginTop: "3em" }}>
                 <Col xs="1"></Col>
-                <Col xs="4">
+                <Col lg={4}  md={6} sm={8} xs="8">
                     <Card>
                         <Card.Body>
+                            <Col>
                             <Card.Title>{user.first_name} {user.last_name}</Card.Title>
                             <Card.Text>Email : {user.email}</Card.Text>
                             <Card.Text>Date of Birth: {user.date_of_birth}</Card.Text>
                             <Card.Text>Gender : {user.gender}</Card.Text>
                             <Card.Text>Location : {user.location}</Card.Text>
+                            </Col>
+                            <Col>
                             <Card.Img src={profilePicture} />
+                            </Col>
                         </Card.Body>
                     </Card>
                 </Col>
-                <Col xs="6"></Col>
+                <Col lg={5}  md={3} sm={1} xs="1"></Col>
                 {activeUser && activeUser.email === user.email &&
                 <Col xs="1">
                     <Link to={`/edit-profile/`}>
