@@ -176,7 +176,7 @@ export default function SearchPage() {
                         <Dropdown.Menu style={{ maxHeight: "200px", overflowY: "auto" }}>
                             {groupLocations.map((location) => (
                                 <Form.Check
-                                    style={{ marginLeft: "10px" }}
+                                    style={{ margin: "10px" }}
                                     name={location}
                                     label={location}
                                     type="checkbox"
@@ -198,7 +198,7 @@ export default function SearchPage() {
                         <Dropdown.Menu style={{ maxHeight: "200px", overflowY: "auto" }}>
                             {groupGenders.map((gender) => (
                                 <Form.Check
-                                style={{ marginLeft: "10px" }}
+                                style={{ margin: "10px" }}
                                     name={gender}
                                     label={gender}
                                     type="checkbox"
@@ -215,15 +215,15 @@ export default function SearchPage() {
             </Row>): 
             ( <Row className='d-flex justify-content-around'>
                 <Col lg="1" md="1" sm="1" xs="0"></Col>
-                <Col lg="2" md="2" xs="3" className="me-4">
+                <Col lg="2" md="2" xs="3" className="me-4" >
                     <Dropdown>
-                        <Dropdown.Toggle variant="primary" id="dropdown1" style={{ borderRadius: "20px" }} >
+                        <Dropdown.Toggle variant="primary" id="dropdown1" className="text-wrap" style={{ borderRadius: "20px" }} >
                            Locations Filter
                         </Dropdown.Toggle>
                         <Dropdown.Menu style={{ maxHeight: "200px", overflowY: "auto" }}>
                             {eventLocations.map((location) => (
                                 <Form.Check
-                                style={{ marginLeft: "10px" }}
+                                style={{ margin: "10px" }}
                                     name={location}
                                     label={location}
                                     type="checkbox"
@@ -239,13 +239,13 @@ export default function SearchPage() {
                 </Col>
                 <Col lg="2" md="2" sm="2" xs="3" className="me-4">
                     <Dropdown>
-                        <Dropdown.Toggle variant="primary" id="dropdown1" style={{ borderRadius: "20px" }} >
+                        <Dropdown.Toggle variant="primary" id="dropdown1" className="text-wrap" style={{ borderRadius: "20px" }} >
                             Gender Filter
                         </Dropdown.Toggle>
                         <Dropdown.Menu style={{ maxHeight: "200px", overflowY: "auto" }}>
                             {eventGenders.map((gender) => (
                                 <Form.Check
-                                style={{ marginLeft: "10px" }}
+                                style={{ margin: "10px" }}
                                     name={gender}
                                     label={gender}
                                     type="checkbox"
@@ -261,13 +261,13 @@ export default function SearchPage() {
                 </Col>
                 <Col lg="4" md="4" sm="4" xs="3" className="me-4">
                     <Dropdown>
-                        <Dropdown.Toggle variant="primary" id="dropdown1" style={{ borderRadius: "20px" }} >
+                        <Dropdown.Toggle variant="primary" id="dropdown1" className="text-wrap" style={{ borderRadius: "20px" }} >
                             Sport Filter
                         </Dropdown.Toggle>
                         <Dropdown.Menu style={{ maxHeight: "200px", overflowY: "auto" }}>
                             {eventSportsTypes.map((sport) => (
                                 <Form.Check
-                                style={{ marginLeft: "10px" }}
+                                style={{ margin: "10px" }}
                                     name={sport}
                                     label={sport}
                                     type="checkbox"
