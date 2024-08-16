@@ -60,7 +60,7 @@ export default function EventCard({ event }) {
             />
             <Row>
                 <Col xs="auto">
-                    <Link to={`../events/${event.id}`}>
+                    <Link to={`/events/${event.id}/`}>
                         <Image
                             src={event.image ?? default_event_img}
                             alt="Event thumbnail"
@@ -70,7 +70,7 @@ export default function EventCard({ event }) {
                     </Link>
                 </Col>
                 <Col>
-                    <Link to={`${event.id}`} className='text-decoration-none'>
+                    <Link to={`/events/${event.id}/`} className='text-decoration-none'>
                         <h3>{event.title}</h3>
                     </Link>
                     <h5>{event.date}</h5>

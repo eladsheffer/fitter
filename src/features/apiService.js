@@ -211,4 +211,22 @@ const haversineDistance = (lat1, lon1, lat2, lon2) => {
     return R * c; // Distance in km
   };
 
-export { postData, putData, patchData, deleteData, getData, formatDate, haversineDistance };
+  function formatFriendlyDate(isoDateString) {
+    // Creating a date object from the ISO string
+    const date = new Date(isoDateString);
+
+    // Converting to a more readable format
+    const friendlyDate = date.toLocaleString("en-GB", {
+      weekday: "long", // long name of the day
+      year: "numeric", // numeric year
+      month: "2-digit", // two digit month
+      day: "2-digit", // two digit day
+      hour: "numeric", // numeric hour (12-hour clock)
+      minute: "2-digit", // two digit minutes
+      hour12: true, // use 12-hour clock
+    });
+
+    return friendlyDate;
+  }
+
+export { postData, putData, patchData, deleteData, getData, formatDate, haversineDistance, formatFriendlyDate };

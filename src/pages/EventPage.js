@@ -6,7 +6,8 @@ import { useParams, Link } from "react-router-dom";
 import events from "../data-model/events.json";
 import { useSelector } from "react-redux";
 import { green } from "@mui/material/colors";
-import { formatDate } from "../features/apiService";
+import { formatFriendlyDate } from "../features/apiService";
+import LinearProgress from '@mui/material/LinearProgress';
 
 export default function EventPage() {
   const activeUser = useSelector((state) => state.user.value);
@@ -36,31 +37,15 @@ export default function EventPage() {
     }
   }
 
-  function formatFriendlyDate(isoDateString) {
-    // Creating a date object from the ISO string
-    const date = new Date(isoDateString);
-
-    // Converting to a more readable format
-    const friendlyDate = date.toLocaleString("en-GB", {
-      weekday: "long", // long name of the day
-      year: "numeric", // numeric year
-      month: "2-digit", // two digit month
-      day: "2-digit", // two digit day
-      hour: "numeric", // numeric hour (12-hour clock)
-      minute: "2-digit", // two digit minutes
-      hour12: true, // use 12-hour clock
-    });
-
-    return friendlyDate;
-  }
-
   useEffect(() => {
     getEvent();
   }, []);
 
   return (
     <div>
-      {event ? (
+      {!event ? (
+        <LinearProgress style={{ marginTop: "4rem" }} />
+      ) : (
         <div style={{ width: "80%", margin: "4rem auto" }}>
           <Container fluid="md">
             <Row className="mb-4">
@@ -142,8 +127,6 @@ export default function EventPage() {
             </Row>
           </Container>
         </div>
-      ) : (
-        <p>Loading...</p>
       )}
     </div>
   );
