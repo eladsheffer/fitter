@@ -5,6 +5,7 @@ const initialStateValue = {
     title: "",
     body: "",
     show: false,
+    groupId: null,
 };
 
 export const modalSlice = createSlice({
@@ -20,15 +21,20 @@ export const modalSlice = createSlice({
         },
         closeModal: (state) => {
         state.value.show = false;
+        state.value.groupId = null;
         console.log("CLOSE MODAL");
         },
 
         renderModalType: (state, action) => {
             state.value.type = action.payload.type;
         },
+        
+        setGroupId: (state, action) => {
+            state.value.groupId = action.payload.groupId;
+        },
     },
     });
 
-export const {showModal, closeModal, renderModalType} = modalSlice.actions;
+export const {showModal, closeModal, renderModalType, setGroupId} = modalSlice.actions;
 
 export default modalSlice.reducer;

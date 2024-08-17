@@ -6,8 +6,9 @@ import { postData } from '../features/apiService';
 import RemoveModal from '../components/RemoveModal';
 import { renderCardType, makeAdmin, makeMember, removeAdmin, removeMember } from '../features/card';
 import { setGroupsAsAdmin, setGroupsAsMember, addGroup, removeGroup } from '../features/groups';
-import { showModal, closeModal, renderModalType } from '../features/modal';
+import { showModal, closeModal, renderModalType, setGroupId } from '../features/modal';
 import RootModal from './RootModal';
+import RootDialog from './RootDialog';
 
 const GroupCard2= (props) => {
     const dispatch = useDispatch();
@@ -82,7 +83,10 @@ const GroupCard2= (props) => {
     };
 
     const createEvent = () => {
-        //dispatch(renderModalType({ type: 'Event' }));
+        //navigate(`/new-event/${group.id}`);
+        dispatch(renderModalType({ type: 'Event' }));
+        dispatch(setGroupId({groupId: group.id}));
+        dispatch(showModal());
     };
 
     // const removeGroup = () => {

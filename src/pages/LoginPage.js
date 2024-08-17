@@ -94,7 +94,7 @@ function LoginPage(props) {
         <div>
             <div className="login">
 
-                {props.modal === true ? null : <>
+                {props.modal ? null : <>
                     <h1>Login</h1>
                     <p>
                         Not a member yet? <Link to="/signup">sign up</Link>

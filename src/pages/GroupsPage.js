@@ -6,7 +6,7 @@ import GroupCard2 from '../components/GroupCard2';
 import RootCard from '../components/RootCard';
 import { useSelector, useDispatch } from 'react-redux';
 import RootModal from '../components/RootModal';
-import { renderModalType } from '../features/modal';
+import { renderModalType, showModal } from '../features/modal';
 import { useState, useEffect } from 'react';
 import { getData } from '../features/apiService';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -63,6 +63,15 @@ const GroupsPage = () => {
         };
     }, []);
 
+    const createGroup = () => {
+        if (!activeUser) {
+            dispatch(renderModalType({ type: 'Login' }));
+        } else {
+            dispatch(renderModalType({ type: 'Group' }));
+        }
+        dispatch(showModal());
+    }
+
 
     return (
         <div>
@@ -94,7 +103,11 @@ const GroupsPage = () => {
                         <p>Start your group and community!</p>
                     </Col>
                     <Col>
-                        <RootModal />
+                    <a href="#">
+                        <Image src="/icons/add.png" width="40" height="40" className="d-inline-block align-top" alt="add" rounded
+                            onClick={createGroup} />
+                    </a>
+                    <RootModal hideButton={true} />
                     </Col>
 
                 </Row>

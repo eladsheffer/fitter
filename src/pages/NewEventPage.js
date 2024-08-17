@@ -17,12 +17,14 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Description } from '@mui/icons-material';
 import dayjs from 'dayjs';
 import sports from "../data-model/sports.json";
-
+import { useParams } from 'react-router-dom';
 
 const NewEventPage = (props) => {
 
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const citiesUrl = process.env.REACT_APP_CITIES_URL;
+    let { groupId } = useParams();
+    groupId =useSelector((state) => state.modal.value.groupId) || groupId;
 
     const activeUser = useSelector((state) => state.user.value);
     const titleEventInput = useRef(null);
@@ -105,8 +107,8 @@ const NewEventPage = (props) => {
         newEvent.append('gender', eventGenderInput.current.value);
         newEvent.append('max_participants', value);
         newEvent.append('organizer', activeUser.id);
-        if (props.group)
-            newEvent.append('group_organized', props.group);
+        if (groupId)
+            newEvent.append('group_organized', groupId);
 
         console.log(newEvent);
         let path = serverUrl + 'events/';

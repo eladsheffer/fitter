@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { renderModalType, closeModal, showModal } from '../features/modal';
 import NewEventPage from '../pages/NewEventPage';
 
-const RootModal = () => {
+const RootModal = (props) => {
     const dispatch = useDispatch();
     const show = useSelector((state) => state.modal.value.show);
     const handleClose = () => dispatch(closeModal());
@@ -27,7 +27,7 @@ const RootModal = () => {
             <p>
                 Not a member yet? <Button className="btn btn-link" variant="outline-none" role="link" onClick={handleChange}>signup</Button>
             </p>
-            <LoginPage />
+            <LoginPage modal={true}/>
         </>
     } : type==='Signup' ? {
         title: 'Signup', body: <>
@@ -48,6 +48,7 @@ const RootModal = () => {
 
     return (
         <Container>
+            {!props.hideButton &&
             <Row>
                 <Col>
                     <a href="#">
@@ -55,7 +56,7 @@ const RootModal = () => {
                             onClick={handleShow} />
                     </a>
                 </Col>
-            </Row>
+            </Row>}
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>{element.title}</Modal.Title>
