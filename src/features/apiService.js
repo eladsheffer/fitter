@@ -63,8 +63,11 @@ const postData = async (url, data, login = false) => {
         }
 
         if (status === 200 || status === 201) {
+            console.log("API SERVICE - SUCCESS: ", responseData);
             return responseData;
         }
+
+        console.log("API SERVICE - FAILED: ", responseData);
 
         return null;
     } catch (error) {
@@ -75,22 +78,77 @@ const postData = async (url, data, login = false) => {
     }
 };
 
+const patchData = async (url, data, login = false) => {
 
-const putData = async (url, data) => {
-    const settings = {
-        method: 'PUT',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
+    const headers = {
+        Accept: 'application/json',
     };
+
+    if (!login) {
+        headers['Authorization'] = `Token ${getAuthToken()}`;
+    }
+
+    if (!(data instanceof FormData)) {
+        headers['Content-Type'] = 'application/json';
+        data = JSON.stringify(data);
+    }
+
+    const settings = {
+        method: 'PATCH',
+        headers: headers,
+        body: data
+    };
+
     try {
         const response = await fetch(url, settings);
-        const data = await response.json();
+        const responseData = await response.json();
         const status = response.status;
         if (status === 200)
-            return data;
+            return responseData;
+
+        console.log("API SERVICE - FAILED: ", responseData);
+
+        
+        return null;
+    } catch (error) {
+        console.error('Error updating data:', error);
+        return null;
+        //throw error;
+        // handle the error here
+    }
+}
+
+
+const putData = async (url, data, login = false) => {
+    const headers = {
+        Accept: 'application/json',
+    };
+
+    if (!login) {
+        headers['Authorization'] = `Token ${getAuthToken()}`;
+    }
+
+    if (!(data instanceof FormData)) {
+        headers['Content-Type'] = 'application/json';
+        data = JSON.stringify(data);
+    }
+
+    const settings = {
+        method: 'PUT',
+        headers: headers,
+        body: data
+    };
+
+    try {
+        const response = await fetch(url, settings);
+        const responseData = await response.json();
+        const status = response.status;
+        if (status === 200)
+            return responseData;
+
+        console.log("API SERVICE - FAILED: ", responseData);
+
+        
         return null;
     } catch (error) {
         console.error('Error updating data:', error);
@@ -102,8 +160,14 @@ const putData = async (url, data) => {
 
 const deleteData = async (url) => {
 
+    const headers = {
+        Accept: 'application/json',
+        'Authorization': `Token ${getAuthToken()}`
+    };
+
     const settings = {
         method: 'DELETE',
+        headers: headers
     };
 
     try {
@@ -111,6 +175,7 @@ const deleteData = async (url) => {
         const status = response.status;
         if (status === 200)
             return true;
+        console.log("API SERVICE - FAILED: ", response);
         return false;
     } catch (error) {
         console.error('Error deleting data:', error);
@@ -134,4 +199,34 @@ const formatDate = (date)=> {
     return [year, month, day].join('-');
 };
 
-export { postData, putData, deleteData, getData, formatDate };
+const haversineDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Radius of the Earth in km
+    const dLat = (lat2 - lat1) * (Math.PI / 180);
+    const dLon = (lon2 - lon1) * (Math.PI / 180);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c; // Distance in km
+  };
+
+  function formatFriendlyDate(isoDateString) {
+    // Creating a date object from the ISO string
+    const date = new Date(isoDateString);
+
+    // Converting to a more readable format
+    const friendlyDate = date.toLocaleString("en-GB", {
+      weekday: "long", // long name of the day
+      year: "numeric", // numeric year
+      month: "2-digit", // two digit month
+      day: "2-digit", // two digit day
+      hour: "numeric", // numeric hour (12-hour clock)
+      minute: "2-digit", // two digit minutes
+      hour12: true, // use 12-hour clock
+    });
+
+    return friendlyDate;
+  }
+
+export { postData, putData, patchData, deleteData, getData, formatDate, haversineDistance, formatFriendlyDate };

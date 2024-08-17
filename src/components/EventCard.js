@@ -12,9 +12,12 @@ export default function EventCard({ event }) {
     const user = useSelector((state) => state.user.value);
     const [attendees, setAttendees] = useState(event.users_attended);
     const [showModal, setShowModal] = useState(false);
+    const event_date = new Date(event.date_and_time).toLocaleDateString();
+    const event_time = new Date(event.date_and_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
 
     const handleClose = () => setShowModal(false);
-    const handleShow = () => setShowModal(true);
+    const handleShow = () => setShowModal(true); 
 
     const handleAttend = async (isAttending) => {
         const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -40,7 +43,7 @@ export default function EventCard({ event }) {
                 handleClose();
             } else {
                 console.error('Error removing user from group:', response);
-            }
+            } 
         }
     };
 
@@ -57,7 +60,7 @@ export default function EventCard({ event }) {
             />
             <Row>
                 <Col xs="auto">
-                    <Link to={`../events/${event.id}`}>
+                    <Link to={`/events/${event.id}/`}>
                         <Image
                             src={event.image ?? default_event_img}
                             alt="Event thumbnail"
@@ -67,11 +70,12 @@ export default function EventCard({ event }) {
                     </Link>
                 </Col>
                 <Col>
-                    <Link to={`${event.id}`} className='text-decoration-none'>
+                    <Link to={`/events/${event.id}/`} className='text-decoration-none'>
                         <h3>{event.title}</h3>
                     </Link>
                     <h5>{event.date}</h5>
                     <p>{event.description}</p>
+                    <h6>{event_date} - {event_time}</h6>
                     <Row className="justify-content-between">
                         <Col xs="auto">
                             <h6>{`${attendees.length}${event.max_participants ? `/${event.max_participants}` : ''} Attendees`}</h6>

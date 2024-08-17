@@ -18,6 +18,7 @@ import RootDialog from "../components/RootDialog";
 import RootModal from "../components/RootModal";
 import { renderModalType } from "../features/modal";
 import { useEffect } from "react";
+import sports from "../data-model/sports.json";
 
 const EventsPage = () => {
   // States
@@ -25,6 +26,8 @@ const EventsPage = () => {
   const [date, setDate] = useState(new Date());
   const [events, setEvents] = useState([]);
   const dispatch = useDispatch();
+
+  const defaultEventImage = "/icons/event.png";
 
   const activeUser = useSelector((state) => state.user.value);
 
@@ -41,7 +44,6 @@ const EventsPage = () => {
     const url = `${process.env.REACT_APP_SERVER_URL}events`;
     const req = await fetch(url);
     const res = await req.json();
-    console.log(res.results);
     setEvents(res.results);
   }
 
@@ -50,7 +52,7 @@ const EventsPage = () => {
     const date = new Date(isoDateString);
 
     // Converting to a more readable format
-    const friendlyDate = date.toLocaleString("en-US", {
+    const friendlyDate = date.toLocaleString("en-GB", {
       weekday: "long", // long name of the day
       year: "numeric", // numeric year
       month: "2-digit", // two digit month
@@ -70,16 +72,13 @@ const EventsPage = () => {
   // UI
   return (
     <div>
-      <div style={{ width: "70%", marginInline: "auto", marginTop: "4rem" }}>
+      <div style={{ width: "95%", marginInline: "auto", marginTop: "4rem" }}>
         <Container>
-          <Row className="gap-5">
-            <Col>
-              <h1>
-                Hello {activeUser !== null ? activeUser.first_name : "guest"} 👋
-              </h1>
+          <Row>
+            <Col xs="8">
             </Col>
-            <Col xs="5"></Col>
-            <Col>{activeUser ? <RootDialog /> : <RootModal />}</Col>
+            <Col xs="1">Create New Event</Col>
+            <Col xs="3">{activeUser ? <RootDialog /> : <RootModal />}</Col>
           </Row>
           <Row className="mt-5 gap-5">
             <Col xs="auto" className="p-0">
@@ -94,58 +93,26 @@ const EventsPage = () => {
               {/* Filter Navbar */}
               <Row className="gap-5 align-middle">
                 <Col>
-                  <DropdownButton id="dropdown-sports" title={sport}>
-                    <Dropdown.Item
-                      onClick={() => setSport("Basketball")}
-                      href="#/action-1"
-                    >
-                      Basketball
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      onClick={() => setSport("Soccer")}
-                      href="#/action-2"
-                    >
-                      Soccer
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      onClick={() => setSport("Tenis")}
-                      href="#/action-3"
-                    >
-                      Tenis
-                    </Dropdown.Item>
-                  </DropdownButton>
+                  <Dropdown>
+                    <Dropdown.Toggle variant="primary" id="dropdown1" style={{ borderRadius: "20px" }}>
+                      Any Sports
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu style={{ maxHeight: "200px", overflowY: "auto" }}>
+                      {sports.map((sport, i) => (
+                        <Dropdown.Item key={i}>{sport.name}</Dropdown.Item>
+                      ))}
+                    </Dropdown.Menu>
+                  </Dropdown>
                 </Col>
-                <Col>
-                  <DropdownButton id="dropdown-sports" title={sport}>
-                    <Dropdown.Item
-                      onClick={() => setSport("Basketball")}
-                      href="#/action-1"
-                    >
-                      Basketball
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      onClick={() => setSport("Soccer")}
-                      href="#/action-2"
-                    >
-                      Soccer
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      onClick={() => setSport("Tenis")}
-                      href="#/action-3"
-                    >
-                      Tenis
-                    </Dropdown.Item>
-                  </DropdownButton>
-                </Col>
+
                 <Col>
                   <Button variant="link">Reset</Button>
                 </Col>
               </Row>
               {/* Events */}
               <Row>
-                <h2 className="mt-5 p-0">{`Events - ${date.getDate()}/${
-                  date.getMonth() + 1
-                }/${date.getFullYear()}`}</h2>
+                <h2 className="mt-5 p-0">{`Events - ${date.getDate()}/${date.getMonth() + 1
+                  }/${date.getFullYear()}`}</h2>
                 {events.map((event, i) => (
                   <div key={i}>
                     <hr />
@@ -153,7 +120,7 @@ const EventsPage = () => {
                       <Col xs="auto">
                         <Link to={`${event.id}`}>
                           <Image
-                            src={event.image}
+                            src={event.image || defaultEventImage}
                             alt="Event thumbnail"
                             width={100}
                             height={100}
@@ -169,7 +136,7 @@ const EventsPage = () => {
                         <Row className="justify-between gap-5">
                           <Col xs={4}>
                             {event.max_participants !== null &&
-                            typeof event.max_participants === "number" ? (
+                              typeof event.max_participants === "number" ? (
                               <h6>{`${event.users_attended.length}/${event.max_participants} Attendees`}</h6>
                             ) : (
                               <h6>{`${event.users_attended.length} Attendees`}</h6>

@@ -31,9 +31,8 @@ const RootDialog = () => {
     return(
         <div>
         <Box sx={{ fontSize: 20, textAlign: 'center' }}>
-        Create New Event
         <a href='#'>
-        <AddCircleIcon color="primary" sx={{fontSize: 100}} onClick={functionopenpopup} variant="contained">
+        <AddCircleIcon color="primary" sx={{fontSize: 45, color:"blue"}} onClick={functionopenpopup} variant="contained">
         {/* <Button onClick={functionopenpopup} color="primary" variant="contained">Create New Event</Button> */}
         </AddCircleIcon>
         </a>

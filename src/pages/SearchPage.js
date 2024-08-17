@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import GroupCard from '../components/GroupCard';
 import EventCard from '../components/EventCard';
-import { Button, Row, Col, Container, ToggleButton, ButtonGroup } from 'react-bootstrap';
+import { Button, Row, Col, Container, ToggleButton, ButtonGroup, Dropdown, Form } from 'react-bootstrap';
 import { getData } from '../features/apiService';
 import SearchFilter from '../components/SearchFilter';
 
@@ -19,7 +19,7 @@ export default function SearchPage() {
     const [searchType, setSearchType] = useState('groups');
     const [selectedGroupFilters, setSelectedGroupFilters] = useState({
         location: [],
-        gender : [],
+        gender: [],
     });
     const [selectedEventFilters, setSelectedEventFilters] = useState({
         location: [],
@@ -131,7 +131,7 @@ export default function SearchPage() {
 
 
     return (
-        <Container>
+        <div>
             <Row className="my-4 justify-content-center">
                 <Col xs="auto" className="text-center">
                     <h1>Search Page</h1>
@@ -166,8 +166,125 @@ export default function SearchPage() {
                     </ButtonGroup>
                 </Col>
             </Row>
-            <Row className="justify-content-center">
-                <Col xs="auto" className="text-start mx-5" style={{ width: '20%' }}>
+            {searchType === 'groups' ? (
+            <Row className="d-flex justify-content-around">
+                <Col lg="1" md="0" sm="0" xs="auto">
+                    <Dropdown>
+                        <Dropdown.Toggle variant="primary" id="dropdown1" style={{ borderRadius: "20px" }} >
+                           Locations Filter
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu style={{ maxHeight: "200px", overflowY: "auto" }}>
+                            {groupLocations.map((location) => (
+                                <Form.Check
+                                    style={{ margin: "10px" }}
+                                    name={location}
+                                    label={location}
+                                    type="checkbox"
+                                    //defaultChecked={props?.searchIn?.title}
+                                    onChange={(e) => handleFilterChange("location", e.target.name)}
+                                />))}
+
+                            {/* {groupLocations.map((location, i) => (
+                        <Dropdown.Item key={location}>{location}</Dropdown.Item>
+                      ))} */}
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Col>
+                <Col lg="4" md="4" sm="4" xs="auto">
+                    <Dropdown>
+                        <Dropdown.Toggle variant="primary" id="dropdown1" style={{ borderRadius: "20px" }} >
+                            Gender Filter
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu style={{ maxHeight: "200px", overflowY: "auto" }}>
+                            {groupGenders.map((gender) => (
+                                <Form.Check
+                                style={{ margin: "10px" }}
+                                    name={gender}
+                                    label={gender}
+                                    type="checkbox"
+                                    //defaultChecked={props?.searchIn?.title}
+                                    onChange={(e) => handleFilterChange("gender", e.target.name)}
+                                />))}
+
+                            {/* {groupLocations.map((location, i) => (
+                        <Dropdown.Item key={location}>{location}</Dropdown.Item>
+                      ))} */}
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Col>
+            </Row>): 
+            ( <Row className='d-flex justify-content-around'>
+                <Col lg="1" md="1" sm="1" xs="0"></Col>
+                <Col lg="2" md="2" xs="3" className="me-4" >
+                    <Dropdown>
+                        <Dropdown.Toggle variant="primary" id="dropdown1" className="text-wrap" style={{ borderRadius: "20px" }} >
+                           Locations Filter
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu style={{ maxHeight: "200px", overflowY: "auto" }}>
+                            {eventLocations.map((location) => (
+                                <Form.Check
+                                style={{ margin: "10px" }}
+                                    name={location}
+                                    label={location}
+                                    type="checkbox"
+                                    //defaultChecked={props?.searchIn?.title}
+                                    onChange={(e) => handleFilterChange("location", e.target.name)}
+                                />))}
+
+                            {/* {groupLocations.map((location, i) => (
+                        <Dropdown.Item key={location}>{location}</Dropdown.Item>
+                      ))} */}
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Col>
+                <Col lg="2" md="2" sm="2" xs="3" className="me-4">
+                    <Dropdown>
+                        <Dropdown.Toggle variant="primary" id="dropdown1" className="text-wrap" style={{ borderRadius: "20px" }} >
+                            Gender Filter
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu style={{ maxHeight: "200px", overflowY: "auto" }}>
+                            {eventGenders.map((gender) => (
+                                <Form.Check
+                                style={{ margin: "10px" }}
+                                    name={gender}
+                                    label={gender}
+                                    type="checkbox"
+                                    //defaultChecked={props?.searchIn?.title}
+                                    onChange={(e) => handleFilterChange("gender", e.target.name)}
+                                />))}
+
+                            {/* {groupLocations.map((location, i) => (
+                        <Dropdown.Item key={location}>{location}</Dropdown.Item>
+                      ))} */}
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Col>
+                <Col lg="4" md="4" sm="4" xs="3" className="me-4">
+                    <Dropdown>
+                        <Dropdown.Toggle variant="primary" id="dropdown1" className="text-wrap" style={{ borderRadius: "20px" }} >
+                            Sport Filter
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu style={{ maxHeight: "200px", overflowY: "auto" }}>
+                            {eventSportsTypes.map((sport) => (
+                                <Form.Check
+                                style={{ margin: "10px" }}
+                                    name={sport}
+                                    label={sport}
+                                    type="checkbox"
+                                    //defaultChecked={props?.searchIn?.title}
+                                    onChange={(e) => handleFilterChange("sport_type", e.target.name)}
+                                />))}
+
+                            {/* {groupLocations.map((location, i) => (
+                        <Dropdown.Item key={location}>{location}</Dropdown.Item>
+                      ))} */}
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Col>
+            </Row>)}  
+
+            <Row className="justify-content-center my-4">
+                {/* <Col xs="auto" className="text-start mx-5" style={{ width: '20%' }}>
                     <h2>Filters</h2>
                     {searchType === 'groups' ?
                         (
@@ -183,8 +300,9 @@ export default function SearchPage() {
                                 {eventGenders.length > 0 && <SearchFilter title="Gender" data={eventGenders} filterType="gender" onFilterChange={handleFilterChange} />}
                             </>
                         )}
-                </Col>
-                <Col xs="auto" style={{ width: '65%' }}>
+                </Col> */}
+                <Col lg="1" xs="4"></Col>
+                <Col xs="auto" style={{ width: '80%' }}>
                     <h2>Search Results</h2>
                     {searchType === 'groups' ? (
                         <div style={{ width: '100%' }}>
@@ -211,6 +329,6 @@ export default function SearchPage() {
                     )}
                 </Col>
             </Row>
-        </Container>
+        </div>
     );
 }

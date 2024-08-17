@@ -2,16 +2,20 @@ import React, { useEffect, useState } from "react";
 import FitterNavbar from "../components/FitterNavbar";
 import { Container, Image, Row, Col } from "react-bootstrap";
 import logo from "@/../../public/icons/fitter-logo.jpg";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import events from "../data-model/events.json";
 import { useSelector } from "react-redux";
 import { green } from "@mui/material/colors";
+import { formatFriendlyDate } from "../features/apiService";
+import LinearProgress from '@mui/material/LinearProgress';
 
 export default function EventPage() {
   const activeUser = useSelector((state) => state.user.value);
   let { id } = useParams();
   const [event, setEvent] = useState(null);
   const [organizer, setOrganizer] = useState(null);
+  const defaultEventImage = "/icons/event.png";
+  const [eventImage, setEventImage] = useState(defaultEventImage);
 
   async function getEvent() {
     // Fetch event data
@@ -20,6 +24,9 @@ export default function EventPage() {
     const reqBodyEvent = await reqEvent.json();
     const organizerID = reqBodyEvent.organizer;
     setEvent(reqBodyEvent);
+    if (reqBodyEvent.image) {
+      setEventImage(reqBodyEvent.image);
+    }
 
     // Fetch organizer data
     if (organizerID) {
@@ -30,38 +37,22 @@ export default function EventPage() {
     }
   }
 
-  function formatFriendlyDate(isoDateString) {
-    // Creating a date object from the ISO string
-    const date = new Date(isoDateString);
-
-    // Converting to a more readable format
-    const friendlyDate = date.toLocaleString("en-US", {
-      weekday: "long", // long name of the day
-      year: "numeric", // numeric year
-      month: "2-digit", // two digit month
-      day: "2-digit", // two digit day
-      hour: "numeric", // numeric hour (12-hour clock)
-      minute: "2-digit", // two digit minutes
-      hour12: true, // use 12-hour clock
-    });
-
-    return friendlyDate;
-  }
-
   useEffect(() => {
     getEvent();
   }, []);
 
   return (
     <div>
-      {event ? (
+      {!event ? (
+        <LinearProgress style={{ marginTop: "4rem" }} />
+      ) : (
         <div style={{ width: "80%", margin: "4rem auto" }}>
           <Container fluid="md">
-            <Row className="align-items-center mb-4">
+            <Row className="mb-4">
               <Col md={6}>
-                <Image src={event.image} alt="Event Banner" fluid />
+                <Image src={eventImage} alt="Event Banner" fluid />
               </Col>
-              <Col md={6}>
+              <Col md={5}>
                 <h1>{`${event.title} - ${event.location}`}</h1>
                 <h2>{formatFriendlyDate(event.date_and_time)}</h2>
                 {organizer ? (
@@ -94,7 +85,7 @@ export default function EventPage() {
                   </p>
                 )}
                 {event.max_participants !== null &&
-                typeof event.max_participants === "number" ? (
+                  typeof event.max_participants === "number" ? (
                   <h6
                     style={{ color: green }}
                   >{`${event.users_attended.length}/${event.max_participants} Attendees`}</h6>
@@ -104,6 +95,14 @@ export default function EventPage() {
                   >{`${event.users_attended.length} Attendees`}</h6>
                 )}
               </Col>
+              {
+                activeUser && event.organizer === activeUser.id &&
+                <Col xs="1">
+                  <Link to={`/edit-event/${event.id}/`}>
+                    <Image width={50} height={50} src="/icons/settings.png" />
+                  </Link>
+                </Col>
+              }
             </Row>
             <Row>
               <Col>
@@ -128,8 +127,6 @@ export default function EventPage() {
             </Row>
           </Container>
         </div>
-      ) : (
-        <p>Loading...</p>
       )}
     </div>
   );

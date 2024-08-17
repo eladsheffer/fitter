@@ -80,19 +80,16 @@ const NewGroupPage = () => {
     );
     newGroup.append("min_age", disabledAgeSlider ? 0 : ageRange[0]);
     newGroup.append("max_age", disabledAgeSlider ? 120 : ageRange[1]);
-    // newGroup.append("profile_picture", groupProfilePicture);
-    // newGroup.append("gender", genderInput.current.value);
+    newGroup.append("profile_picture", groupProfilePicture);
+    newGroup.append("gender", genderInput.current.value);
     const preferred_sports = Array.from(
       sportsInput.current.selectedOptions
     ).map((option) => option.value);
-    preferred_sports.forEach((sport, i) => {
-      newGroup.append(`preferred_sports[${i}]`, sport);
-    });
+    preferred_sports.forEach((sport, i) =>
+      newGroup.append(`preferred_sports[${i}]`, sport)
+    );
 
-    for (const entry of newGroup.entries()) {
-      console.log(entry[0], entry[1]);
-    }
-    //console.log(newGroup.get('profile_picture'))
+    console.log(newGroup);
 
     let path = serverUrl + "groups/";
     let group = await postData(path, newGroup);
@@ -127,6 +124,10 @@ const NewGroupPage = () => {
     }
   };
 
+  let groupProfilePictureToShow = groupProfilePicture
+    ? URL.createObjectURL(groupProfilePicture)
+    : null;
+
   return (
     <div className="login">
       <Alert variant="danger" show={errorMessages}>
@@ -152,7 +153,7 @@ const NewGroupPage = () => {
         <Form.Group className="mb-3" controlId="groupDescription">
           <Form.Label>Group Description</Form.Label>
           <Form.Control
-            type="text"
+            as="textarea"
             placeholder="Enter group description"
             required
             ref={groupDescriptionInput}
@@ -180,7 +181,9 @@ const NewGroupPage = () => {
         <Form.Group className="mb-3" controlId="city">
           <Form.Label>City</Form.Label>
           <Form.Select aria-label="cities" ref={cityInput}>
-            <option value="">Choose Location</option>
+            <option value="" disabled checked>
+              Choose Location
+            </option>
             {cities.map((city) => (
               <option value={city} key={city}>
                 {city}
@@ -191,7 +194,9 @@ const NewGroupPage = () => {
         <Form.Group className="mb-3" controlId="sports">
           <Form.Label>Sports</Form.Label>
           <Form.Select multiple aria-label="sports" ref={sportsInput}>
-            <option value="">Choose Sports</option>
+            <option value="" disabled>
+              Choose Sports
+            </option>
             {sports.map((sport) => (
               <option value={sport.name} key={sport.id}>
                 {sport.name}
@@ -203,8 +208,8 @@ const NewGroupPage = () => {
           <Form.Label>Gender of the Group</Form.Label>
           <Form.Select aria-label="gender" ref={genderInput}>
             <option value="mixed">mixed</option>
-            <option value="male">male</option>
-            <option value="female">female</option>
+            <option value="men">male</option>
+            <option value="women">female</option>
           </Form.Select>
         </Form.Group>
         <Form.Group controlId="formFile" className="mb-3">
@@ -219,7 +224,11 @@ const NewGroupPage = () => {
               />
             </Col>
             <Col sm={3}>
-              <Image src={groupProfilePicture} ref={groupProfileImg} fluid />
+              <Image
+                src={groupProfilePictureToShow}
+                ref={groupProfileImg}
+                fluid
+              />
             </Col>
           </Row>
         </Form.Group>
