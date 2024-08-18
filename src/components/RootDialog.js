@@ -18,39 +18,40 @@ import { Description } from '@mui/icons-material';
 import dayjs from 'dayjs';
 import NewEventPage from '../pages/NewEventPage';
 
-const RootDialog = () => {
+const RootDialog = (props) => {
     const dispatch = useDispatch();
     const open = useSelector((state) => state.modal.value.show);
     const functionopenpopup = () => {
         dispatch(showModal());
     }
     const closepopup = () => {
-        dispatch(closeModal()); 
+        dispatch(closeModal());
     }
-    
-    return(
+
+    return (
         <div>
-        <Box sx={{ fontSize: 20, textAlign: 'center' }}>
-        <a href='#'>
-        <AddCircleIcon color="primary" sx={{fontSize: 45, color:"blue"}} onClick={functionopenpopup} variant="contained">
-        {/* <Button onClick={functionopenpopup} color="primary" variant="contained">Create New Event</Button> */}
-        </AddCircleIcon>
-        </a>
-        </Box>
-        <Dialog
-            // fullScreen 
-            open={open} onClose={closepopup} fullWidth maxWidth="sm">
-            <DialogTitle>Create Event<IconButton onClick={closepopup} style={{ float: 'right' }}><CloseIcon color="primary"></CloseIcon></IconButton>  </DialogTitle>
-            <DialogContent>
-               <NewEventPage/>
-            </DialogContent>
-            <DialogActions>
-                {/* <Button color="success" variant="contained">Yes</Button>
+            {!props.hideButton &&
+                <Box sx={{ fontSize: 20, textAlign: 'center' }}>
+                    <a href='#'>
+                        <AddCircleIcon color="primary" sx={{ fontSize: 45, color: "blue" }} onClick={functionopenpopup} variant="contained">
+                            {/* <Button onClick={functionopenpopup} color="primary" variant="contained">Create New Event</Button> */}
+                        </AddCircleIcon>
+                    </a>
+                </Box>}
+            <Dialog
+                // fullScreen 
+                open={open} onClose={closepopup} fullWidth maxWidth="sm">
+                <DialogTitle>Create Event<IconButton onClick={closepopup} style={{ float: 'right' }}><CloseIcon color="primary"></CloseIcon></IconButton>  </DialogTitle>
+                <DialogContent>
+                    <NewEventPage />
+                </DialogContent>
+                <DialogActions>
+                    {/* <Button color="success" variant="contained">Yes</Button>
                 <Button onClick={closepopup} color="error" variant="contained">Close</Button> */}
-            </DialogActions>
-        </Dialog>
-    </div>
-        
+                </DialogActions>
+            </Dialog>
+        </div>
+
     )
 };
 

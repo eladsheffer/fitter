@@ -10,6 +10,10 @@ import UserCard from '../components/UserCard';
 import { getData, postData } from '../features/apiService';
 import EventCard from '../components/EventCard';
 import LinearProgress from '@mui/material/LinearProgress';
+import RootDialog from '../components/RootDialog';
+import RootModal from '../components/RootModal';
+import { useDispatch } from 'react-redux';
+import { setGroupId, showModal } from '../features/modal';
 
 
 const GroupPage = () => {
@@ -19,6 +23,7 @@ const GroupPage = () => {
     const [users, setUsers] = useState([]);
     const [events, setEvents] = useState([]);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     let { id } = useParams();
 
     useEffect(() => {
@@ -45,6 +50,11 @@ const GroupPage = () => {
         fetchGroupAndUsers();
     }, [activeUser, id, serverUrl]);
 
+    const createEvent = () => {
+        dispatch(setGroupId({groupId: id}));
+        dispatch(showModal());
+    };
+
     let profile_picture = group?.profile_picture || "https://res.cloudinary.com/djud4xysp/image/upload/v1716159438/groups/group_img_b9v9za.png";
 
     return (
@@ -54,11 +64,29 @@ const GroupPage = () => {
             ) : (
                 <div style={{ width: "80%", margin: "4rem auto" }}>
                     <Container fluid="md">
+                        {
+                            activeUser && group.admin === activeUser.id &&
+                            <Row>
+                                <Col lg={8} md={8} sm={8} xs="8"></Col>
+                                <Col lg={1} md={1} sm={2} xs="2">
+                                    <a href="#">
+                                        <Image src="/icons/add.png" width="40" height="40" className="d-inline-block align-top" alt="add" rounded
+                                            onClick={createEvent} />
+                                    </a>
+                                    <Col> <RootDialog hideButton={true} /></Col>
+                                </Col>
+                                <Col lg={3} md={3} sm={2} xs="2">
+                                    <Link to={`/edit-group/${group.id}/`}>
+                                        <Image width={40} height={40} src="/icons/settings.png" />
+                                    </Link>
+                                </Col>
+                            </Row>
+                        }
                         <Row className="mb-4">
                             <Col md={6}>
                                 <Image src={profile_picture} alt="Event Banner" fluid />
                             </Col>
-                            <Col md={5}>
+                            <Col md={6}>
                                 <h1>{group.name}</h1>
                                 <h2>{group.location}</h2>
                                 <h3>Preferred Sports:</h3>
@@ -66,14 +94,6 @@ const GroupPage = () => {
                                     <h3>{sport}</h3>
                                 ))}
                             </Col>
-                            {
-                                activeUser && group.admin === activeUser.id &&
-                                <Col xs="1">
-                                    <Link to={`/edit-group/${group.id}/`}>
-                                        <Image width={50} height={50} src="/icons/settings.png" />
-                                    </Link>
-                                </Col>
-                            }
                         </Row>
                         <Row>
                             <Col>
