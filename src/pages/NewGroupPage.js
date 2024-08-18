@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { getData, postData } from '../features/apiService';
 import { Box, Slider } from '@mui/material';
 import sports from "../data-model/sports.json";
+import { Typeahead } from 'react-bootstrap-typeahead';
 
 const NewGroupPage = () => {
 
@@ -16,11 +17,12 @@ const NewGroupPage = () => {
     const [groupProfilePicture, setGroupProfilePicture] = useState(null);
     const [ageRange, setAgeRange] = useState([20, 40]);
     const [disabledAgeSlider, setDisabledAgeSlider] = useState(true);
+    const [city, setCity] = useState(null);
 
     const groupNameInput = useRef(null);
     const groupDescriptionInput = useRef(null);
     const groupVisibilityInput = useRef(null);
-    const cityInput = useRef(null);
+    // const cityInput = useRef(null);
     const groupProfilePictureInput = useRef(null);
     const groupProfileImg = useRef(null);
     const genderInput = useRef(null);
@@ -60,7 +62,7 @@ const NewGroupPage = () => {
         newGroup.append('name', groupNameInput.current.value);
         newGroup.append('description', groupDescriptionInput.current.value);
         newGroup.append('visibility', groupVisibilityInput.current.value);
-        newGroup.append('location', cityInput.current.value ? cityInput.current.value : null);
+        newGroup.append('location', city);
         newGroup.append('min_age', disabledAgeSlider ? 0 : ageRange[0]);
         newGroup.append('max_age', disabledAgeSlider ? 120 : ageRange[1]);
         newGroup.append('profile_picture', groupProfilePicture);
@@ -142,13 +144,25 @@ const NewGroupPage = () => {
                         required field
                     </Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="city">
+                <Form.Group>
+                        <Form.Label>Location</Form.Label>
+                        <Typeahead
+                            id="basic-typeahead-single"
+                            labelKey="name"
+                            onChange={setCity}
+                            options={cities}
+                            placeholder="Chose location"
+                            selected={city}
+                            required
+                        />
+                </Form.Group>
+                {/* <Form.Group className="mb-3" controlId="city">
                     <Form.Label>City</Form.Label>
                     <Form.Select aria-label="cities" ref={cityInput}>
                         <option value="" disabled checked>Choose Location</option>
                         {cities.map((city) => <option value={city} key={city}>{city}</option>)}
                     </Form.Select>
-                </Form.Group>
+                </Form.Group> */}
                 <Form.Group className="mb-3" controlId="sports">
                     <Form.Label>Sports</Form.Label>
                     <Form.Select multiple aria-label="sports" ref={sportsInput}>

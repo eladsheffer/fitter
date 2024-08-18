@@ -18,13 +18,14 @@ import { Description } from '@mui/icons-material';
 import dayjs from 'dayjs';
 import sports from "../data-model/sports.json";
 import { useParams } from 'react-router-dom';
+import Autocomplete from '@mui/material/Autocomplete';
 
 const NewEventPage = (props) => {
 
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const citiesUrl = process.env.REACT_APP_CITIES_URL;
     let { groupId } = useParams();
-    groupId =useSelector((state) => state.modal.value.groupId) || groupId;
+    groupId = useSelector((state) => state.modal.value.groupId) || groupId;
 
     const activeUser = useSelector((state) => state.user.value);
     const titleEventInput = useRef(null);
@@ -145,17 +146,15 @@ const NewEventPage = (props) => {
                 <TextField variant="outlined" inputRef={titleEventInput} name="title" error={formValues.title} label="Title" helperText="required field" required onChange={handleChange}></TextField>
                 <TextField variant="outlined" inputRef={descriptionEventInput} name="description" label="Description" error={formValues.description} helperText="required field" required onChange={handleChange}></TextField>
                 <FormControl fullWidth required>
-                    <InputLabel id="demo-simple-select-label" error={formValues.location}>Location</InputLabel>
-                    <Select inputRef={locationEventInput}
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        name="location"
+                    <Autocomplete
+                        disablePortal
+                        id="combo-box-location"
+                        options={cities}
                         error={formValues.location}
                         label="Location"
                         onChange={handleChange}
-                    >
-                        {cities.map((city) => <MenuItem key={city} value={city}>{city}</MenuItem>)}
-                    </Select>
+                        renderInput={(params) => <TextField {...params} label="Location" required error={formValues.location} />}
+                    />
                 </FormControl>
                 <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label" error={formValues.visibility}>Visibility</InputLabel>

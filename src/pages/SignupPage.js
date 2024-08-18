@@ -7,6 +7,7 @@ import { getData, postData } from '../features/apiService';
 import { showModal, closeModal } from '../features/modal';
 import { Box, Slider } from '@mui/material';
 import sports from "../data-model/sports.json";
+import { Typeahead } from 'react-bootstrap-typeahead';
 
 const SignupPage = (props) => {
     const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -15,7 +16,7 @@ const SignupPage = (props) => {
     const lastNameInput = useRef(null);
     const emailInput = useRef(null);
     const passwordInput = useRef(null);
-    const cityInput = useRef(null);
+    // const cityInput = useRef(null);
     const dateOfBirthInput = useRef(null);
     const genderInput = useRef(null);
     const sportsInput = useRef(null);
@@ -29,6 +30,7 @@ const SignupPage = (props) => {
     const navigate = useNavigate();
     const [validated, setValidated] = useState(false);
     const [cities, setCities] = useState([]);
+    const [city, setCity] = useState([]);
     const [errorMessages, setErrorMessages] = useState(null);
     const [successMessages, setSuccessMessages] = useState(null);
     const [userProfilePicture, setUserProfilePicture] = useState(null);
@@ -72,7 +74,7 @@ const SignupPage = (props) => {
         newUser.append('last_name', lastNameInput.current.value);
         newUser.append('email', emailInput.current.value);
         newUser.append('password', passwordInput.current.value);
-        newUser.append('location', cityInput.current.value);
+        newUser.append('location', city);
         newUser.append('date_of_birth', dateOfBirthInput.current.value);
         newUser.append('gender', genderInput.current.value);
         const preferred_sports = Array.from(sportsInput.current.selectedOptions).map((option) => option.value);
@@ -163,13 +165,27 @@ const SignupPage = (props) => {
                             required field
                         </Form.Control.Feedback>
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="city">
+
+                    <Form.Group>
+                        <Form.Label>Location</Form.Label>
+                        <Typeahead
+                            id="basic-typeahead-single"
+                            labelKey="name"
+                            onChange={setCity}
+                            options={cities}
+                            placeholder="Chose location"
+                            selected={city}
+                            required
+                        />
+                    </Form.Group>
+
+                    {/* <Form.Group className="mb-3" controlId="city">
                         <Form.Label>City</Form.Label>
                         <Form.Select aria-label="cities" ref={cityInput} required>
                             <option value="" disabled checked>Choose Location</option>
                             {cities.map((city) => <option value={city} key={city}>{city}</option>)}
                         </Form.Select>
-                    </Form.Group>
+                    </Form.Group> */}
                     <Form.Group className="mb-3" controlId="date-of-birth">
                         <Form.Label>Date of Birth</Form.Label>
                         <Form.Control type="date" ref={dateOfBirthInput} required />
@@ -178,11 +194,11 @@ const SignupPage = (props) => {
                         </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Select aria-label="gender" ref={genderInput}>
-                                <option value="" disabled checked>Your Gender</option>
-                                <option value="male">male</option>
-                                <option value="female">female</option>
-                                <option value="prefer_not_to_say">prefer not to say</option>
-                            </Form.Select>
+                        <option value="" disabled checked>Your Gender</option>
+                        <option value="male">male</option>
+                        <option value="female">female</option>
+                        <option value="prefer_not_to_say">prefer not to say</option>
+                    </Form.Select>
                     <Form.Group className="mb-3" controlId="sports">
                         <Form.Label>Sports</Form.Label>
                         <Form.Select multiple aria-label="sports" ref={sportsInput}>
