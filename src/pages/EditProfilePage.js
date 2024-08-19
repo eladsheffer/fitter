@@ -8,6 +8,7 @@ import { Slider } from '@mui/material';
 import sports from "../data-model/sports.json";
 import { useSelector } from 'react-redux';
 import RemoveModal from '../components/RemoveModal';
+import { Typeahead } from 'react-bootstrap-typeahead';
 
 const EditProfilePage = (props) => {
     const activeUser = useSelector((state) => state.user.value);
@@ -17,7 +18,6 @@ const EditProfilePage = (props) => {
     const lastNameInput = useRef(null);
     const emailInput = useRef(null);
     const passwordInput = useRef(null);
-    const cityInput = useRef(null);
     const dateOfBirthInput = useRef(null);
     const genderInput = useRef(null);
     const sportsInput = useRef(null);
@@ -40,7 +40,7 @@ const EditProfilePage = (props) => {
     const [disabledHeightSlider, setDisabledHeightSlider] = useState(true);
     const [height, setHeight] = useState(activeUser && activeUser.height ? activeUser.height : 165);
     const [weight, setWeight] = useState(activeUser && activeUser.weight ? activeUser.weight : 60);
-    const [location, setLocation] = useState(activeUser ? activeUser.location : "");
+    const [city, setCity] = useState(activeUser ? activeUser.location : "");
     const [gender, setGender] = useState(activeUser ? activeUser.gender : "");
     const [preferredSports, setPreferredSports] = useState(activeUser && activeUser.preferred_sports.length > 0 ? activeUser.preferred_sports[0].split(",") : []);
 
@@ -91,7 +91,7 @@ const EditProfilePage = (props) => {
         if (passwordInput.current.value) {
             newUser.append('password', passwordInput.current.value);
         }
-        newUser.append('location', cityInput.current.value);
+        newUser.append('location', city);
         newUser.append('date_of_birth', dateOfBirthInput.current.value);
         newUser.append('gender', genderInput.current.value);
         // const preferred_sports = Array.from(sportsInput.current.selectedOptions).map((option) => option.value);
@@ -138,6 +138,7 @@ const EditProfilePage = (props) => {
     };
 
     const handleDelete = async () => {
+        setDeleteProfileModalShow(false);
         const user = await deleteData(`${serverUrl}users/${activeUser.id}/`);
         if (user) {
             dispatch(logout());
@@ -146,6 +147,8 @@ const EditProfilePage = (props) => {
         else {
             setErrorMessages("Error deleting user profile");
         }
+        
+
     }
 
     return (
@@ -189,13 +192,17 @@ const EditProfilePage = (props) => {
                                 defaultValue={activeUser ? activeUser.password : ""}
                             />
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="city">
-                            <Form.Label>City</Form.Label>
-                            <Form.Select aria-label="cities" ref={cityInput} value={location} onChange={(e) => setLocation(e.target.value)}>
-                                <option value="">Choose Location</option>
-                                {cities.map((city) => <option value={city} key={city}>{city}</option>)}
-                            </Form.Select>
-                        </Form.Group>
+                        <Form.Group>
+                        <Form.Label>Location</Form.Label>
+                        <Typeahead
+                            id="basic-typeahead-single"
+                            labelKey="name"
+                            onChange={(selected) => setCity(selected)}
+                            options={cities}
+                            placeholder="Choose location"
+                            defaultInputValue={city}
+                        />
+                </Form.Group>
                         <Form.Group className="mb-3" controlId="date-of-birth">
                             <Form.Label>Date of Birth</Form.Label>
                             <Form.Control type="date" ref={dateOfBirthInput}

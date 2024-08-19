@@ -149,10 +149,9 @@ const NewGroupPage = () => {
                         <Typeahead
                             id="basic-typeahead-single"
                             labelKey="name"
-                            onChange={setCity}
+                            onChange={(selected) => setCity(selected[0])}
                             options={cities}
-                            placeholder="Chose location"
-                            selected={city}
+                            placeholder="Choose location"
                             required
                         />
                 </Form.Group>

@@ -173,7 +173,7 @@ const SignupPage = (props) => {
                             labelKey="name"
                             onChange={setCity}
                             options={cities}
-                            placeholder="Chose location"
+                            placeholder="Choose location"
                             selected={city}
                             required
                         />

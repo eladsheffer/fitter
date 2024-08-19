@@ -7,6 +7,7 @@ import sports from "../data-model/sports.json";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import RemoveModal from '../components/RemoveModal';
 import LinearProgress from '@mui/material/LinearProgress';
+import { Typeahead } from 'react-bootstrap-typeahead';
 
 const EditGroupPage = (props) => {
     const navigate = useNavigate();
@@ -20,11 +21,11 @@ const EditGroupPage = (props) => {
     const [errorMessages, setErrorMessages] = useState(null);
     const [successMessages, setSuccessMessages] = useState(null);
     const [cities, setCities] = useState([]);
+    const [city, setCity] = useState(null);
     const [groupProfilePicture, setGroupProfilePicture] = useState(null);
     const [ageRange, setAgeRange] = useState([0, 120]);
     const [disabledAgeSlider, setDisabledAgeSlider] = useState(true);
     const [group, setGroup] = useState({});
-    const [location, setLocation] = useState(null);
     const [visibility, setVisibility] = useState(null);
     const [gender, setGender] = useState(null);
     const [preferredSports, setPreferredSports] = useState([]);
@@ -33,7 +34,6 @@ const EditGroupPage = (props) => {
     const groupNameInput = useRef(null);
     const groupDescriptionInput = useRef(null);
     const groupVisibilityInput = useRef(null);
-    const cityInput = useRef(null);
     const groupProfilePictureInput = useRef(null);
     const groupProfileImg = useRef(null);
     const genderInput = useRef(null);
@@ -64,7 +64,7 @@ const EditGroupPage = (props) => {
         console.log(groupData);
         if (!groupData) return;
         setGroup(groupData);
-        setLocation(groupData.location);
+        setCity(groupData.location);
         setPreferredSports(groupData.preferred_sports[0].split(","));
         setGroupProfilePictureToShow(groupData.profile_picture);
         setVisibility(groupData.visibility);
@@ -100,7 +100,7 @@ const EditGroupPage = (props) => {
         }
 
         newGroup.append('visibility', groupVisibilityInput.current.value);
-        newGroup.append('location', cityInput.current.value);
+        newGroup.append('location', city);
         newGroup.append('gender', genderInput.current.value);
 
         if (!disabledAgeSlider) {
@@ -200,13 +200,17 @@ const EditGroupPage = (props) => {
                                     <option value={"invitation_only"}>invitation only</option>
                                 </Form.Select>
                             </Form.Group>
-                            <Form.Group className="mb-3" controlId="city">
-                                <Form.Label>City</Form.Label>
-                                <Form.Select aria-label="cities" value={location} ref={cityInput} onChange={(e) => setLocation(e.target.value)}>
-                                    <option value="" checked disabled>Choose Location</option>
-                                    {cities.map((city) => <option value={city} key={city}>{city}</option>)}
-                                </Form.Select>
-                            </Form.Group>
+                            <Form.Group>
+                        <Form.Label>Location</Form.Label>
+                        <Typeahead
+                            id="basic-typeahead-single"
+                            labelKey="name"
+                            onChange={(selected) => setCity(selected)}
+                            options={cities}
+                            placeholder="Choose location"
+                            defaultInputValue={city}
+                        />
+                </Form.Group>
                             <Form.Group className="mb-3" controlId="sports">
                                 <Form.Label>Sports</Form.Label>
                                 <Form.Select multiple aria-label="sports" ref={sportsInput} value={preferredSports} onChange={(e) => setPreferredSports(Array.from(e.target.selectedOptions, option => option.value))}>
