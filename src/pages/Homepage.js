@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getData } from "../features/apiService";
 import GroupCard2 from "../components/GroupCard2";
+import GroupCard3 from "../components/GroupCard3";
 import EventCard2 from "../components/EventCard2";
 import RootCard from "../components/RootCard";
 import LinearProgress from '@mui/material/LinearProgress';
@@ -116,7 +117,7 @@ const Homepage = () => {
                         >
                             {groups.map((group, i) => (
                                 <Col lg={4}  md={6} sm={12}>
-                                    <GroupCard2 group={group} key={i} />
+                                    <GroupCard3 group={group} key={i} />
                                 </Col>
                             ))}
                         </Row>

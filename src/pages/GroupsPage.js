@@ -1,4 +1,4 @@
-import { Dropdown, Row, Col, Form, Button, Image, Card, CardGroup } from 'react-bootstrap';
+import { Dropdown, Row, Col, Form, Button, Image, Card, CardGroup, Container } from 'react-bootstrap';
 import groups from "../data-model/groups.json";
 import sports from "../data-model/sports.json";
 import { Link, useNavigate, useLocation } from "react-router-dom";
@@ -10,6 +10,7 @@ import { renderModalType, showModal } from '../features/modal';
 import { useState, useEffect } from 'react';
 import { getData } from '../features/apiService';
 import LinearProgress from '@mui/material/LinearProgress';
+import GroupCard3 from "../components/GroupCard3";
 
 const GroupsPage = () => {
     const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -175,6 +176,17 @@ const GroupsPage = () => {
             >
                 {groupsOfUserAsAdmin.map((group, i) => (
                     <Col lg={4} md={6} sm={12}>
+                        <GroupCard3 group={group} key={i}/>
+                    </Col>
+                ))}
+            </Row>
+            <Row
+                style={{
+                    marginInline: "auto",
+                }}
+            >
+                {groupsOfUserAsAdmin.map((group, i) => (
+                    <Col lg={4} md={6} sm={12}>
                         <GroupCard2 group={group} key={i}/>
                     </Col>
                 ))}
@@ -196,7 +208,7 @@ const GroupsPage = () => {
             >
                 {groupsOfUserAsMember.map((group, i) => (
                     <Col lg={4} md={6} sm={12}>
-                        <GroupCard2 group={group} key={i}/>
+                        <GroupCard3 group={group} key={i}/>
                     </Col>
                 ))}
             </Row>
@@ -217,7 +229,7 @@ const GroupsPage = () => {
             >
                 {groupsUserNotIn.map((group, i) => (
                     <Col lg={4} md={6} sm={12}>
-                        <GroupCard2 group={group} key={i}/>
+                        <GroupCard3 group={group} key={i}/>
                     </Col>
                 ))}
             </Row>
