@@ -73,7 +73,7 @@ const GroupCard3 = ({ group }) => {
             <hr />
             <Row>
                 <Col lg={6} md={6} sm={6} xs="6" style={{ overflow: "hidden" }}>
-                    <Link to={`groups/${group.id}/`}>
+                    <Link to={`/groups/${group.id}/`}>
                         <Image
                             src={profile_picture}
                             alt="Group thumbnail"
@@ -86,7 +86,7 @@ const GroupCard3 = ({ group }) => {
 
                 <Col lg={6} md={6} sm={6} xs="6" style={{textWrap: "wrap", whiteSpace: "wrap", textOverflow: "ellipsis"}}>
                     <Row>
-                        <Link to={`groups/${group.id}/`} style={{textDecoration: "none"}}>
+                        <Link to={`/groups/${group.id}/`} style={{textDecoration: "none"}}>
                             <h5>{group.name}</h5>
                         </Link>
                        
