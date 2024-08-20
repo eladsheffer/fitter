@@ -25,28 +25,29 @@ const GroupCard3 = ({ group }) => {
         if (!activeUser)
             navigate('/login');
 
-        let url = serverUrl + `/groups/${group.id}/add_user/`;
+        let url = serverUrl + `groups/${group.id}/add_user/`;
         let data = {
             user_id: activeUser.id
         };
         let response = await postData(url, data);
+        
         if (response) {
             setMembers([...members, activeUser.id]);
-            dispatch(addGroup(group));
+            
         } else {
             console.error('Error joining group:', response);
         }
     };
 
     const leaveGroup = async () => {
-        let url = serverUrl + `/groups/${group.id}/remove_user/`;
+        let url = serverUrl + `groups/${group.id}/remove_user/`;
         let data = {
             user_id: activeUser.id
         };
         let response = await postData(url, data);
         if (response) {
-            //setMembers(members.filter(member => member !== activeUser.id));
-            dispatch(removeGroup(group));
+            setMembers(members.filter(member => member !== activeUser.id));
+            //dispatch(removeGroup(group));
         } else {
             console.error('Error leaving group:', response);
         }
@@ -118,7 +119,7 @@ const GroupCard3 = ({ group }) => {
             <Row className="justify-between gap-5" style={{ color: "#43a047" }}>
                 <Col>
                     
-                    <h6>{`${group.members.length} Members`}</h6>
+                    <h6>{`${members.length} Members`}</h6>
                 </Col>
             </Row>
 
@@ -131,14 +132,14 @@ const GroupCard3 = ({ group }) => {
                             <Button variant="outline-primary" onClick={editGroup}>Edit Group</Button>
                             <Button variant="outline-danger" onClick={createEvent}>Create New Event</Button>
                         </>
-                    ) : group.members.includes(activeUser.id) ? (
+                    ) : members.includes(activeUser.id) ? (
                         <Button variant="outline-info" onClick={leaveGroup}>Leave</Button>
                     ) : (
-                        <Button variant="outline-warning" onClick={joinGroup}>Join</Button>
+                        <Button variant="outline-warning" onClick={()=>joinGroup()}>Join</Button>
                     )}              </Col>
             </Row>
             
-            {activeUser && group.members.includes(activeUser.id) &&
+            {activeUser && members.includes(activeUser.id) &&
                 <Row>
                     <Col xs="auto" style={{ paddingRight: '0', display: 'flex', alignItems: 'center' }}>
                         <Image src={memberIcon} alt="Member icon" width={20} height={20} />

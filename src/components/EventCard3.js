@@ -28,11 +28,36 @@ const EventCard3 = ({ event }) => {
     };
 
     const joinEvent = async () => {
+        if (!activeUser)
+            navigate('/login');
+
+        let url = serverUrl + `events/${event.id}/add_user/`;
+        let data = {
+            user_id: activeUser.id
+        };
+        let response = await postData(url, data);
+        
+        if (response) {
+            setParticpants([...participants, activeUser.id]);
+            
+        } else {
+            console.error('Error joining event:', response);
+        }
 
     };
 
     const leaveEvent = async () => {
-
+        let url = serverUrl + `events/${event.id}/remove_user/`;
+        let data = {
+            user_id: activeUser.id
+        };
+        let response = await postData(url, data);
+        if (response) {
+            setParticpants(participants.filter(participant => participant !== activeUser.id));
+            // dispatch(removeEvent(event));
+        } else {
+            console.error('Error leaving event: ', response);
+        }
     };
 
     const removeEvent = () => {
@@ -94,9 +119,9 @@ const EventCard3 = ({ event }) => {
 
                     {event.max_participants !== null &&
                         typeof event.max_participants === "number" ? (
-                        <h6>{`${event.users_attended.length}/${event.max_participants} Attendees`}</h6>
+                        <h6>{`${participants.length}/${event.max_participants} Attendees`}</h6>
                     ) : (
-                        <h6>{`${event.users_attended.length} Attendees`}</h6>
+                        <h6>{`${participants.length} Attendees`}</h6>
                     )}
                 </Col>
             </Row>
@@ -107,7 +132,7 @@ const EventCard3 = ({ event }) => {
                         <Button variant="outline-warning" onClick={login}>Login</Button>
                     </>) : event.organizer === activeUser.id ? (<>
                         <Button variant="outline-primary" onClick={editEvent}>Edit Event</Button>
-                    </>) : event.users_attended.includes(activeUser.id) ? (<>
+                    </>) : participants.includes(activeUser.id) ? (<>
                         <Button variant="outline-info" onClick={leaveEvent}>Leave</Button>
                     </>) : (<>
                         <Button variant="outline-warning" onClick={joinEvent}>Join</Button>
@@ -116,7 +141,7 @@ const EventCard3 = ({ event }) => {
                 </Col>
             </Row>
 
-            {activeUser && event.users_attended.includes(activeUser.id) &&
+            {activeUser && participants.includes(activeUser.id) &&
                 <Row>
                     <Col xs="auto" style={{ paddingRight: '0', display: 'flex', alignItems: 'center' }}>
                         <Image src={attendeeIcon} alt="Member icon" width={20} height={20} />
