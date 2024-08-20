@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Row, Col, Image, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
@@ -19,13 +19,13 @@ const GroupCard3 = ({ group }) => {
     const memberIcon = '/icons/success.png';
     const adminIcon = '/icons/admin.png';
 
-    const [members, setMembers] = React.useState(group.members);
+    const [members, setMembers] = useState(group.members);
 
     const joinGroup = async () => {
         if (!activeUser)
             navigate('/login');
 
-        let url = serverUrl + `groups/${group.id}/add_user/`;
+        let url = serverUrl + `/groups/${group.id}/add_user/`;
         let data = {
             user_id: activeUser.id
         };
@@ -39,7 +39,7 @@ const GroupCard3 = ({ group }) => {
     };
 
     const leaveGroup = async () => {
-        let url = serverUrl + `groups/${group.id}/remove_user/`;
+        let url = serverUrl + `/groups/${group.id}/remove_user/`;
         let data = {
             user_id: activeUser.id
         };
@@ -115,7 +115,7 @@ const GroupCard3 = ({ group }) => {
 
                     </Row>
                     
-            <Row className="justify-between gap-5">
+            <Row className="justify-between gap-5" style={{ color: "#43a047" }}>
                 <Col>
                     
                     <h6>{`${group.members.length} Members`}</h6>

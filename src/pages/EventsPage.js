@@ -19,6 +19,7 @@ import RootModal from "../components/RootModal";
 import { renderModalType } from "../features/modal";
 import { useEffect } from "react";
 import sports from "../data-model/sports.json";
+import EventCard3 from "../components/EventCard3";
 
 const EventsPage = () => {
   // States
@@ -114,41 +115,7 @@ const EventsPage = () => {
                 <h2 className="mt-5 p-0">{`Events - ${date.getDate()}/${date.getMonth() + 1
                   }/${date.getFullYear()}`}</h2>
                 {events.map((event, i) => (
-                  <div key={i}>
-                    <hr />
-                    <Row>
-                      <Col xs="auto">
-                        <Link to={`${event.id}`}>
-                          <Image
-                            src={event.image || defaultEventImage}
-                            alt="Event thumbnail"
-                            width={100}
-                            height={100}
-                          />
-                        </Link>
-                      </Col>
-                      <Col>
-                        <Link to={`${event.id}`}>
-                          <h3>{event.title}</h3>
-                        </Link>
-                        <h5>{formatFriendlyDate(event.date_and_time)}</h5>
-                        <p>{event.description}</p>
-                        <Row className="justify-between gap-5">
-                          <Col xs={4}>
-                            {event.max_participants !== null &&
-                              typeof event.max_participants === "number" ? (
-                              <h6>{`${event.users_attended.length}/${event.max_participants} Attendees`}</h6>
-                            ) : (
-                              <h6>{`${event.users_attended.length} Attendees`}</h6>
-                            )}
-                          </Col>
-                          <Col xs={{ span: 4, offset: 2 }}>
-                            <h6>{event.location}</h6>
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                  </div>
+                 <EventCard3 event={event} key={i} />
                 ))}
               </Row>
             </Col>
