@@ -180,17 +180,6 @@ const GroupsPage = () => {
                     </Col>
                 ))}
             </Row>
-            <Row
-                style={{
-                    marginInline: "auto",
-                }}
-            >
-                {groupsOfUserAsAdmin.map((group, i) => (
-                    <Col lg={4} md={6} sm={12}>
-                        <GroupCard2 group={group} key={i}/>
-                    </Col>
-                ))}
-            </Row>
             </>}
 
             {groupsOfUserAsMember.length===0? null : <>
