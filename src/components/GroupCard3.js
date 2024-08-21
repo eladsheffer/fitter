@@ -17,6 +17,7 @@ const GroupCard3 = (props) => {
     
     const [isMember, setIsMember] = useState(activeUser && group ? group.members.includes(activeUser.id): false);
     const [isAdmin, setIsAdmin] = useState(activeUser && group ? group.admin === activeUser.id : false);
+    const [numOfMembers, setNumOfMembers] = useState(group.members.length);
 
     const defaultGroupImage = '/icons/group.png';
     const profile_picture = group.profile_picture ? group.profile_picture : defaultGroupImage;
@@ -37,6 +38,7 @@ const GroupCard3 = (props) => {
             dispatch(updateGroup());
             if (!render) {
                 setIsMember(true);
+                setNumOfMembers(numOfMembers + 1);
             }
         } else {
             console.error('Error joining group:', response);
@@ -54,6 +56,7 @@ const GroupCard3 = (props) => {
             if (!render) {
                 setIsMember(false);
                 setIsAdmin(false);
+                setNumOfMembers(numOfMembers - 1);
             }
         } else {
             console.error('Error leaving group:', response);
@@ -126,7 +129,7 @@ const GroupCard3 = (props) => {
             <Row className="justify-between gap-5" style={{ color: "#43a047" }}>
                 <Col>
                     
-                    <h6>{`${group.members.length} Members`}</h6>
+                    <h6>{`${numOfMembers} Members`}</h6>
                 </Col>
             </Row>
 

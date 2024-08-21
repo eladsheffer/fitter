@@ -23,6 +23,7 @@ const EventCard3 = (props) => {
 
     const [isAttendee, setIsAttendee] = useState(activeUser && event ? event.users_attended.includes(activeUser.id) : false);
     const [isOrganizer, setIsOrganizer] = useState(activeUser && event ? event.organizer === activeUser.id : false);
+    const [numOfAttendees, setNumOfAttendees] = useState(event.users_attended.length);
 
     const editEvent = () => {
         console.log('Edit event:', event);
@@ -38,12 +39,13 @@ const EventCard3 = (props) => {
             user_id: activeUser.id
         };
         let response = await postData(url, data);
-        
+
         if (response) {
-           dispatch(updateEvent());
-           if (!render) {
-               setIsAttendee(true);
-           } 
+            dispatch(updateEvent());
+            if (!render) {
+                setIsAttendee(true);
+                setNumOfAttendees(numOfAttendees + 1);
+            }
         } else {
             console.error('Error joining event:', response);
         }
@@ -61,6 +63,7 @@ const EventCard3 = (props) => {
             if (!render) {
                 setIsAttendee(false);
                 setIsOrganizer(false);
+                setNumOfAttendees(numOfAttendees - 1);
             }
         } else {
             console.error('Error leaving event: ', response);
@@ -126,9 +129,9 @@ const EventCard3 = (props) => {
 
                     {event.max_participants !== null &&
                         typeof event.max_participants === "number" ? (
-                        <h6>{`${event.users_attended.length}/${event.max_participants} Attendees`}</h6>
+                        <h6>{`${numOfAttendees}/${event.max_participants} Attendees`}</h6>
                     ) : (
-                        <h6>{`${event.users_attended.length} Attendees`}</h6>
+                        <h6>{`${numOfAttendees} Attendees`}</h6>
                     )}
                 </Col>
             </Row>
