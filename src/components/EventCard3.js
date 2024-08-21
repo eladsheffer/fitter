@@ -2,25 +2,27 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Row, Col, Image, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { addGroup, removeGroup } from '../features/groups';
+import { addEvent, removeEvent, updateEvent } from '../features/events';
 import { showModal, renderModalType, setGroupId } from '../features/modal';
 import { postData } from '../features/apiService';
 import { formatFriendlyDate } from "../features/apiService";
 
 
-const EventCard3 = ({ event }) => {
-
+const EventCard3 = (props) => {
+    const event = props.event;
+    const render = props.render;
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const activeUser = useSelector((state) => state.user.value);
 
-    const defaultEventImage = '/icons/group.png';
+    const defaultEventImage = '/icons/event.png';
     const image = event.image ? event.image : defaultEventImage;
     const attendeeIcon = '/icons/success.png';
     const organizerIcon = '/icons/admin.png';
 
-    const [participants, setParticpants] = useState(event.users_attended);
+    const [isAttendee, setIsAttendee] = useState(activeUser && event ? event.users_attended.includes(activeUser.id) : false);
+    const [isOrganizer, setIsOrganizer] = useState(activeUser && event ? event.organizer === activeUser.id : false);
 
     const editEvent = () => {
         console.log('Edit event:', event);
@@ -38,8 +40,10 @@ const EventCard3 = ({ event }) => {
         let response = await postData(url, data);
         
         if (response) {
-            setParticpants([...participants, activeUser.id]);
-            
+           dispatch(updateEvent());
+           if (!render) {
+               setIsAttendee(true);
+           } 
         } else {
             console.error('Error joining event:', response);
         }
@@ -53,8 +57,11 @@ const EventCard3 = ({ event }) => {
         };
         let response = await postData(url, data);
         if (response) {
-            setParticpants(participants.filter(participant => participant !== activeUser.id));
-            // dispatch(removeEvent(event));
+            dispatch(updateEvent());
+            if (!render) {
+                setIsAttendee(false);
+                setIsOrganizer(false);
+            }
         } else {
             console.error('Error leaving event: ', response);
         }
@@ -119,9 +126,9 @@ const EventCard3 = ({ event }) => {
 
                     {event.max_participants !== null &&
                         typeof event.max_participants === "number" ? (
-                        <h6>{`${participants.length}/${event.max_participants} Attendees`}</h6>
+                        <h6>{`${event.users_attended.length}/${event.max_participants} Attendees`}</h6>
                     ) : (
-                        <h6>{`${participants.length} Attendees`}</h6>
+                        <h6>{`${event.users_attended.length} Attendees`}</h6>
                     )}
                 </Col>
             </Row>
@@ -130,9 +137,9 @@ const EventCard3 = ({ event }) => {
                 <Col>
                     {activeUser === null ? (<>
                         <Button variant="outline-warning" onClick={login}>Login</Button>
-                    </>) : event.organizer === activeUser.id ? (<>
+                    </>) : isOrganizer ? (<>
                         <Button variant="outline-primary" onClick={editEvent}>Edit Event</Button>
-                    </>) : participants.includes(activeUser.id) ? (<>
+                    </>) : isAttendee ? (<>
                         <Button variant="outline-info" onClick={leaveEvent}>Leave</Button>
                     </>) : (<>
                         <Button variant="outline-warning" onClick={joinEvent}>Join</Button>
@@ -141,7 +148,7 @@ const EventCard3 = ({ event }) => {
                 </Col>
             </Row>
 
-            {activeUser && participants.includes(activeUser.id) &&
+            {activeUser && isAttendee &&
                 <Row>
                     <Col xs="auto" style={{ paddingRight: '0', display: 'flex', alignItems: 'center' }}>
                         <Image src={attendeeIcon} alt="Member icon" width={20} height={20} />
@@ -149,10 +156,10 @@ const EventCard3 = ({ event }) => {
                     <Col className="text-start" xs="auto" style={{ paddingLeft: '0', display: 'flex', alignItems: 'center' }}>
                         <h5 style={{ color: 'green', marginLeft: '5px', marginTop: '6px' }}>Attendee</h5>
                     </Col>
-                    {activeUser && event.organizer === activeUser.id &&
+                    {isOrganizer &&
                         <>
                             <Col xs="auto" style={{ paddingLeft: '0', display: 'flex', alignItems: 'center' }}>
-                                <Image src={organizerIcon} alt="Admin icon" width={30} height={30} />
+                                <Image src={organizerIcon} alt="Organizer icon" width={30} height={30} />
                             </Col>
                             <Col className="text-start" xs="auto" style={{ paddingLeft: '0', display: 'flex', alignItems: 'center' }}>
                                 <h5 style={{ color: 'blue', marginLeft: '5px', marginTop: '6px' }}>organizer</h5>

@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialStateValue = {
     groupsAsAdmin: [],
     groupsAsMember: [],
+    groupUpdated: false,
 };
 
 export const groupsSlice = createSlice({
@@ -24,10 +25,14 @@ export const groupsSlice = createSlice({
         removeGroup: (state, action) => {
             state.value.groupsAsMember = state.value.groupsAsMember.filter((group) => group.id !== action.payload.id);
         }, 
+
+        updateGroup: (state) => {
+            state.value.groupUpdated = !state.value.groupUpdated;
+        },
         
     },
     });
 
-export const { setGroupsAsAdmin, setGroupsAsMember, addGroup, removeGroup } = groupsSlice.actions;
+export const { setGroupsAsAdmin, setGroupsAsMember, addGroup, removeGroup, updateGroup } = groupsSlice.actions;
 
     export default groupsSlice.reducer;

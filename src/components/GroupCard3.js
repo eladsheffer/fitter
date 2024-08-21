@@ -2,24 +2,26 @@ import React, {useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Row, Col, Image, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { addGroup, removeGroup } from '../features/groups';
+import { addGroup, removeGroup, updateGroup } from '../features/groups';
 import { showModal, renderModalType, setGroupId } from '../features/modal';
 import { postData } from '../features/apiService';
 
 
-const GroupCard3 = ({ group }) => {
-
+const GroupCard3 = (props) => {
+    const group = props.group;
+    const render = props.render;
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const activeUser = useSelector((state) => state.user.value);
+    
+    const [isMember, setIsMember] = useState(activeUser && group ? group.members.includes(activeUser.id): false);
+    const [isAdmin, setIsAdmin] = useState(activeUser && group ? group.admin === activeUser.id : false);
 
     const defaultGroupImage = '/icons/group.png';
     const profile_picture = group.profile_picture ? group.profile_picture : defaultGroupImage;
     const memberIcon = '/icons/success.png';
     const adminIcon = '/icons/admin.png';
-
-    const [members, setMembers] = useState(group.members);
 
     const joinGroup = async () => {
         if (!activeUser)
@@ -32,8 +34,10 @@ const GroupCard3 = ({ group }) => {
         let response = await postData(url, data);
         
         if (response) {
-            setMembers([...members, activeUser.id]);
-            
+            dispatch(updateGroup());
+            if (!render) {
+                setIsMember(true);
+            }
         } else {
             console.error('Error joining group:', response);
         }
@@ -46,8 +50,11 @@ const GroupCard3 = ({ group }) => {
         };
         let response = await postData(url, data);
         if (response) {
-            setMembers(members.filter(member => member !== activeUser.id));
-            //dispatch(removeGroup(group));
+            dispatch(updateGroup());
+            if (!render) {
+                setIsMember(false);
+                setIsAdmin(false);
+            }
         } else {
             console.error('Error leaving group:', response);
         }
@@ -119,7 +126,7 @@ const GroupCard3 = ({ group }) => {
             <Row className="justify-between gap-5" style={{ color: "#43a047" }}>
                 <Col>
                     
-                    <h6>{`${members.length} Members`}</h6>
+                    <h6>{`${group.members.length} Members`}</h6>
                 </Col>
             </Row>
 
@@ -127,19 +134,19 @@ const GroupCard3 = ({ group }) => {
                 <Col>
                     {activeUser === null ? (
                         <Button variant="outline-warning" onClick={login}>Login</Button>
-                    ) : group.admin === activeUser.id ? (
+                    ) : isAdmin ? (
                         <>
                             <Button variant="outline-primary" onClick={editGroup}>Edit Group</Button>
                             <Button variant="outline-danger" onClick={createEvent}>Create New Event</Button>
                         </>
-                    ) : members.includes(activeUser.id) ? (
+                    ) : isMember ? (
                         <Button variant="outline-info" onClick={leaveGroup}>Leave</Button>
                     ) : (
                         <Button variant="outline-warning" onClick={()=>joinGroup()}>Join</Button>
                     )}              </Col>
             </Row>
             
-            {activeUser && members.includes(activeUser.id) &&
+            {isMember &&
                 <Row>
                     <Col xs="auto" style={{ paddingRight: '0', display: 'flex', alignItems: 'center' }}>
                         <Image src={memberIcon} alt="Member icon" width={20} height={20} />
@@ -147,7 +154,7 @@ const GroupCard3 = ({ group }) => {
                     <Col className="text-start" xs="auto" style={{ paddingLeft: '0', display: 'flex', alignItems: 'center' }}>
                         <h5 style={{ color: 'green', marginLeft: '5px', marginTop: '6px' }}>Member</h5>
                     </Col>
-                    {activeUser && group.admin === activeUser.id &&
+                    {isAdmin &&
                     <>
                         <Col xs="auto" style={{ paddingLeft: '0', display: 'flex', alignItems: 'center' }}>
                             <Image src={adminIcon} alt="Admin icon" width={30} height={30} />

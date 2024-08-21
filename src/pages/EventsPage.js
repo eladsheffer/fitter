@@ -31,6 +31,7 @@ const EventsPage = () => {
   const defaultEventImage = "/icons/event.png";
 
   const activeUser = useSelector((state) => state.user.value);
+  const eventUpdated = useSelector((state) => state.events.value.eventUpdated);
 
   const type = activeUser ? "Event" : "Signup";
 
@@ -68,7 +69,7 @@ const EventsPage = () => {
 
   useEffect(() => {
     getEvents();
-  }, []);
+  }, [eventUpdated]);
 
   // UI
   return (
