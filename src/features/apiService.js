@@ -211,7 +211,7 @@ const haversineDistance = (lat1, lon1, lat2, lon2) => {
     return R * c; // Distance in km
   };
 
-  function formatFriendlyDate(isoDateString) {
+  function formatFriendlyDate(isoDateString, options="") {
     // Creating a date object from the ISO string
     const date = new Date(isoDateString);
 
@@ -221,10 +221,18 @@ const haversineDistance = (lat1, lon1, lat2, lon2) => {
       year: "numeric", // numeric year
       month: "2-digit", // two digit month
       day: "2-digit", // two digit day
-      hour: "numeric", // numeric hour (12-hour clock)
-      minute: "2-digit", // two digit minutes
-      hour12: true, // use 12-hour clock
     });
+
+    if (options.includes("time")) {
+      // Adding the time to the friendly date
+      const time = date.toLocaleString("en-GB", {
+        hour: "2-digit", // two digit hour
+        minute: "2-digit", // two digit minute
+      });
+
+      return `${friendlyDate} at ${time}`;
+    }
+
 
     return friendlyDate;
   }

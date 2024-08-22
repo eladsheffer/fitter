@@ -31,8 +31,7 @@ const EditEventPage = (props) => {
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const citiesUrl = process.env.REACT_APP_CITIES_URL;
 
-    //const path = `${serverUrl}events/${id}/`;
-    const path = `${serverUrl}events/70/`;
+    const path = `${serverUrl}events/${id}/`;
 
     const activeUser = useSelector((state) => state.user.value);
     const titleEventInput = useRef(null);

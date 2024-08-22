@@ -81,7 +81,6 @@ const EventCard3 = (props) => {
 
     return (
         <div>
-            <hr />
             <Row>
                 <Col lg={6} md={6} sm={6} xs="6" style={{ overflow: "hidden" }}>
                     <Link to={`/events/${event.id}/`}>
@@ -100,7 +99,7 @@ const EventCard3 = (props) => {
                         <Link to={`/events/${event.id}/`} style={{ textDecoration: "none" }}>
                             <h5>{event.title}</h5>
                         </Link>
-                        <h5>{formatFriendlyDate(event.date_and_time)}</h5>
+                        <h5>{formatFriendlyDate(event.date_and_time, "time")}</h5>
 
                         <Col>
                             <h6>{event.location}</h6>
@@ -171,6 +170,7 @@ const EventCard3 = (props) => {
                     }
                 </Row>
             }
+             <hr />
 
         </div>
     );

@@ -20,13 +20,16 @@ import { renderModalType } from "../features/modal";
 import { useEffect } from "react";
 import sports from "../data-model/sports.json";
 import EventCard3 from "../components/EventCard3";
+import { formatFriendlyDate } from "../features/apiService";
 
 const EventsPage = () => {
   // States
   const [sport, setSport] = useState("Any Sport");
   const [date, setDate] = useState(new Date());
   const [events, setEvents] = useState([]);
+  const [eventDates, setEventDates] = useState(['2024-08-01', '2024-08-14', '2024-08-31']);
   const dispatch = useDispatch();
+  
 
   const defaultEventImage = "/icons/event.png";
 
@@ -41,32 +44,20 @@ const EventsPage = () => {
   function onChange(newDate) {
     setDate(newDate);
   }
+  
+  const compareDates = (a, b) => {
+    return a.slice(0, 10) === b.slice(0, 10);
+  };
 
   async function getEvents() {
     const url = `${process.env.REACT_APP_SERVER_URL}events`;
     const req = await fetch(url);
     const res = await req.json();
-    setEvents(res.results);
+    setEvents(res.results.sort((a, b) => new Date(a.date_and_time) - new Date(b.date_and_time)));
+    setEventDates(res.results.map((event) =>  event.users_attended.includes(activeUser.id) && event.date_and_time.slice(0, 10)));
   }
 
-  function formatFriendlyDate(isoDateString) {
-    // Creating a date object from the ISO string
-    const date = new Date(isoDateString);
-
-    // Converting to a more readable format
-    const friendlyDate = date.toLocaleString("en-GB", {
-      weekday: "long", // long name of the day
-      year: "numeric", // numeric year
-      month: "2-digit", // two digit month
-      day: "2-digit", // two digit day
-      hour: "numeric", // numeric hour (12-hour clock)
-      minute: "2-digit", // two digit minutes
-      hour12: true, // use 12-hour clock
-    });
-
-    return friendlyDate;
-  }
-
+  // Effects
   useEffect(() => {
     getEvents();
   }, [eventUpdated]);
@@ -87,7 +78,18 @@ const EventsPage = () => {
               <Calendar
                 onChange={onChange}
                 value={date}
-                showNeighboringMonth={false}
+                showNeighboringMonth={true}
+                tileClassName={({ date }) =>{
+                  let day = date.getDate();
+                  let month = date.getMonth() + 1;
+                  if (date.getMonth() < 10) 
+                    month = "0" + month;
+                  if (date.getDate() < 10)
+                    day = "0" + day;  
+                  let formattedDate = `${date.getFullYear()}-${month}-${day}`;
+                return eventDates.find(val=> val===formattedDate) ? "highlight" : null;
+                }}
+
                 className="border rounded"
               />
             </Col>
@@ -115,9 +117,37 @@ const EventsPage = () => {
               <Row>
                 <h2 className="mt-5 p-0">{`Events - ${date.getDate()}/${date.getMonth() + 1
                   }/${date.getFullYear()}`}</h2>
-                {events.map((event, i) => (
+                {/* {events.map((event, i) => (
+                  <>
+                  {
+                  <h5>{formatFriendlyDate(event.date_and_time, "time")}</h5>}
                  <EventCard3 event={event} key={i} />
-                ))}
+                 </>
+                ))} */}
+
+<>
+      {events.map((event, i) => {
+        // Get the date part of the current event
+        
+
+        let isDifferentDate = true;
+        if (i > 0) {
+          // Get the date part of the previous event
+          isDifferentDate = events[i - 1].date_and_time.slice(0, 10) !== event.date_and_time.slice(0, 10);
+        }
+        
+
+        return (
+          <>
+            {isDifferentDate && <h3 style={{color: "blue", fontWeight:"bold", borderBottom:"5px solid", marginTop:"2rem"}}>{formatFriendlyDate(event.date_and_time)}</h3>}
+            <EventCard3 event={event} key={i}/>
+          </>
+        );
+      })}
+    </>
+
+
+
               </Row>
             </Col>
           </Row>
