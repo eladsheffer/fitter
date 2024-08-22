@@ -27,7 +27,7 @@ const EventsPage = () => {
   const [sport, setSport] = useState("Any Sport");
   const [date, setDate] = useState(new Date());
   const [events, setEvents] = useState([]);
-  const [eventDates, setEventDates] = useState(['2024-08-01', '2024-08-14', '2024-08-31']);
+  const [eventDates, setEventDates] = useState([]);
   const dispatch = useDispatch();
   
 
