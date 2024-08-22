@@ -168,23 +168,21 @@ const GroupPage = () => {
                         </h1>
 
 
-                        <CardGroup
+                        <Row
                             style={{
-                                width: "70%",
-                                marginInline: "auto",
                                 marginTop: "4rem",
                             }}
                         >
                             {users.length > 0 ? (
                                 users.map((user, i) => (
-                                    <Col lg={4} md={6} sm={12}>
+                                    <Col lg={3} md={4} sm={6} xs={12}>
                                         <UserCard key={i} user={user} />
                                     </Col>
                                 ))
                             ) : (
                                 <p style={{ color: "red" }}>No members found.</p>
                             )}
-                        </CardGroup>
+                        </Row>
                     </Container>
                 </div>
             )}
