@@ -10,6 +10,7 @@ import { postData } from '../features/apiService';
 const GroupCard3 = (props) => {
     const group = props.group;
     const render = props.render;
+    const narrowView = props.narrowView;
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -81,7 +82,6 @@ const GroupCard3 = (props) => {
 
     return (
         <div>
-            <hr />
             <Row>
                 <Col lg={6} md={6} sm={6} xs="6" style={{ overflow: "hidden" }}>
                     <Link to={`/groups/${group.id}/`}>
@@ -132,7 +132,7 @@ const GroupCard3 = (props) => {
                     <h6>{`${numOfMembers} Members`}</h6>
                 </Col>
             </Row>
-
+            {!narrowView && <>
             <Row className="justify-between gap-5">
                 <Col>
                     {activeUser === null ? (
@@ -169,7 +169,8 @@ const GroupCard3 = (props) => {
                     }
                 </Row>
             }
-
+            </>}
+            <hr />
         </div>
     );
 }

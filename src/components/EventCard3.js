@@ -11,6 +11,7 @@ import { formatFriendlyDate } from "../features/apiService";
 const EventCard3 = (props) => {
     const event = props.event;
     const render = props.render;
+    const narrowView = props.narrowView;
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -134,43 +135,44 @@ const EventCard3 = (props) => {
                     )}
                 </Col>
             </Row>
+            {!narrowView && <>
+                <Row className="justify-between gap-5">
+                    <Col>
+                        {activeUser === null ? (<>
+                            <Button variant="outline-warning" onClick={login}>Login</Button>
+                        </>) : isOrganizer ? (<>
+                            <Button variant="outline-primary" onClick={editEvent}>Edit Event</Button>
+                        </>) : isAttendee ? (<>
+                            <Button variant="outline-info" onClick={leaveEvent}>Leave</Button>
+                        </>) : (<>
+                            <Button variant="outline-warning" onClick={joinEvent}>Join</Button>
+                        </>)}
 
-            <Row className="justify-between gap-5">
-                <Col>
-                    {activeUser === null ? (<>
-                        <Button variant="outline-warning" onClick={login}>Login</Button>
-                    </>) : isOrganizer ? (<>
-                        <Button variant="outline-primary" onClick={editEvent}>Edit Event</Button>
-                    </>) : isAttendee ? (<>
-                        <Button variant="outline-info" onClick={leaveEvent}>Leave</Button>
-                    </>) : (<>
-                        <Button variant="outline-warning" onClick={joinEvent}>Join</Button>
-                    </>)}
-
-                </Col>
-            </Row>
-
-            {activeUser && isAttendee &&
-                <Row>
-                    <Col xs="auto" style={{ paddingRight: '0', display: 'flex', alignItems: 'center' }}>
-                        <Image src={attendeeIcon} alt="Member icon" width={20} height={20} />
                     </Col>
-                    <Col className="text-start" xs="auto" style={{ paddingLeft: '0', display: 'flex', alignItems: 'center' }}>
-                        <h5 style={{ color: 'green', marginLeft: '5px', marginTop: '6px' }}>Attendee</h5>
-                    </Col>
-                    {isOrganizer &&
-                        <>
-                            <Col xs="auto" style={{ paddingLeft: '0', display: 'flex', alignItems: 'center' }}>
-                                <Image src={organizerIcon} alt="Organizer icon" width={30} height={30} />
-                            </Col>
-                            <Col className="text-start" xs="auto" style={{ paddingLeft: '0', display: 'flex', alignItems: 'center' }}>
-                                <h5 style={{ color: 'blue', marginLeft: '5px', marginTop: '6px' }}>organizer</h5>
-                            </Col>
-                        </>
-                    }
                 </Row>
-            }
-             <hr />
+
+                {activeUser && isAttendee &&
+                    <Row>
+                        <Col xs="auto" style={{ paddingRight: '0', display: 'flex', alignItems: 'center' }}>
+                            <Image src={attendeeIcon} alt="Member icon" width={20} height={20} />
+                        </Col>
+                        <Col className="text-start" xs="auto" style={{ paddingLeft: '0', display: 'flex', alignItems: 'center' }}>
+                            <h5 style={{ color: 'green', marginLeft: '5px', marginTop: '6px' }}>Attendee</h5>
+                        </Col>
+                        {isOrganizer &&
+                            <>
+                                <Col xs="auto" style={{ paddingLeft: '0', display: 'flex', alignItems: 'center' }}>
+                                    <Image src={organizerIcon} alt="Organizer icon" width={30} height={30} />
+                                </Col>
+                                <Col className="text-start" xs="auto" style={{ paddingLeft: '0', display: 'flex', alignItems: 'center' }}>
+                                    <h5 style={{ color: 'blue', marginLeft: '5px', marginTop: '6px' }}>organizer</h5>
+                                </Col>
+                            </>
+                        }
+                    </Row>
+                }
+            </>}
+            <hr />
 
         </div>
     );
