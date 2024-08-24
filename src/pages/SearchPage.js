@@ -52,7 +52,7 @@ export default function SearchPage() {
     const fetchEvents = async () => {
         let eventsData = await getData(serverUrl + `events/?search=${key}`);
         setEvents(eventsData.results);
-        setFilteredEvents(eventsData.results.sort((a, b) => new Date(a.date_and_time) - new Date(b.date_and_time)));
+        setFilteredEvents(eventsData.results);
     };
 
     useEffect(() => {
@@ -61,7 +61,7 @@ export default function SearchPage() {
         } else {
             fetchEvents();
         }
-    }, [searchType]);
+    }, [searchType,key]);
 
     useEffect(() => {
         applyFilters();
