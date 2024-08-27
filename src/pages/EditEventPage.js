@@ -20,6 +20,7 @@ import dayjs from 'dayjs';
 import sports from "../data-model/sports.json";
 import LinearProgress from '@mui/material/LinearProgress';
 import RemoveModal from '../components/RemoveModal';
+import Autocomplete from '@mui/material/Autocomplete';
 
 
 const EditEventPage = (props) => {
@@ -30,13 +31,11 @@ const EditEventPage = (props) => {
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const citiesUrl = process.env.REACT_APP_CITIES_URL;
 
-    //const path = `${serverUrl}events/${id}/`;
-    const path = `${serverUrl}events/70/`;
+    const path = `${serverUrl}events/${id}/`;
 
     const activeUser = useSelector((state) => state.user.value);
     const titleEventInput = useRef(null);
     const descriptionEventInput = useRef(null);
-    const locationEventInput = useRef(null);
     const eventVisibilityInput = useRef(null);
     const eventDateTimeInput = useRef(null);
     const eventSportTypeInput = useRef(null);
@@ -139,7 +138,7 @@ const EditEventPage = (props) => {
         if (descriptionEventInput.current.value) {
             newEvent.append('description', descriptionEventInput.current.value);
         }
-        newEvent.append('location', locationEventInput.current.value);
+        newEvent.append('location', location);
         newEvent.append('visibility', eventVisibilityInput.current.value);
         newEvent.append('gender', eventGenderInput.current.value);
         newEvent.append('sport_type', eventSportTypeInput.current.value);
@@ -211,18 +210,19 @@ const EditEventPage = (props) => {
                         {successMessages && (<Alert severity='success' >{successMessages}</Alert>)}
                         {errorMessages && (<Alert severity='error'>{errorMessages}</Alert>)}
                         <Stack spacing={2} margin={2}>
-                            <TextField variant="outlined" inputRef={titleEventInput} name="title" placeholder='Event title is empty and will not be altered'  defaultValue={event.title} label="Title"></TextField>
+                            <TextField variant="outlined" inputRef={titleEventInput} name="title" placeholder='Event title is empty and will not be altered' defaultValue={event.title} label="Title"></TextField>
                             <TextField variant="outlined" inputRef={descriptionEventInput} name="description" placeholder='Event description is empty and will not be altered' defaultValue={event.description} label="Description"></TextField>
                             <FormControl fullWidth>
-                                <InputLabel id="demo-simple-select-label">Location</InputLabel>
-                                <Select inputRef={locationEventInput} value={location} onChange={(e) => setLocation(e.target.value)}
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    name="location"
+                                <Autocomplete
+                                    disablePortal
+                                    id="combo-box-location"
+                                    options={cities}
+                                    error={formValues.location}
                                     label="Location"
-                                >
-                                    {cities.map((city) => <MenuItem key={city} value={city}>{city}</MenuItem>)}
-                                </Select>
+                                    defaultValue={event.location}
+                                    onChange={(e, value) => setLocation(value)}
+                                    renderInput={(params) => <TextField {...params} label="Location" />}
+                                />
                             </FormControl>
                             <FormControl fullWidth>
                                 <InputLabel id="demo-simple-select-label">Visibility</InputLabel>

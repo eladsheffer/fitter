@@ -37,3 +37,42 @@
   margin: 20px auto;
 
 }
+
+.highlight{
+  position: relative;
+  display: inline-block;
+}
+
+.highlight::before {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: green; 
+}
+
+.profile-container {
+  display: inline-block; /* Container width based on content */
+  padding: 10px; /* Optional padding */
+  border-radius: 4px; /* Optional rounded corners */
+}
+
+.text-container {
+  text-wrap: wrap; /* Allow text to wrap */ 
+  white-space: wrap;  /* Allow text to wrap */
+  text-overflow: ellipsis;  /* Add an ellipsis if text overflows */
+  max-width: 80%; /* Limit the width of the text */
+  white-space: wrap; /* Prevent text wrapping if needed */
+  overflow: hidden; /* Hide any text that overflows */
+}
+
+.profile-image{
+  overflow: hidden;  /* Hide any content that overflows */
+  width: 50px; 
+  height: 50px; 
+  border: 1px solid #ddd; 
+}

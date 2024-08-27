@@ -5,6 +5,8 @@ import EventCard from '../components/EventCard';
 import { Button, Row, Col, Container, ToggleButton, ButtonGroup, Dropdown, Form } from 'react-bootstrap';
 import { getData } from '../features/apiService';
 import SearchFilter from '../components/SearchFilter';
+import GroupCard3 from '../components/GroupCard3';
+import EventCard3 from '../components/EventCard3';
 
 export default function SearchPage() {
     const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -59,7 +61,7 @@ export default function SearchPage() {
         } else {
             fetchEvents();
         }
-    }, [searchType]);
+    }, [searchType,key]);
 
     useEffect(() => {
         applyFilters();
@@ -309,7 +311,7 @@ export default function SearchPage() {
                             <h3>Groups</h3>
                             {filteredGroups.length > 0 ? (
                                 filteredGroups.map(group =>
-                                    <GroupCard key={group.id} group={group} />
+                                    <GroupCard3 key={group.id} group={group} />
                                 )
                             ) : (
                                 <p>No groups found</p>
@@ -320,7 +322,7 @@ export default function SearchPage() {
                             <h3>Events</h3>
                             {filteredEvents.length > 0 ? (
                                 filteredEvents.map(event =>
-                                    <EventCard key={event.id} event={event} />
+                                    <EventCard3 key={event.id} event={event} />
                                 )
                             ) : (
                                 <p>No events found</p>

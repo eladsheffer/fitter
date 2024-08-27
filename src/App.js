@@ -65,7 +65,8 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/new-group" element={<NewGroupPage />} />
-        <Route path="/new-event/:groupId" element={<NewEventPage />} />
+        <Route path="/new-event/:id" element={<NewEventPage />} />
+        <Route path="/new-event" element={<NewEventPage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/users/:id" element={<UserPage />} />
         <Route path="/edit-profile" element={<EditProfilePage />} />

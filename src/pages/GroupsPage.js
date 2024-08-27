@@ -1,4 +1,4 @@
-import { Dropdown, Row, Col, Form, Button, Image, Card, CardGroup } from 'react-bootstrap';
+import { Dropdown, Row, Col, Form, Button, Image, Card, CardGroup, Container } from 'react-bootstrap';
 import groups from "../data-model/groups.json";
 import sports from "../data-model/sports.json";
 import { Link, useNavigate, useLocation } from "react-router-dom";
@@ -10,12 +10,15 @@ import { renderModalType, showModal } from '../features/modal';
 import { useState, useEffect } from 'react';
 import { getData } from '../features/apiService';
 import LinearProgress from '@mui/material/LinearProgress';
+import GroupCard3 from "../components/GroupCard3";
+import { updateGroup } from '../features/groups';
 
 const GroupsPage = () => {
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const activeUser = useSelector((state) => state.user.value);
+    const groupUpdated = useSelector((state) => state.groups.value.groupUpdated);
     //const groups = useSelector((state) => state.groups.value);
     const location = useLocation();
 
@@ -61,7 +64,7 @@ const GroupsPage = () => {
         return () => {
             // Cleanup code here, if any
         };
-    }, []);
+    }, [groupUpdated]);
 
     const createGroup = () => {
         if (!activeUser) {
@@ -175,7 +178,7 @@ const GroupsPage = () => {
             >
                 {groupsOfUserAsAdmin.map((group, i) => (
                     <Col lg={4} md={6} sm={12}>
-                        <GroupCard2 group={group} key={i}/>
+                        <GroupCard3 group={group} key={i} render={true}/>
                     </Col>
                 ))}
             </Row>
@@ -196,7 +199,7 @@ const GroupsPage = () => {
             >
                 {groupsOfUserAsMember.map((group, i) => (
                     <Col lg={4} md={6} sm={12}>
-                        <GroupCard2 group={group} key={i}/>
+                        <GroupCard3 group={group} key={i} render={true}/>
                     </Col>
                 ))}
             </Row>
@@ -217,7 +220,7 @@ const GroupsPage = () => {
             >
                 {groupsUserNotIn.map((group, i) => (
                     <Col lg={4} md={6} sm={12}>
-                        <GroupCard2 group={group} key={i}/>
+                        <GroupCard3 group={group} key={i} render={true}/>
                     </Col>
                 ))}
             </Row>

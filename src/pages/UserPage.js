@@ -4,10 +4,8 @@ import { Card, CardGroup, Row, Col, Image } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getData } from '../features/apiService';
-import EventCard2 from '../components/EventCard2';
-import GroupCard2 from '../components/GroupCard2';
-import EventCard from '../components/EventCard';
-import GroupCard from '../components/GroupCard';
+import EventCard3 from '../components/EventCard3';
+import GroupCard3 from '../components/GroupCard3';
 import LinearProgress from '@mui/material/LinearProgress';
 
 const UserPage = () => {
@@ -18,8 +16,6 @@ const UserPage = () => {
     const [groups, setGroups] = useState(null);
     const [events, setEvents] = useState(null);
     let { id } = useParams();
-    const default_group_img = 'https://res.cloudinary.com/djud4xysp/image/upload/v1716159438/groups/group_img_b9v9za.png';
-
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -58,42 +54,61 @@ const UserPage = () => {
         fetchGroupsAndEvents();
     }, [user, id, serverUrl]);
 
+    const ageCalc = (dateOfBirth) => {
+        const today = new Date();
+        const birthDate = new Date(dateOfBirth);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDifference = today.getMonth() - birthDate.getMonth();
+        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    }
+
     if (!user) {
-        return <p>Loading...</p>;
+        return <LinearProgress />;
     }
 
     return (
         <div style={{ width: "95%", marginInline: "auto", marginTop: "4rem" }}>
             <Row style={{ marginTop: "3em" }}>
                 <Col xs="1"></Col>
-                <Col lg={4}  md={6} sm={8} xs="8">
-                    <Card>
-                        <Card.Body>
-                            <Col>
-                            <Card.Title>{user.first_name} {user.last_name}</Card.Title>
-                            <Card.Text>Email : {user.email}</Card.Text>
-                            <Card.Text>Date of Birth: {user.date_of_birth}</Card.Text>
-                            <Card.Text>Gender : {user.gender}</Card.Text>
-                            <Card.Text>Location : {user.location}</Card.Text>
-                            </Col>
-                            <Col>
-                            <Card.Img src={profilePicture} />
-                            </Col>
-                        </Card.Body>
-                    </Card>
+                <Col lg={4} md={6} sm={8} xs="8">
+
+                    <Image src={profilePicture} style={{ width: "10em", height: "10em" }} roundedCircle />
+                    <h1>{user.first_name} {user.last_name}</h1>
+                    <h5>Age: {ageCalc(user.date_of_birth)}</h5>
+                    {user.height && <h5>Height: {user.height} cm.</h5>}
+                    {user.weight && <h5>Weight: {user.weight} kg.</h5>}
+                    <h5>
+                        <Link to={`mailto:${user.email}`}>
+                            {user.email}
+                        </Link>
+                    </h5>
+                    {user.location && <h5>Location: {user.location}</h5>}
+                    {user.bio && <h5>Bio: {user.bio}</h5>}
+                    {user.preferred_sports && user.preferred_sports.length > 0 &&
+                        <>
+                            <h5>Preferred Sport: | {user.preferred_sports.map(
+                                (sport) => (
+                                    ` ${sport} | `
+                                )
+                            )}</h5>
+                        </>}
+
                 </Col>
-                <Col lg={5}  md={3} sm={1} xs="1"></Col>
+                <Col lg={5} md={3} sm={1} xs="1"></Col>
                 {activeUser && activeUser.email === user.email &&
-                <Col xs="1">
-                    <Link to={`/edit-profile/`}>
-                        <Image src="/icons/settings.png" style={{ width: "3em", height: "3em" }} />
-                    </Link>
-                </Col>
-}
+                    <Col xs="1">
+                        <Link to={`/edit-profile/`}>
+                            <Image src="/icons/settings.png" style={{ width: "3em", height: "3em" }} />
+                        </Link>
+                    </Col>
+                }
             </Row>
             {!groups && !events ? <LinearProgress /> : null}
             {!groups || groups.length === 0 ? null : <>
-                {/* <h1
+                <h1
                     style={{
                         marginTop: "4rem",
                     }}
@@ -103,30 +118,20 @@ const UserPage = () => {
                 <Row
                     style={{
                         marginInline: "auto",
+                        marginTop: "2rem",
+                        marginLeft: "2rem",
                     }}
                 >
                     {groups.map((group, i) => (
                         <Col lg={4} md={6} sm={12}>
-                            <GroupCard2 group={group} key={i} />
+                            <GroupCard3 group={group} key={i} narrowView />
                         </Col>
                     ))}
-                </Row> */}
-                <h2 style={{ marginLeft: "2em", marginTop: "2em" }}> {user.first_name} {user.last_name}'s Groups</h2>
-                    <CardGroup
-                        style={{
-                            width: "70%",
-                            marginInline: "auto",
-                            marginTop: "4rem",
-                        }}
-                    >
-                        {groups.map((group, index) => (
-                            <GroupCard key={index} group={group} />
-                        ))}
-                    </CardGroup>
+                </Row>
             </>}
 
             {!events || events.length === 0 ? null : <>
-                {/* <h1
+                <h1
                     style={{
                         marginTop: "4rem",
                     }}
@@ -136,27 +141,16 @@ const UserPage = () => {
                 <Row
                     style={{
                         marginInline: "auto",
+                        marginTop: "2rem",
+                        marginLeft: "2rem",
                     }}
                 >
                     {events.map((event, i) => (
                         <Col lg={4} md={6} sm={12}>
-                            <EventCard2 event={event} key={i} />
+                            <EventCard3 event={event} key={i} narrowView />
                         </Col>
                     ))}
-                </Row> */}
-                
-                    <h2 style={{ marginLeft: "2em", marginTop: "2em" }}>{user.first_name} {user.last_name}'s Upcoming Events</h2>
-                    <CardGroup
-                        style={{
-                            width: "70%",
-                            marginInline: "auto",
-                            marginTop: "4rem",
-                        }}
-                    >
-                        {events.map((event, index) => (
-                            <EventCard key={index} event={event} />
-                        ))}
-                    </CardGroup>
+                </Row>
             </>}
         </div>
     );
