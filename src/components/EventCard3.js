@@ -95,7 +95,7 @@ const EventCard3 = (props) => {
 
 
 
-                <Col lg={6} md={6} sm={6} xs="6" style={{ textWrap: "wrap", whiteSpace: "wrap", textOverflow: "ellipsis" }}>
+                <Col lg={6} md={6} sm={6} xs="6" style={{ textWrap: "wrap", whiteSpace: "wrap", textOverflow: "ellipsis", overflowX: "hidden" }}>
                     <Row>
                         <Link to={`/events/${event.id}/`} style={{ textDecoration: "none" }}>
                             <h5>{event.title}</h5>

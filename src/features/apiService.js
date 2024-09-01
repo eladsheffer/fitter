@@ -60,7 +60,10 @@ const postData = async (url, data, login = false) => {
         // Store auth token only if it's present in the response
         if (responseData.token) {
             localStorage.setItem('authToken', responseData.token);
+            console.log("API SERVICE - TOKEN: ", responseData.token);
         }
+        else
+            console.log("API SERVICE - NO TOKEN");
 
         if (status === 200 || status === 201) {
             console.log("API SERVICE - SUCCESS: ", responseData);

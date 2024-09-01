@@ -24,11 +24,11 @@ const Homepage = () => {
 
             let data = await getData(serverUrl + 'groups');
             if (!data) return;
-            setGroups(data.results);
+            setGroups(data);
 
             data = await getData(serverUrl + 'events');
             if (!data) return;
-           setEvents(data.results);
+           setEvents(data);
             }
             else{
                 let data = await getData(serverUrl + 'users/get_groups_user_not_in/?email=' + activeUser.email);

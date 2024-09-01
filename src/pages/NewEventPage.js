@@ -24,6 +24,7 @@ const NewEventPage = (props) => {
 
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const citiesUrl = process.env.REACT_APP_CITIES_URL;
+    const streetsUrl = process.env.REACT_APP_STREETS_URL;
     let { groupId } = useParams();
     groupId = useSelector((state) => state.modal.value.groupId) || groupId;
 
@@ -42,12 +43,19 @@ const NewEventPage = (props) => {
     const [successMessages, setSuccessMessages] = useState(null);
     const [formValues, setFormValues] = useState({ title: true, description: true, location: true, visibility: true, location: true, sportType: true });
     const [cities, setCities] = useState([]);
+    const [streets, setStreets] = useState([]);
     const [city, setCity] = useState(null);
     const [eventProfilePicture, setEventProfilePicture] = useState(null);
     const [disabledAgeSlider, setDisabledAgeSlider] = useState(true);
     const [ageRange, setAgeRange] = useState([20, 40]);
     const [value, setValue] = useState('');
 
+    const fetchStreets = async (city) => {
+        const data = await getData(`${streetsUrl}&q=${city}`);
+        if (!data) return;
+        const streets = data.result.records.map((street) => street.שם_רחוב.trim().replace('(', ')').replace(')', '('));
+        setStreets(streets);
+    };
 
     useEffect(() => {
         const fetchCities = async () => {
@@ -55,11 +63,10 @@ const NewEventPage = (props) => {
             if (!data) return;
             const cities = data.result.records.map((city) => city.שם_ישוב.trim().replace('(', ')').replace(')', '('));
             setCities(cities);
-            console.log(dayjs());
         };
 
         fetchCities();
-
+        
         // Cleanup function if needed
         return () => {
             // Cleanup code here, if any
@@ -79,6 +86,7 @@ const NewEventPage = (props) => {
         }
         else {
             setCity(value);
+            //fetchStreets(value);
             setFormValues({ ...formValues, ["location"]: false });
         }
     };
@@ -171,6 +179,19 @@ const NewEventPage = (props) => {
                         renderInput={(params) => <TextField {...params} label="Location" required error={formValues.location} onChange={handleAutocompleteChange} />}
                     />
                 </FormControl>
+
+                <FormControl fullWidth required>
+                    <Autocomplete
+                        disablePortal
+                        id="combo-box-location"
+                        options={streets}
+                        error={formValues.location}
+                        label="Street"
+                        onChange={handleAutocompleteChange}
+                        renderInput={(params) => <TextField {...params} label="Street" required error={formValues.street} onChange={handleAutocompleteChange} />}
+                    />
+                </FormControl>
+
                 <FormControl fullWidth required>
                     <InputLabel id="demo-simple-select-label" error={formValues.visibility}>Visibility</InputLabel>
                     <Select inputRef={eventVisibilityInput}

@@ -87,6 +87,7 @@ function FitterNavbar() {
 
     let data = await postData(serverUrl + 'users/logout/', null);
       dispatch(logout()); 
+      localStorage.removeItem('authToken');
     handleCloseUserMenu();
     navigate('/');
   }
