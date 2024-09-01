@@ -39,7 +39,7 @@ const GroupsPage = () => {
             if (!activeUser){
                 let data = await getData(serverUrl + 'groups');
                 if (!data) return;
-                setGroupsUserNotIn(data.results);
+                setGroupsUserNotIn(data);
             }
             else{
 
