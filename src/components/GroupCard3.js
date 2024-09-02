@@ -26,8 +26,10 @@ const GroupCard3 = (props) => {
     const adminIcon = '/icons/admin.png';
 
     const joinGroup = async () => {
-        if (!activeUser)
+        if (!activeUser){
             navigate('/login');
+            return;
+        }
 
         let url = serverUrl + `groups/${group.id}/add_user/`;
         let data = {
@@ -74,10 +76,6 @@ const GroupCard3 = (props) => {
         dispatch(renderModalType({ type: 'Event' }));
         dispatch(setGroupId({groupId: group.id}));
         dispatch(showModal());
-    };
-
-    const login = () => {
-        navigate('/login');
     };
 
     return (
@@ -136,7 +134,7 @@ const GroupCard3 = (props) => {
             <Row className="justify-between gap-5">
                 <Col>
                     {activeUser === null ? (
-                        <Button variant="outline-warning" onClick={login}>Login</Button>
+                        <Button variant="outline-warning" onClick={()=>joinGroup()}>Join</Button>
                     ) : isAdmin ? (
                         <>
                             <Button variant="outline-primary" onClick={editGroup}>Edit Group</Button>

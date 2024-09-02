@@ -45,14 +45,14 @@ export default function SearchPage() {
 
     const fetchGroups = async () => {
         let groupsData = await getData(serverUrl + `groups/?search=${key}`);
-        setGroups(groupsData.results);
-        setFilteredGroups(groupsData.results);
+        setGroups(groupsData);
+        setFilteredGroups(groupsData);
     };
 
     const fetchEvents = async () => {
         let eventsData = await getData(serverUrl + `events/?search=${key}`);
-        setEvents(eventsData.results);
-        setFilteredEvents(eventsData.results);
+        setEvents(eventsData);
+        setFilteredEvents(eventsData);
     };
 
     useEffect(() => {
