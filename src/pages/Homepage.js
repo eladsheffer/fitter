@@ -18,9 +18,8 @@ const Homepage = () => {
     const [groups, setGroups] = useState([]);
     const [events, setEvents] = useState([]);
 
-    useEffect(() => {
-        const fetchGroupsAndEvents = async () => {
-            if (!activeUser){
+    const fetchGroupsAndEvents = async () => {
+        if (!activeUser) {
 
             let data = await getData(serverUrl + 'groups');
             if (!data) return;
@@ -28,18 +27,21 @@ const Homepage = () => {
 
             data = await getData(serverUrl + 'events');
             if (!data) return;
-           setEvents(data);
-            }
-            else{
-                let data = await getData(serverUrl + 'users/get_groups_user_not_in/?email=' + activeUser.email);
-                if (!data) return;
-                setGroups(data);
-
-                data = await getData(serverUrl + 'users/get_events_user_not_in/?email=' + activeUser.email);
-                if (!data) return;
-                setEvents(data);
-            }
+            setEvents(data);
         }
+        else {
+            let data = await getData(serverUrl + 'users/get_groups_user_not_in/?email=' + activeUser.email);
+            if (!data) return;
+            setGroups(data);
+
+            data = await getData(serverUrl + 'users/get_events_user_not_in/?email=' + activeUser.email);
+            if (!data) return;
+            setEvents(data);
+        }
+    };
+
+    useEffect(() => {
+
         fetchGroupsAndEvents();
 
         // Cleanup function if needed
@@ -50,12 +52,12 @@ const Homepage = () => {
 
 
     return (
-        
+
         <div>
-             <div style={{ width: "95%", marginInline: "auto", marginTop: "1rem" }}>
-             <h1>
-                Hello {activeUser !== null ? activeUser.first_name : "Guest"} 👋
-              </h1>
+            <div style={{ width: "95%", marginInline: "auto", marginTop: "1rem" }}>
+                <h1>
+                    Hello {activeUser !== null ? activeUser.first_name : "Guest"} 👋
+                </h1>
                 <div style={{ backgroundColor: "#f8f9fa", padding: "2rem" }}>
                     <h1 style={{ textAlign: "center" }}>Welcome to Fitter</h1>
                     <p style={{ textAlign: "center" }}>
@@ -67,7 +69,7 @@ const Homepage = () => {
                     <Card.Body>
                         <Row>
                             <Col>
-                            <Card.Img src="https://images.unsplash.com/photo-1607962776833-7ec9ef952784?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTd8fHxlbnwwfHx8fHw%3D" />
+                                <Card.Img src="https://images.unsplash.com/photo-1607962776833-7ec9ef952784?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTd8fHxlbnwwfHx8fHw%3D" />
                             </Col>
                             <Col>
                                 <Card.Img src="https://images.unsplash.com/photo-1622599518895-be813cc42628?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
@@ -79,7 +81,7 @@ const Homepage = () => {
                     </Card.Body>
                 </Card>
 
-                {groups.length===0 && events.length === 0 ? (
+                {groups.length === 0 && events.length === 0 ? (
                     <LinearProgress style={{ marginTop: "4rem" }} />
                 ) : (
                     <>
@@ -97,7 +99,7 @@ const Homepage = () => {
                             }}
                         >
                             {events.map((event, i) => (
-                                <Col lg={4}  md={6} sm={12}>
+                                <Col lg={4} md={6} sm={12}>
                                     <EventCard3 event={event} key={i} />
                                 </Col>
                             ))}
@@ -117,14 +119,14 @@ const Homepage = () => {
                             }}
                         >
                             {groups.map((group, i) => (
-                                <Col lg={4}  md={6} sm={12}>
+                                <Col lg={4} md={6} sm={12}>
                                     <GroupCard3 group={group} key={i} />
                                 </Col>
                             ))}
                         </Row>
                     </>
                 )}
-                </div>
+            </div>
         </div>
     );
 };

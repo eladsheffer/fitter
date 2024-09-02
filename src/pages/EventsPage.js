@@ -62,7 +62,7 @@ const EventsPage = () => {
   // Effects
   useEffect(() => {
     getEvents();
-  }, [eventUpdated]);
+  }, [eventUpdated, activeUser]);
 
   // UI
   return (
