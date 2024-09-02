@@ -67,15 +67,16 @@ export default function SearchPage() {
         applyFilters();
     }, [selectedGroupFilters, selectedEventFilters, groups, events]);
 
-    const handleFilterChange = (filterType, value) => {
+    const handleFilterChange = (filterType, event) => {
+        let value = event.target.name;
         if (searchType === 'groups') {
             setSelectedGroupFilters(prevFilters => {
                 const updatedFilters = { ...prevFilters };
                 // Update the group filter
-                if (updatedFilters[filterType].includes(value)) {
-                    updatedFilters[filterType] = updatedFilters[filterType].filter(item => item !== value);
-                } else {
+                if (event.target.checked) {
                     updatedFilters[filterType].push(value);
+                } else {
+                    updatedFilters[filterType] = updatedFilters[filterType].filter(item => item !== value);
                 }
                 return updatedFilters;
             });
@@ -83,10 +84,10 @@ export default function SearchPage() {
             setSelectedEventFilters(prevFilters => {
                 const updatedFilters = { ...prevFilters };
                 // Update the event filter
-                if (updatedFilters[filterType].includes(value)) {
-                    updatedFilters[filterType] = updatedFilters[filterType].filter(item => item !== value);
-                } else {
+                if (event.target.checked) {
                     updatedFilters[filterType].push(value);
+                } else {
+                    updatedFilters[filterType] = updatedFilters[filterType].filter(item => item !== value);
                 }
                 return updatedFilters;
             });
@@ -183,7 +184,7 @@ export default function SearchPage() {
                                     label={location}
                                     type="checkbox"
                                     //defaultChecked={props?.searchIn?.title}
-                                    onChange={(e) => handleFilterChange("location", e.target.name)}
+                                    onChange={(e) => handleFilterChange("location", e)}
                                 />))}
 
                             {/* {groupLocations.map((location, i) => (
@@ -205,7 +206,7 @@ export default function SearchPage() {
                                     label={gender}
                                     type="checkbox"
                                     //defaultChecked={props?.searchIn?.title}
-                                    onChange={(e) => handleFilterChange("gender", e.target.name)}
+                                    onChange={(e) => handleFilterChange("gender", e)}
                                 />))}
 
                             {/* {groupLocations.map((location, i) => (
