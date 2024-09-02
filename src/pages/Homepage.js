@@ -55,9 +55,11 @@ const Homepage = () => {
 
         <div>
             <div style={{ width: "95%", marginInline: "auto", marginTop: "1rem" }}>
+                { activeUser &&
                 <h1>
-                    Hello {activeUser !== null ? activeUser.first_name : "Guest"} 👋
+                    Hello {activeUser.first_name} 👋
                 </h1>
+                }
                 <div style={{ backgroundColor: "#f8f9fa", padding: "2rem" }}>
                     <h1 style={{ textAlign: "center" }}>Welcome to Fitter</h1>
                     <p style={{ textAlign: "center" }}>
