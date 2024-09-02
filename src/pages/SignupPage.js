@@ -85,15 +85,21 @@ const SignupPage = (props) => {
         newUser.append('bio', bioInput.current.value);
 
         console.log(newUser);
-        newUser = await postData(serverUrl + 'users/', newUser, true);
-        if (newUser) {
-            dispatch(login(newUser));
-            setSuccessMessages("User created successfully");
-            navigate("/");
-        }
-        else {
+        let data = await postData(serverUrl + 'users/', newUser, true);
+        if (!data) {
             setErrorMessages("Error creating user");
+            return;
         }
+
+        newUser = data.user;
+        if (!newUser) {
+            setErrorMessages("Error creating user");
+            return;
+        }
+
+        dispatch(login(newUser));
+        setSuccessMessages("User created successfully");
+        navigate("/");
     };
 
     const handleChange = (event) => {
