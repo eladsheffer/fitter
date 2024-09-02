@@ -46,7 +46,7 @@ const Homepage = () => {
         return () => {
             // Cleanup code here, if any
         };
-    }, []);
+    }, [activeUser]);
 
 
     return (
