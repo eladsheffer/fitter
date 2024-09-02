@@ -86,7 +86,7 @@ const GroupCard3 = (props) => {
                         <Image
                             src={profile_picture}
                             alt="Group thumbnail"
-                            style={{ width: "200px", height: "150px" }}
+                            style={{ width: "200px", height: "150px", objectFit: "cover", objectPosition: "center" }}
                         />
                     </Link>
                 </Col>

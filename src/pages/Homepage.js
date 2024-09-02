@@ -67,17 +67,21 @@ const Homepage = () => {
                     </p>
                 </div>
 
-                <Card style={{ width: "80%", marginInline: "auto" }}>
+                <Card >
                     <Card.Body>
                         <Row>
                             <Col>
-                                <Card.Img src="https://images.unsplash.com/photo-1607962776833-7ec9ef952784?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTd8fHxlbnwwfHx8fHw%3D" />
+                                <Card.Img src="https://images.unsplash.com/photo-1607962776833-7ec9ef952784?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTd8fHxlbnwwfHx8fHw%3D" 
+                                 style={{height: "15vw"}}
+                                />
                             </Col>
                             <Col>
-                                <Card.Img src="https://images.unsplash.com/photo-1622599518895-be813cc42628?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
+                                <Card.Img src="https://images.unsplash.com/photo-1622599518895-be813cc42628?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                                 style={{height: "15vw"}}/>
                             </Col>
                             <Col>
-                                <Card.Img src="https://images.unsplash.com/photo-1483721310020-03333e577078?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MzJ8fHxlbnwwfHx8fHw%3D" />
+                                <Card.Img src="https://images.unsplash.com/photo-1483721310020-03333e577078?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MzJ8fHxlbnwwfHx8fHw%3D" 
+                                style={{height: "15vw"}}/>
                             </Col>
                         </Row>
                     </Card.Body>
@@ -89,7 +93,8 @@ const Homepage = () => {
                     <>
                         <h1
                             style={{
-                                marginTop: "4rem",
+                                marginTop: "2rem",
+                                marginBottom: "2rem",
                             }}
                         >
                             Events you may like
@@ -109,7 +114,8 @@ const Homepage = () => {
 
                         <h1
                             style={{
-                                marginTop: "4rem",
+                                marginTop: "2rem",
+                                marginBottom: "2rem",
                             }}
                         >
                             Groups you may like

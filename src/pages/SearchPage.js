@@ -7,6 +7,8 @@ import { getData } from '../features/apiService';
 import SearchFilter from '../components/SearchFilter';
 import GroupCard3 from '../components/GroupCard3';
 import EventCard3 from '../components/EventCard3';
+import RootModal from '../components/RootModal';
+import { LinearProgress } from '@mui/material';
 
 export default function SearchPage() {
     const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -15,6 +17,7 @@ export default function SearchPage() {
     const { groupsData = [], eventsData = [] } = location.state || {};
     const [groups, setGroups] = useState(groupsData);
     const [events, setEvents] = useState(eventsData);
+    const [loading, setLoading] = useState(true);
     const [filteredGroups, setFilteredGroups] = useState(groupsData);
     const [filteredEvents, setFilteredEvents] = useState(eventsData);
     const key = queryParams.get('key');
@@ -44,23 +47,29 @@ export default function SearchPage() {
     const eventGenders = [...new Set(eventGendersArray)];
 
     const fetchGroups = async () => {
+        setLoading(true);
         let groupsData = await getData(serverUrl + `groups/?search=${key}`);
         setGroups(groupsData);
         setFilteredGroups(groupsData);
+        setLoading(false);
     };
 
     const fetchEvents = async () => {
+        setLoading(true);
         let eventsData = await getData(serverUrl + `events/?search=${key}`);
         setEvents(eventsData);
         setFilteredEvents(eventsData);
+        setLoading(false);
     };
 
     useEffect(() => {
+        
         if (searchType === 'groups') {
             fetchGroups();
         } else {
             fetchEvents();
         }
+       
     }, [searchType,key]);
 
     useEffect(() => {
@@ -136,6 +145,7 @@ export default function SearchPage() {
 
     return (
         <div>
+             <RootModal hideButton/>
             <Row className="my-4 justify-content-center">
                 <Col xs="auto" className="text-center">
                     <h1>Search Page</h1>
@@ -311,22 +321,24 @@ export default function SearchPage() {
                     {searchType === 'groups' ? (
                         <div style={{ width: '100%' }}>
                             <h3>Groups</h3>
+                            {loading ? <LinearProgress /> : null}
                             {filteredGroups.length > 0 ? (
                                 filteredGroups.map(group =>
                                     <GroupCard3 key={group.id} group={group} />
                                 )
-                            ) : (
+                            ) : (!loading &&
                                 <p>No groups found</p>
                             )}
                         </div>
                     ) : (
                         <div>
                             <h3>Events</h3>
+                            {loading ? <LinearProgress /> : null}
                             {filteredEvents.length > 0 ? (
                                 filteredEvents.map(event =>
                                     <EventCard3 key={event.id} event={event} />
                                 )
-                            ) : (
+                            ) : (!loading &&
                                 <p>No events found</p>
                             )}
                         </div>
