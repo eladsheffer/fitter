@@ -69,11 +69,12 @@ export default function SearchPage() {
 
     const handleFilterChange = (filterType, event) => {
         let value = event.target.name;
+        let checked = event.target.checked;
         if (searchType === 'groups') {
             setSelectedGroupFilters(prevFilters => {
                 const updatedFilters = { ...prevFilters };
                 // Update the group filter
-                if (event.target.checked) {
+                if (checked) {
                     updatedFilters[filterType].push(value);
                 } else {
                     updatedFilters[filterType] = updatedFilters[filterType].filter(item => item !== value);
@@ -84,7 +85,7 @@ export default function SearchPage() {
             setSelectedEventFilters(prevFilters => {
                 const updatedFilters = { ...prevFilters };
                 // Update the event filter
-                if (event.target.checked) {
+                if (checked) {
                     updatedFilters[filterType].push(value);
                 } else {
                     updatedFilters[filterType] = updatedFilters[filterType].filter(item => item !== value);
@@ -184,7 +185,7 @@ export default function SearchPage() {
                                     label={location}
                                     type="checkbox"
                                     //defaultChecked={props?.searchIn?.title}
-                                    onChange={(e) => handleFilterChange("location", e)}
+                                    onChange={(event) => handleFilterChange("location", event)}
                                 />))}
 
                             {/* {groupLocations.map((location, i) => (
@@ -206,7 +207,7 @@ export default function SearchPage() {
                                     label={gender}
                                     type="checkbox"
                                     //defaultChecked={props?.searchIn?.title}
-                                    onChange={(e) => handleFilterChange("gender", e)}
+                                    onChange={(event) => handleFilterChange("gender", event)}
                                 />))}
 
                             {/* {groupLocations.map((location, i) => (
@@ -231,7 +232,7 @@ export default function SearchPage() {
                                     label={location}
                                     type="checkbox"
                                     //defaultChecked={props?.searchIn?.title}
-                                    onChange={(e) => handleFilterChange("location", e.target.name)}
+                                    onChange={(event) => handleFilterChange("location", event)}
                                 />))}
 
                             {/* {groupLocations.map((location, i) => (
@@ -253,7 +254,7 @@ export default function SearchPage() {
                                     label={gender}
                                     type="checkbox"
                                     //defaultChecked={props?.searchIn?.title}
-                                    onChange={(e) => handleFilterChange("gender", e.target.name)}
+                                    onChange={(event) => handleFilterChange("gender", event)}
                                 />))}
 
                             {/* {groupLocations.map((location, i) => (
@@ -275,7 +276,7 @@ export default function SearchPage() {
                                     label={sport}
                                     type="checkbox"
                                     //defaultChecked={props?.searchIn?.title}
-                                    onChange={(e) => handleFilterChange("sport_type", e.target.name)}
+                                    onChange={(event) => handleFilterChange("sport_type", event)}
                                 />))}
 
                             {/* {groupLocations.map((location, i) => (
