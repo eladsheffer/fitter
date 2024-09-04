@@ -45,7 +45,7 @@ const UserPage = () => {
             }
 
             // Fetch events data
-            const eventsData = await getData(`${serverUrl}users/get_user_future_events/?email=${user.email}`);
+            const eventsData = await getData(`${serverUrl}users/get_user_events/?email=${user.email}`);
             if (eventsData) {
                 setEvents(eventsData);
             }

@@ -76,8 +76,6 @@ const EditProfilePage = (props) => {
         }
 
         let newUser = new FormData();
-        // newUser.append("user_groups",[121,122, 124, 125, 126, 143, 144, 145, 146, 147, 148, 149, 150, 155,156, 157, 161]);
-        // newUser.append("user_groups_as_admin",[121,122, 124, 143, 144, 145, 146, 147, 148, 149, 151, 155, 156, 157, 161]);
 
         if (firstNameInput.current.value) {
             newUser.append('first_name', firstNameInput.current.value);

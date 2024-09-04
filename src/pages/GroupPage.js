@@ -51,7 +51,7 @@ const GroupPage = () => {
     }
 
         // Fetch events data
-        const eventsData = await getData(`${serverUrl}groups/${id}/get_group_future_events/`);
+        const eventsData = await getData(`${serverUrl}groups/${id}/get_group_events/`);
         if (eventsData) {
             setEvents(eventsData);
         }

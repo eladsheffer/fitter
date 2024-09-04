@@ -51,7 +51,8 @@ const EventsPage = () => {
   };
 
   async function getEvents() {
-    const url = `${process.env.REACT_APP_SERVER_URL}events`;
+    console.log(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate());
+    const url = `${process.env.REACT_APP_SERVER_URL}events/?date_range_after=${date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()}`;
     let data = await getData(url);  
     if (!data) return;
     setEvents(data.sort((a, b) => new Date(a.date_and_time) - new Date(b.date_and_time)));
@@ -62,7 +63,7 @@ const EventsPage = () => {
   // Effects
   useEffect(() => {
     getEvents();
-  }, [eventUpdated, activeUser]);
+  }, [eventUpdated, activeUser, date]);
 
   // UI
   return (
@@ -117,7 +118,7 @@ const EventsPage = () => {
               </Row>
               {/* Events */}
               <Row>
-                <h2 className="mt-5 p-0">{`Events - ${date.getDate()}/${date.getMonth() + 1
+                <h2 className="mt-5 p-0">{`Events Starting from: ${date.getDate()}/${date.getMonth() + 1
                   }/${date.getFullYear()}`}</h2>
                 {/* {events.map((event, i) => (
                   <>
