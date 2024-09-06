@@ -52,12 +52,15 @@ const EventsPage = () => {
 
   async function getEvents() {
     console.log(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate());
-    const url = `${process.env.REACT_APP_SERVER_URL}events/?date_range_after=${date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()}`;
+    let url = `${process.env.REACT_APP_SERVER_URL}events/?date_range_after=${date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()}`;
     let data = await getData(url);  
     if (!data) return;
     setEvents(data.sort((a, b) => new Date(a.date_and_time) - new Date(b.date_and_time)));
-    if (activeUser)
+    if (activeUser){
+      url =`${process.env.REACT_APP_SERVER_URL}users/get_user_events/?email=${activeUser.email}`;
+      data = await getData(url);
       setEventDates(data.map((event) => event.users_attended.includes(activeUser.id) && event.date_and_time.slice(0, 10)));
+    }
   }
 
   // Effects

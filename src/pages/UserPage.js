@@ -19,7 +19,10 @@ const UserPage = () => {
 
     useEffect(() => {
         const fetchUser = async () => {
-            if (!activeUser) return;
+           if (activeUser && activeUser.id === id) {
+                setUser(activeUser);
+                return; 
+            }
 
             // Fetch user data
             const userData = await getData(`${serverUrl}users/${id}/`);

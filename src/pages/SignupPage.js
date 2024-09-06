@@ -77,8 +77,7 @@ const SignupPage = (props) => {
         newUser.append('location', city);
         newUser.append('date_of_birth', dateOfBirthInput.current.value);
         newUser.append('gender', genderInput.current.value);
-        const preferred_sports = Array.from(sportsInput.current.selectedOptions).map((option) => option.value);
-        preferred_sports.forEach((sport, i) => newUser.append(`preferred_sports[${i}]`, sport));
+        newUser.append('preferred_sports', Array.from(sportsInput.current.selectedOptions).map((option) => option.value));
         newUser.append('profile_picture', userProfilePicture);
         newUser.append('weight', disabledWeightSlider ? null : weight);
         newUser.append('height', disabledHeightSlider ? null : height);
