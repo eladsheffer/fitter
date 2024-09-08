@@ -66,7 +66,7 @@ const NewEventPage = (props) => {
         };
 
         fetchCities();
-        
+
         // Cleanup function if needed
         return () => {
             // Cleanup code here, if any
@@ -79,8 +79,8 @@ const NewEventPage = (props) => {
     }
 
     const handleAutocompleteChange = (event, value) => {
-        
-        if (!value){
+
+        if (!value) {
             setFormValues({ ...formValues, ["location"]: "required field" });
             setCity(null);
         }
@@ -163,8 +163,6 @@ const NewEventPage = (props) => {
 
     return (
         <div className='login'>
-            {successMessages && (<Alert severity='success' >{successMessages}</Alert>)}
-            {errorMessages && (<Alert severity='error'>{errorMessages}</Alert>)}
             <Stack spacing={2} margin={2}>
                 <TextField variant="outlined" inputRef={titleEventInput} name="title" error={formValues.title} label="Title" helperText="required field" required onChange={handleChange}></TextField>
                 <TextField variant="outlined" inputRef={descriptionEventInput} name="description" label="Description" error={formValues.description} helperText="required field" required onChange={handleChange}></TextField>
@@ -216,7 +214,7 @@ const NewEventPage = (props) => {
                 //onChange={(newValue) => setValue(newValue)}
                 />
                 <FormControl fullWidth required>
-                    <InputLabel id="demo-simple-select-label"  error={formValues.sportType} >Sport Type</InputLabel>
+                    <InputLabel id="demo-simple-select-label" error={formValues.sportType} >Sport Type</InputLabel>
                     <Select inputRef={eventSportTypeInput}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
@@ -278,7 +276,8 @@ const NewEventPage = (props) => {
                     type="number"
                     inputMode='numeric'
                 />
-
+                {successMessages && (<Alert severity='success' >{successMessages}</Alert>)}
+                {errorMessages && (<Alert severity='error'>{errorMessages}</Alert>)}
                 <Button color="primary" variant="contained" onClick={createEvent}>Create Event</Button>
             </Stack>
         </div>

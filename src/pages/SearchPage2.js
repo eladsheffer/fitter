@@ -59,7 +59,7 @@ export default function SearchPage() {
         let url = `${serverUrl}groups/?search=${key}`;
         let groupsData = await getData(url);
         setGroups(groupsData);
-        url = `${serverUrl}groups/?search=${key}&location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&min_age=${ageRange[0]}&max_age=${ageRange[1]}`;
+        url = `${serverUrl}groups/?search=${key}&location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&age_range${ageRange[0]}-${ageRange[1]}}`;
         groupsData = await getData(url);
         setFilteredGroups(groupsData);
         setLoading(false);
@@ -70,7 +70,7 @@ export default function SearchPage() {
         let url = `${serverUrl}events/?search=${key}`;
         let eventsData = await getData(url);
         setEvents(eventsData);
-        url = `${serverUrl}events/?search=${key}&location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&min_age=${ageRange[0]}&max_age=${ageRange[1]}`;
+        url = `${serverUrl}events/?search=${key}&location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&age_range${ageRange[0]}-${ageRange[1]}`;
         eventsData = await getData(url);
         console.log(events);
         setFilteredEvents(eventsData);
@@ -280,8 +280,8 @@ export default function SearchPage() {
             </Row>
                 <Row className="d-flex justify-content-around" style={{ marginTop: "2rem" }}>
                 <Col lg="4" md="4" sm="6" xs="10" style={{marginInline:"auto"}}>
-                    <Form.Group className="mb-3" controlId="min-max">
-                        <Form.Label className="me-3">Group Age Range</Form.Label>
+                    <Form.Group style={{textAlign:"center"}} className="mb-3" controlId="min-max">
+                        <Form.Label style={{padding: "10px",color: "white", backgroundColor:"blue", borderRadius: "40%", margin:"-10px"}}>Age Range</Form.Label>
                         <Slider ref={ageSliderInput}
                             getAriaLabel={() => 'Minimum distance'}
                             value={ageRange}

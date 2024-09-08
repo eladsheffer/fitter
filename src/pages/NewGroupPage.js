@@ -111,12 +111,6 @@ const NewGroupPage = () => {
 
     return (
         <div className="login">
-            <Alert variant="danger" show={errorMessages}>
-                {errorMessages}
-            </Alert>
-            <Alert variant="success" show={successMessages}>
-                {successMessages}
-            </Alert>
             <Form noValidate validated={validated}>
 
                 <Form.Group className="mb-3" controlId="groupName">
@@ -145,15 +139,15 @@ const NewGroupPage = () => {
                     </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group>
-                        <Form.Label>Location</Form.Label>
-                        <Typeahead
-                            id="basic-typeahead-single"
-                            labelKey="name"
-                            onChange={(selected) => setCity(selected[0])}
-                            options={cities}
-                            placeholder="Choose location"
-                            required
-                        />
+                    <Form.Label>Location</Form.Label>
+                    <Typeahead
+                        id="basic-typeahead-single"
+                        labelKey="name"
+                        onChange={(selected) => setCity(selected[0])}
+                        options={cities}
+                        placeholder="Choose location"
+                        required
+                    />
                 </Form.Group>
                 {/* <Form.Group className="mb-3" controlId="city">
                     <Form.Label>City</Form.Label>
@@ -204,6 +198,12 @@ const NewGroupPage = () => {
                 <Box sx={{ width: 300 }}>
 
                 </Box>
+                <Alert variant="danger" show={errorMessages}>
+                    {errorMessages}
+                </Alert>
+                <Alert variant="success" show={successMessages}>
+                    {successMessages}
+                </Alert>
                 <Button variant="primary" className="w-100" onClick={createGroup}>
                     Create Group
                 </Button>

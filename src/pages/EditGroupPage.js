@@ -59,29 +59,29 @@ const EditGroupPage = (props) => {
     }, []);
 
     useEffect(() => {
-    const fetchGroup = async () => {
-        const groupData = await getData(path);
-        console.log(groupData);
-        if (!groupData) return;
-        setGroup(groupData);
-        setCity(groupData.location);
-        setPreferredSports(groupData.preferred_sports[0].split(","));
-        setGroupProfilePictureToShow(groupData.profile_picture);
-        setVisibility(groupData.visibility);
-        setGender(groupData.gender);
-        if (groupData.min_age || groupData.max_age)
-            setAgeRange([groupData.min_age, groupData.max_age]);
-    };
+        const fetchGroup = async () => {
+            const groupData = await getData(path);
+            console.log(groupData);
+            if (!groupData) return;
+            setGroup(groupData);
+            setCity(groupData.location);
+            setPreferredSports(groupData.preferred_sport);
+            setGroupProfilePictureToShow(groupData.profile_picture);
+            setVisibility(groupData.visibility);
+            setGender(groupData.gender);
+            if (groupData.min_age || groupData.max_age)
+                setAgeRange([groupData.min_age, groupData.max_age]);
+        };
 
-    fetchGroup();
+        fetchGroup();
 
-    // Cleanup function if needed
-    return () => {
-        // cleanup
-        
-    };
+        // Cleanup function if needed
+        return () => {
+            // cleanup
 
-}, []);
+        };
+
+    }, []);
 
     const editGroup = async () => {
         setErrorMessages(null);
@@ -90,7 +90,7 @@ const EditGroupPage = (props) => {
             alert("Please login to create a group");
             return;
         }
-        
+
         const newGroup = new FormData();
         if (groupNameInput.current.value) {
             newGroup.append('name', groupNameInput.current.value);
@@ -108,7 +108,7 @@ const EditGroupPage = (props) => {
             newGroup.append('max_age', ageRange[1]);
         }
 
-        if (groupProfilePicture){
+        if (groupProfilePicture) {
             newGroup.append('profile_picture', groupProfilePicture);
         }
 
@@ -158,7 +158,7 @@ const EditGroupPage = (props) => {
         const deleted = await deleteData(path);
 
         if (deleted) {
-            navigate(-1);   
+            navigate(-1);
         }
         else {
             setErrorMessages("Error deleting user profile");
@@ -173,12 +173,6 @@ const EditGroupPage = (props) => {
 
                     <div className="login">
                         <RemoveModal show={showDeleteModal} handleClose={() => setShowDeleteModal(false)} title="Delete Group" message="Are you sure you want to delete this group?" handleRemove={deleteGroup} />
-                        <Alert variant="danger" show={errorMessages}>
-                            {errorMessages}
-                        </Alert>
-                        <Alert variant="success" show={successMessages}>
-                            {successMessages}
-                        </Alert>
                         <Form noValidate validated={validated}>
 
                             <Form.Group className="mb-3" controlId="groupName">
@@ -201,16 +195,16 @@ const EditGroupPage = (props) => {
                                 </Form.Select>
                             </Form.Group>
                             <Form.Group>
-                        <Form.Label>Location</Form.Label>
-                        <Typeahead
-                            id="basic-typeahead-single"
-                            labelKey="name"
-                            onChange={(selected) => setCity(selected)}
-                            options={cities}
-                            placeholder="Choose location"
-                            defaultInputValue={city}
-                        />
-                </Form.Group>
+                                <Form.Label>Location</Form.Label>
+                                <Typeahead
+                                    id="basic-typeahead-single"
+                                    labelKey="name"
+                                    onChange={(selected) => setCity(selected)}
+                                    options={cities}
+                                    placeholder="Choose location"
+                                    defaultInputValue={city}
+                                />
+                            </Form.Group>
                             <Form.Group className="mb-3" controlId="sports">
                                 <Form.Label>Sports</Form.Label>
                                 <Form.Select multiple aria-label="sports" ref={sportsInput} value={preferredSports} onChange={(e) => setPreferredSports(Array.from(e.target.selectedOptions, option => option.value))}>
@@ -253,15 +247,21 @@ const EditGroupPage = (props) => {
                             <Box sx={{ width: 300 }}>
 
                             </Box>
+                            <Alert variant="danger" show={errorMessages}>
+                                {errorMessages}
+                            </Alert>
+                            <Alert variant="success" show={successMessages}>
+                                {successMessages}
+                            </Alert>
                             <Button variant="primary" className="w-100" onClick={editGroup}>
                                 Edit Group
                             </Button>
                             <br />
                             <br />
-                            <Button variant="danger" className="w-100" onClick={()=>setShowDeleteModal(true)}>
+                            <Button variant="danger" className="w-100" onClick={() => setShowDeleteModal(true)}>
                                 Delete Group
                             </Button>
-                            
+
                         </Form>
                     </div>}
         </div>

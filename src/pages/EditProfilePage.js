@@ -42,7 +42,7 @@ const EditProfilePage = (props) => {
     const [weight, setWeight] = useState(activeUser && activeUser.weight ? activeUser.weight : 60);
     const [city, setCity] = useState(activeUser ? activeUser.location : "");
     const [gender, setGender] = useState(activeUser ? activeUser.gender : "");
-    const [preferredSports, setPreferredSports] = useState(activeUser && activeUser.preferred_sports.length > 0 ? activeUser.preferred_sports[0].split(",") : []);
+    const [preferredSports, setPreferredSports] = useState(activeUser && activeUser.preferred_sports.length > 0 ? activeUser.preferred_sports: []);
 
 
     useEffect(() => {
@@ -137,15 +137,16 @@ const EditProfilePage = (props) => {
 
     const handleDelete = async () => {
         setDeleteProfileModalShow(false);
-        const user = await deleteData(`${serverUrl}users/${activeUser.id}/`);
-        if (user) {
+        const deleted = await deleteData(`${serverUrl}users/${activeUser.id}/`);
+        console.log(deleted);
+        if (deleted) {
             dispatch(logout());
             navigate('/');
         }
         else {
             setErrorMessages("Error deleting user profile");
         }
-        
+
 
     }
 
@@ -154,12 +155,6 @@ const EditProfilePage = (props) => {
             {!activeUser ? <Alert variant="danger">You must be logged in to view this page. <Link to="/login">Login</Link></Alert> :
                 <div className="login">
                     <RemoveModal show={deleteProfileModalShow} handleClose={() => setDeleteProfileModalShow(false)} title="Delete Profile" message="Are you sure you want to delete your profile?" handleRemove={handleDelete} />
-                    <Alert variant="danger" show={errorMessages}>
-                        {errorMessages}
-                    </Alert>
-                    <Alert variant="success" show={successMessages}>
-                        {successMessages}
-                    </Alert>
                     <Form noValidate validated={validated}>
                         <Form.Group className="mb-3" controlId="name">
                             <Form.Label>First Name</Form.Label>
@@ -191,16 +186,16 @@ const EditProfilePage = (props) => {
                             />
                         </Form.Group>
                         <Form.Group>
-                        <Form.Label>Location</Form.Label>
-                        <Typeahead
-                            id="basic-typeahead-single"
-                            labelKey="name"
-                            onChange={(selected) => setCity(selected)}
-                            options={cities}
-                            placeholder="Choose location"
-                            defaultInputValue={city}
-                        />
-                </Form.Group>
+                            <Form.Label>Location</Form.Label>
+                            <Typeahead
+                                id="basic-typeahead-single"
+                                labelKey="name"
+                                onChange={(selected) => setCity(selected)}
+                                options={cities}
+                                placeholder="Choose location"
+                                defaultInputValue={city}
+                            />
+                        </Form.Group>
                         <Form.Group className="mb-3" controlId="date-of-birth">
                             <Form.Label>Date of Birth</Form.Label>
                             <Form.Control type="date" ref={dateOfBirthInput}
@@ -258,12 +253,18 @@ const EditProfilePage = (props) => {
                                 defaultValue={activeUser ? activeUser.bio : ""}
                             />
                         </Form.Group>
+                        <Alert variant="danger" show={errorMessages}>
+                            {errorMessages}
+                        </Alert>
+                        <Alert variant="success" show={successMessages}>
+                            {successMessages}
+                        </Alert>
                         <Button type="button" className="w-100" onClick={updateProfile}>
                             Update Profile
                         </Button>
                         <br />
                         <br />
-                        <Button type="button" variant='danger'  className="w-100" onClick={()=>setDeleteProfileModalShow(true)}>
+                        <Button type="button" variant='danger' className="w-100" onClick={() => setDeleteProfileModalShow(true)}>
                             Delete Profile
                         </Button>
                     </Form>

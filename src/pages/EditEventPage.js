@@ -207,8 +207,6 @@ const EditEventPage = (props) => {
 
                     <>
                         <RemoveModal show={showRemoveModal} handleClose={() => setShowRemoveModal(false)} title="Delete Event" message="Are you sure you want to delete this event?" handleRemove={deleteEvent} />
-                        {successMessages && (<Alert severity='success' >{successMessages}</Alert>)}
-                        {errorMessages && (<Alert severity='error'>{errorMessages}</Alert>)}
                         <Stack spacing={2} margin={2}>
                             <TextField variant="outlined" inputRef={titleEventInput} name="title" placeholder='Event title is empty and will not be altered' defaultValue={event.title} label="Title"></TextField>
                             <TextField variant="outlined" inputRef={descriptionEventInput} name="description" placeholder='Event description is empty and will not be altered' defaultValue={event.description} label="Description"></TextField>
@@ -304,7 +302,8 @@ const EditEventPage = (props) => {
                                 inputMode='numeric'
                                 inputRef={maxParticipantsInput}
                             />
-
+                            {successMessages && (<Alert severity='success' >{successMessages}</Alert>)}
+                            {errorMessages && (<Alert severity='error'>{errorMessages}</Alert>)}
                             <Button color="primary" variant="contained" onClick={updateEvent}>Update Event</Button>
                             <Button color="secondary" variant="contained" onClick={() => setShowRemoveModal(true)}>Delete Event</Button>
                         </Stack>

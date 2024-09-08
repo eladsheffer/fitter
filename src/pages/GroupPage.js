@@ -113,10 +113,10 @@ const GroupPage = () => {
                         </Row>
                         <Row>
                             <Col>
-                                <h4>Preferred Sports: |
+                                <h4>Preferred Sports: </h4>|
                                     {group.preferred_sports.map((sport) => (
                                         ` ${sport} | `
-                                    ))} </h4>
+                                    ))} 
                             </Col>
                         </Row>
                         <Row>
