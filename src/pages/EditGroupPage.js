@@ -26,14 +26,12 @@ const EditGroupPage = (props) => {
     const [ageRange, setAgeRange] = useState([0, 120]);
     const [disabledAgeSlider, setDisabledAgeSlider] = useState(true);
     const [group, setGroup] = useState({});
-    const [visibility, setVisibility] = useState(null);
     const [gender, setGender] = useState(null);
     const [preferredSports, setPreferredSports] = useState([]);
     const [groupProfilePictureToShow, setGroupProfilePictureToShow] = useState(null);
 
     const groupNameInput = useRef(null);
     const groupDescriptionInput = useRef(null);
-    const groupVisibilityInput = useRef(null);
     const groupProfilePictureInput = useRef(null);
     const groupProfileImg = useRef(null);
     const genderInput = useRef(null);
@@ -67,7 +65,6 @@ const EditGroupPage = (props) => {
             setCity(groupData.location);
             setPreferredSports(groupData.preferred_sport);
             setGroupProfilePictureToShow(groupData.profile_picture);
-            setVisibility(groupData.visibility);
             setGender(groupData.gender);
             if (groupData.min_age || groupData.max_age)
                 setAgeRange([groupData.min_age, groupData.max_age]);
@@ -99,7 +96,6 @@ const EditGroupPage = (props) => {
             newGroup.append('description', groupDescriptionInput.current.value);
         }
 
-        newGroup.append('visibility', groupVisibilityInput.current.value);
         newGroup.append('location', city);
         newGroup.append('gender', genderInput.current.value);
 
@@ -185,14 +181,6 @@ const EditGroupPage = (props) => {
                             <Form.Group className="mb-3" controlId="groupDescription">
                                 <Form.Label>Group Description</Form.Label>
                                 <Form.Control as="textarea" placeholder="Group description is empty and will not be altered" defaultValue={group.description} ref={groupDescriptionInput} />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="formBasicPassword">
-                                <Form.Label>Group Visibility</Form.Label>
-                                <Form.Select aria-label="Default select example" value={visibility} ref={groupVisibilityInput} onChange={(e) => setVisibility(e.target.value)}>
-                                    <option>public</option>
-                                    <option>private</option>
-                                    <option value={"invitation_only"}>invitation only</option>
-                                </Form.Select>
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>Location</Form.Label>

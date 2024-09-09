@@ -31,8 +31,6 @@ const NewEventPage = (props) => {
     const activeUser = useSelector((state) => state.user.value);
     const titleEventInput = useRef(null);
     const descriptionEventInput = useRef(null);
-    // const locationEventInput = useRef(null);
-    const eventVisibilityInput = useRef(null);
     const eventDateTimeInput = useRef(null);
     const eventSportTypeInput = useRef(null);
     const eventProfilePictureInput = useRef(null);
@@ -41,7 +39,7 @@ const NewEventPage = (props) => {
 
     const [errorMessages, setErrorMessages] = useState(null);
     const [successMessages, setSuccessMessages] = useState(null);
-    const [formValues, setFormValues] = useState({ title: true, description: true, location: true, visibility: true, location: true, sportType: true });
+    const [formValues, setFormValues] = useState({ title: true, description: true, location: true, location: true, sportType: true });
     const [cities, setCities] = useState([]);
     const [streets, setStreets] = useState([]);
     const [city, setCity] = useState(null);
@@ -112,8 +110,8 @@ const NewEventPage = (props) => {
             return;
         }
 
-        if (!titleEventInput.current.value || !descriptionEventInput.current.value || !eventVisibilityInput.current.value || !city || !eventSportTypeInput.current.value || !eventDateTimeInput.current.value || !eventGenderInput.current.value) {
-            setFormValues({ title: !titleEventInput.current.value, description: !descriptionEventInput.current.value, visibility: !eventVisibilityInput.current.value, location: !city, sportType: !eventSportTypeInput.current.value });
+        if (!titleEventInput.current.value || !descriptionEventInput.current.value || !city || !eventSportTypeInput.current.value || !eventDateTimeInput.current.value || !eventGenderInput.current.value) {
+            setFormValues({ title: !titleEventInput.current.value, description: !descriptionEventInput.current.value, location: !city, sportType: !eventSportTypeInput.current.value });
             return;
         }
 
@@ -122,7 +120,6 @@ const NewEventPage = (props) => {
         newEvent.append('title', titleEventInput.current.value);
         newEvent.append('description', descriptionEventInput.current.value);
         newEvent.append('location', city);
-        newEvent.append('visibility', eventVisibilityInput.current.value);
         newEvent.append('date_and_time', eventDateTimeInput.current.value);
         newEvent.append('sport_type', eventSportTypeInput.current.value);
         newEvent.append('image', eventProfilePicture);
@@ -190,22 +187,6 @@ const NewEventPage = (props) => {
                     />
                 </FormControl>
 
-                <FormControl fullWidth required>
-                    <InputLabel id="demo-simple-select-label" error={formValues.visibility}>Visibility</InputLabel>
-                    <Select inputRef={eventVisibilityInput}
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        name="visibility"
-                        error={formValues.visibility}
-                        label="Visibility"
-                        onChange={handleChange}
-                        defaultValue={""}
-                    >
-                        <MenuItem value={"public"}>public</MenuItem>
-                        <MenuItem value={"private"}>private</MenuItem>
-                        <MenuItem value={"invitation_only"}>invitation only</MenuItem>
-                    </Select>
-                </FormControl>
                 <DateTimePicker required inputRef={eventDateTimeInput}
                     label="Event Date & Time"
                     format="YYYY-MM-DD hh:mm a"

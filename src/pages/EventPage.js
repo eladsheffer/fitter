@@ -63,9 +63,6 @@ export default function EventPage() {
                 <p className="mb-0">
                   <strong>Type:</strong> {event.sport_type}
                 </p>
-                <p className="mb-0">
-                  <strong>Visibility:</strong> {event.visibility}
-                </p>
                 {event.event_fee && (
                   <p className="mb-0">
                     <strong>Fee:</strong> ${event.event_fee}
@@ -76,9 +73,6 @@ export default function EventPage() {
                     <strong>Fee:</strong> Free
                   </p>
                 )}
-                <p className="mb-2">
-                  <strong>Status:</strong> {event.status}
-                </p>
                 {event.contact_info && (
                   <p>
                     <strong>Contact:</strong> {event.contact_info}
