@@ -166,6 +166,7 @@ const GroupsPage = () => {
             <h1
                 style={{
                     marginTop: "4rem",
+                    marginBottom: "2rem",
                 }}
             >
                 Groups You Admin
@@ -187,6 +188,7 @@ const GroupsPage = () => {
             <h1
                 style={{
                     marginTop: "4rem",
+                    marginBottom: "2rem",
                 }}
             >
                 Groups You Are A Member Of
@@ -208,6 +210,7 @@ const GroupsPage = () => {
              <h1
                 style={{
                     marginTop: "4rem",
+                    marginBottom: "2rem",
                 }}
             >
                 Groups You can Join:

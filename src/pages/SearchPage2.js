@@ -59,7 +59,8 @@ export default function SearchPage() {
         let url = `${serverUrl}groups/?search=${key}`;
         let groupsData = await getData(url);
         setGroups(groupsData);
-        url = `${serverUrl}groups/?search=${key}&location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&age_range${ageRange[0]}-${ageRange[1]}}`;
+        url = `${serverUrl}groups/?search=${key}&location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&age_range=${ageRange[0]}-${ageRange[1]}}`;
+        console.log(url);
         groupsData = await getData(url);
         setFilteredGroups(groupsData);
         setLoading(false);
@@ -70,7 +71,7 @@ export default function SearchPage() {
         let url = `${serverUrl}events/?search=${key}`;
         let eventsData = await getData(url);
         setEvents(eventsData);
-        url = `${serverUrl}events/?search=${key}&location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&age_range${ageRange[0]}-${ageRange[1]}`;
+        url = `${serverUrl}events/?search=${key}&location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&age_range=${ageRange[0]}-${ageRange[1]}`;
         eventsData = await getData(url);
         console.log(events);
         setFilteredEvents(eventsData);
