@@ -59,8 +59,7 @@ export default function SearchPage() {
         let url = `${serverUrl}groups/?search=${key}`;
         let groupsData = await getData(url);
         setGroups(groupsData);
-        url = `${serverUrl}groups/?search=${key}&location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&age_range=${ageRange[0]}-${ageRange[1]}}`;
-        console.log(url);
+        url = `${serverUrl}groups/?search=${key}&location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&age_range=${ageRange[0]}-${ageRange[1]}`;
         groupsData = await getData(url);
         setFilteredGroups(groupsData);
         setLoading(false);
@@ -73,7 +72,6 @@ export default function SearchPage() {
         setEvents(eventsData);
         url = `${serverUrl}events/?search=${key}&location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&age_range=${ageRange[0]}-${ageRange[1]}`;
         eventsData = await getData(url);
-        console.log(events);
         setFilteredEvents(eventsData);
         setLoading(false);
     };
@@ -119,7 +117,6 @@ export default function SearchPage() {
     };
 
     const resetFilters = () => {
-        console.log(reset);
         Object.values(checkboxRefs.current).forEach(ref => {
             if (ref) ref.checked = false; // Directly manipulate the DOM element
         });
@@ -134,7 +131,6 @@ export default function SearchPage() {
         setAgeRange([0, 120]);
         setFilterAge(false);
         setReset(!reset);
-        console.log(reset);
     }
 
     return (
