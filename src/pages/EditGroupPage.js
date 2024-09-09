@@ -63,7 +63,7 @@ const EditGroupPage = (props) => {
             if (!groupData) return;
             setGroup(groupData);
             setCity(groupData.location);
-            setPreferredSports(groupData.preferred_sport);
+            setPreferredSports(groupData.preferred_sports);
             setGroupProfilePictureToShow(groupData.profile_picture);
             setGender(groupData.gender);
             if (groupData.min_age || groupData.max_age)

@@ -92,11 +92,12 @@ const UserPage = () => {
                     {user.bio && <h5>Bio: {user.bio}</h5>}
                     {user.preferred_sports && user.preferred_sports.length > 0 &&
                         <>
-                            <h5>Preferred Sport:</h5> | {user.preferred_sports.map(
+                            <h5>Preferred Sport:</h5> 
+                            <div style={{textWrap: "wrap", whiteSpace: "wrap"}}>| {user.preferred_sports.map(
                                 (sport) => (
                                     ` ${sport} | `
                                 )
-                            )}
+                            )}</div>
                         </>}
 
                 </Col>

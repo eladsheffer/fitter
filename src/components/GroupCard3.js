@@ -116,10 +116,10 @@ const GroupCard3 = (props) => {
 
             <Row>
                         <Col>
-                            <h6>Preferred Sports: |  
-                            {group.preferred_sports.map((sport) => (
+                            <h6>Preferred Sports:  
+                            <div style={{textWrap: "wrap", whiteSpace: "wrap"}}>|{group.preferred_sports.map((sport) => (
                                 ` ${sport} | `
-                            ))} </h6>
+                            ))} </div></h6>
                         </Col>
 
                     </Row>
