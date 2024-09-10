@@ -8,37 +8,51 @@ import { useSelector } from "react-redux";
 import { green } from "@mui/material/colors";
 import { formatFriendlyDate } from "../features/apiService";
 import LinearProgress from '@mui/material/LinearProgress';
+import UserCard from "../components/UserCard";
+import { getData } from "../features/apiService";
 
 export default function EventPage() {
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   const activeUser = useSelector((state) => state.user.value);
   let { id } = useParams();
   const [event, setEvent] = useState(null);
   const [organizer, setOrganizer] = useState(null);
+  const [attendees, setAttendees] = useState([]);
   const defaultEventImage = "/icons/event.png";
   const [eventImage, setEventImage] = useState(defaultEventImage);
 
-  async function getEvent() {
-    // Fetch event data
-    const urlEvent = `${process.env.REACT_APP_SERVER_URL}events/${id}`;
-    const reqEvent = await fetch(urlEvent);
-    const reqBodyEvent = await reqEvent.json();
-    const organizerID = reqBodyEvent.organizer;
-    setEvent(reqBodyEvent);
-    if (reqBodyEvent.image) {
-      setEventImage(reqBodyEvent.image);
+
+
+  const fetchEventAndAttendees = async () => {
+
+    // Fetch evnet data
+    let organizerId = null;
+    const eventData = await getData(`${serverUrl}events/${id}/`);
+    if (eventData) {
+      setEvent(eventData);
+      if (eventData.image) {
+        setEventImage(eventData.image);
+      }
+      organizerId = eventData.organizer;
     }
 
-    // Fetch organizer data
-    if (organizerID) {
-      const urlOrganizer = `${process.env.REACT_APP_SERVER_URL}users/${organizerID}`;
-      const reqOrganizer = await fetch(urlOrganizer);
-      const reqBodyOrganizer = await reqOrganizer.json();
-      setOrganizer(reqBodyOrganizer);
+    // Fetch attendees data
+    const attendeesData = await getData(`${serverUrl}events/${id}/get_event_attendees/`);
+    if (attendeesData) {
+      setAttendees(attendeesData);
     }
-  }
+
+    if (organizerId) {
+      const organizerData = await getData(`${serverUrl}users/${organizerId}/`);
+      if (organizerData) {
+        setOrganizer(organizerData);
+      }
+    }
+
+  };
 
   useEffect(() => {
-    getEvent();
+    fetchEventAndAttendees();
   }, []);
 
   return (
@@ -103,6 +117,46 @@ export default function EventPage() {
                 <h3>Description</h3>
                 <p>{event.description}</p>
               </Col>
+            </Row>
+            {
+              organizer &&
+              <Row>
+                <Col lg={1} md={2} sm={2} xs={3}>
+                  <h4>Organizer: </h4>
+
+                </Col>
+                <Col>
+                  <UserCard user={organizer} />
+                </Col>
+
+              </Row>
+            }
+
+            <h1
+              style={{
+                marginInline: "auto",
+                marginTop: "2rem",
+              }}
+            >
+              Attendees
+            </h1>
+
+
+            <Row
+              style={{
+                marginInline: "auto",
+                marginLeft: "2rem",
+              }}
+            >
+              {attendees.length > 0 ? (
+                attendees.map((user, i) => (
+                  <Col lg={3} md={4} sm={6} xs={12}>
+                    <UserCard key={i} user={user} />
+                  </Col>
+                ))
+              ) : (
+                <p style={{ color: "red" }}>No attendees found.</p>
+              )}
             </Row>
             <Row>
               <Col>

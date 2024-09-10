@@ -119,16 +119,16 @@ const GroupPage = () => {
                                     ))} </div>
                             </Col>
                         </Row>
-                        <Row>
+                        <Row style={{marginTop:"2rem"}}>
                             <Col>
                                 <h4>{`${group.members.length} Members`}</h4>
                             </Col>
                         </Row>
                         {
                             admin &&
-                        <Row>
+                        <Row style={{marginTop:"2rem"}}>
                             <Col lg={1} md={2} sm={2} xs={3}>
-                                <h4>Admin: </h4>
+                                <h4 >Admin: </h4>
                                
                             </Col>
                             <Col>
@@ -173,7 +173,6 @@ const GroupPage = () => {
 
                         <Row
                             style={{
-                                marginTop: "4rem",
                                 marginInline: "auto",
                                 marginLeft: "2rem",
                             }}

@@ -198,10 +198,6 @@ export default function SearchPage() {
                                         onChange={(event) => handleFilterChange("location", event)}
                                         ref={el => checkboxRefs.current[location] = el}
                                     />)))}
-
-                            {/* {groupLocations.map((location, i) => (
-                        <Dropdown.Item key={location}>{location}</Dropdown.Item>
-                      ))} */}
                         </Dropdown.Menu>
                     </Dropdown>
                 </Col>
