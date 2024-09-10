@@ -91,6 +91,7 @@ function FitterNavbar() {
 
   const handleSearch = async () => {
     navigate(`/search?key=${searchKey}`);
+    setSearchKey('');
   };
 
   const handleOpenNavMenu = (event) => {
@@ -165,7 +166,7 @@ function FitterNavbar() {
             }}
           >
             <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-              <img src={logo} alt="Fitter" height="50" />
+              <img src={logo} alt="Fitter" width="60" height="40" />
             </Link>
           </Typography>
           <Typography
@@ -187,13 +188,14 @@ function FitterNavbar() {
           </Typography>
           <Search>
             <StyledInputBase
-              placeholder="Search…"
+              placeholder="Search groups/events..."
               inputProps={{ 'aria-label': 'search' }}
-              onChange={(e) => setSearchKey(e.target.value)}
-              onKeyDown={(e) => { if (e.key === 'Enter') handleSearch() }}
+              onChange={(event) => setSearchKey(event.target.value)}
+              value={searchKey}
+              onKeyDown={(event) => { if (event.key === 'Enter') handleSearch() }}
             />
           </Search>
-          <IconButton size="large" aria-label="search" color="inherit" onClick={handleSearch}><SearchIcon /></IconButton>
+          <IconButton size="large" aria-label="search" color="inherit" onClick={()=>handleSearch()}><SearchIcon /></IconButton>
 
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
