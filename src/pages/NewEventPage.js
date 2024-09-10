@@ -24,14 +24,13 @@ const NewEventPage = (props) => {
 
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const citiesUrl = process.env.REACT_APP_CITIES_URL;
+    const streetsUrl = process.env.REACT_APP_STREETS_URL;
     let { groupId } = useParams();
     groupId = useSelector((state) => state.modal.value.groupId) || groupId;
 
     const activeUser = useSelector((state) => state.user.value);
     const titleEventInput = useRef(null);
     const descriptionEventInput = useRef(null);
-    // const locationEventInput = useRef(null);
-    const eventVisibilityInput = useRef(null);
     const eventDateTimeInput = useRef(null);
     const eventSportTypeInput = useRef(null);
     const eventProfilePictureInput = useRef(null);
@@ -40,14 +39,21 @@ const NewEventPage = (props) => {
 
     const [errorMessages, setErrorMessages] = useState(null);
     const [successMessages, setSuccessMessages] = useState(null);
-    const [formValues, setFormValues] = useState({ title: true, description: true, location: true, visibility: true, location: true, sportType: true });
+    const [formValues, setFormValues] = useState({ title: true, description: true, location: true, location: true, sportType: true });
     const [cities, setCities] = useState([]);
+    const [streets, setStreets] = useState([]);
     const [city, setCity] = useState(null);
     const [eventProfilePicture, setEventProfilePicture] = useState(null);
     const [disabledAgeSlider, setDisabledAgeSlider] = useState(true);
     const [ageRange, setAgeRange] = useState([20, 40]);
     const [value, setValue] = useState('');
 
+    const fetchStreets = async (city) => {
+        const data = await getData(`${streetsUrl}&q=${city}`);
+        if (!data) return;
+        const streets = data.result.records.map((street) => street.שם_רחוב.trim().replace('(', ')').replace(')', '('));
+        setStreets(streets);
+    };
 
     useEffect(() => {
         const fetchCities = async () => {
@@ -55,7 +61,6 @@ const NewEventPage = (props) => {
             if (!data) return;
             const cities = data.result.records.map((city) => city.שם_ישוב.trim().replace('(', ')').replace(')', '('));
             setCities(cities);
-            console.log(dayjs());
         };
 
         fetchCities();
@@ -72,13 +77,14 @@ const NewEventPage = (props) => {
     }
 
     const handleAutocompleteChange = (event, value) => {
-        
-        if (!value){
+
+        if (!value) {
             setFormValues({ ...formValues, ["location"]: "required field" });
             setCity(null);
         }
         else {
             setCity(value);
+            //fetchStreets(value);
             setFormValues({ ...formValues, ["location"]: false });
         }
     };
@@ -104,8 +110,8 @@ const NewEventPage = (props) => {
             return;
         }
 
-        if (!titleEventInput.current.value || !descriptionEventInput.current.value || !eventVisibilityInput.current.value || !city || !eventSportTypeInput.current.value || !eventDateTimeInput.current.value || !eventGenderInput.current.value) {
-            setFormValues({ title: !titleEventInput.current.value, description: !descriptionEventInput.current.value, visibility: !eventVisibilityInput.current.value, location: !city, sportType: !eventSportTypeInput.current.value });
+        if (!titleEventInput.current.value || !descriptionEventInput.current.value || !city || !eventSportTypeInput.current.value || !eventDateTimeInput.current.value || !eventGenderInput.current.value) {
+            setFormValues({ title: !titleEventInput.current.value, description: !descriptionEventInput.current.value, location: !city, sportType: !eventSportTypeInput.current.value });
             return;
         }
 
@@ -114,7 +120,6 @@ const NewEventPage = (props) => {
         newEvent.append('title', titleEventInput.current.value);
         newEvent.append('description', descriptionEventInput.current.value);
         newEvent.append('location', city);
-        newEvent.append('visibility', eventVisibilityInput.current.value);
         newEvent.append('date_and_time', eventDateTimeInput.current.value);
         newEvent.append('sport_type', eventSportTypeInput.current.value);
         newEvent.append('image', eventProfilePicture);
@@ -155,8 +160,6 @@ const NewEventPage = (props) => {
 
     return (
         <div className='login'>
-            {successMessages && (<Alert severity='success' >{successMessages}</Alert>)}
-            {errorMessages && (<Alert severity='error'>{errorMessages}</Alert>)}
             <Stack spacing={2} margin={2}>
                 <TextField variant="outlined" inputRef={titleEventInput} name="title" error={formValues.title} label="Title" helperText="required field" required onChange={handleChange}></TextField>
                 <TextField variant="outlined" inputRef={descriptionEventInput} name="description" label="Description" error={formValues.description} helperText="required field" required onChange={handleChange}></TextField>
@@ -171,22 +174,19 @@ const NewEventPage = (props) => {
                         renderInput={(params) => <TextField {...params} label="Location" required error={formValues.location} onChange={handleAutocompleteChange} />}
                     />
                 </FormControl>
+
                 <FormControl fullWidth required>
-                    <InputLabel id="demo-simple-select-label" error={formValues.visibility}>Visibility</InputLabel>
-                    <Select inputRef={eventVisibilityInput}
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        name="visibility"
-                        error={formValues.visibility}
-                        label="Visibility"
-                        onChange={handleChange}
-                        defaultValue={""}
-                    >
-                        <MenuItem value={"public"}>public</MenuItem>
-                        <MenuItem value={"private"}>private</MenuItem>
-                        <MenuItem value={"invitation_only"}>invitation only</MenuItem>
-                    </Select>
+                    <Autocomplete
+                        disablePortal
+                        id="combo-box-location"
+                        options={streets}
+                        error={formValues.location}
+                        label="Street"
+                        onChange={handleAutocompleteChange}
+                        renderInput={(params) => <TextField {...params} label="Street" required error={formValues.street} onChange={handleAutocompleteChange} />}
+                    />
                 </FormControl>
+
                 <DateTimePicker required inputRef={eventDateTimeInput}
                     label="Event Date & Time"
                     format="YYYY-MM-DD hh:mm a"
@@ -195,7 +195,7 @@ const NewEventPage = (props) => {
                 //onChange={(newValue) => setValue(newValue)}
                 />
                 <FormControl fullWidth required>
-                    <InputLabel id="demo-simple-select-label"  error={formValues.sportType} >Sport Type</InputLabel>
+                    <InputLabel id="demo-simple-select-label" error={formValues.sportType} >Sport Type</InputLabel>
                     <Select inputRef={eventSportTypeInput}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
@@ -257,7 +257,8 @@ const NewEventPage = (props) => {
                     type="number"
                     inputMode='numeric'
                 />
-
+                {successMessages && (<Alert severity='success' >{successMessages}</Alert>)}
+                {errorMessages && (<Alert severity='error'>{errorMessages}</Alert>)}
                 <Button color="primary" variant="contained" onClick={createEvent}>Create Event</Button>
             </Stack>
         </div>

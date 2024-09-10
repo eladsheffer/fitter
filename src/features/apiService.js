@@ -1,5 +1,5 @@
 
-//const baseUrl = 'https://fitter-backend.onrender.com/';
+// This file contains the functions to interact with the API
 
 const getAuthToken = () => {
     // Retrieve the authentication token from wherever you have stored it
@@ -60,7 +60,10 @@ const postData = async (url, data, login = false) => {
         // Store auth token only if it's present in the response
         if (responseData.token) {
             localStorage.setItem('authToken', responseData.token);
+            console.log("API SERVICE - TOKEN: ", responseData.token);
         }
+        else
+            console.log("API SERVICE - NO TOKEN");
 
         if (status === 200 || status === 201) {
             console.log("API SERVICE - SUCCESS: ", responseData);
@@ -173,7 +176,7 @@ const deleteData = async (url) => {
     try {
         const response = await fetch(url, settings);
         const status = response.status;
-        if (status === 200)
+        if (status === 204)
             return true;
         console.log("API SERVICE - FAILED: ", response);
         return false;

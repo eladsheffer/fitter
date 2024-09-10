@@ -26,8 +26,10 @@ const GroupCard3 = (props) => {
     const adminIcon = '/icons/admin.png';
 
     const joinGroup = async () => {
-        if (!activeUser)
+        if (!activeUser){
             navigate('/login');
+            return;
+        }
 
         let url = serverUrl + `groups/${group.id}/add_user/`;
         let data = {
@@ -76,10 +78,6 @@ const GroupCard3 = (props) => {
         dispatch(showModal());
     };
 
-    const login = () => {
-        navigate('/login');
-    };
-
     return (
         <div>
             <Row>
@@ -88,14 +86,14 @@ const GroupCard3 = (props) => {
                         <Image
                             src={profile_picture}
                             alt="Group thumbnail"
-                            style={{ width: "200px", height: "150px" }}
+                            style={{ width: "200px", height: "150px", objectFit: "cover", objectPosition: "center" }}
                         />
                     </Link>
                 </Col>
                
 
 
-                <Col lg={6} md={6} sm={6} xs="6" style={{textWrap: "wrap", whiteSpace: "wrap", textOverflow: "ellipsis"}}>
+                <Col lg={6} md={6} sm={6} xs="6" style={{textWrap: "wrap", whiteSpace: "wrap", textOverflow: "ellipsis", overflowX: "hidden"}}>
                     <Row>
                         <Link to={`/groups/${group.id}/`} style={{textDecoration: "none"}}>
                             <h5>{group.name}</h5>
@@ -118,10 +116,10 @@ const GroupCard3 = (props) => {
 
             <Row>
                         <Col>
-                            <h6>Preferred Sports: |  
-                            {group.preferred_sports.map((sport) => (
+                            <h6>Preferred Sports:  
+                            <div style={{textWrap: "wrap", whiteSpace: "wrap"}}>|{group.preferred_sports.map((sport) => (
                                 ` ${sport} | `
-                            ))} </h6>
+                            ))} </div></h6>
                         </Col>
 
                     </Row>
@@ -136,7 +134,7 @@ const GroupCard3 = (props) => {
             <Row className="justify-between gap-5">
                 <Col>
                     {activeUser === null ? (
-                        <Button variant="outline-warning" onClick={login}>Login</Button>
+                        <Button variant="outline-warning" onClick={()=>joinGroup()}>Join</Button>
                     ) : isAdmin ? (
                         <>
                             <Button variant="outline-primary" onClick={editGroup}>Edit Group</Button>

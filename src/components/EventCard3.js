@@ -32,8 +32,10 @@ const EventCard3 = (props) => {
     };
 
     const joinEvent = async () => {
-        if (!activeUser)
+        if (!activeUser){
             navigate('/login');
+            return; 
+        }
 
         let url = serverUrl + `events/${event.id}/add_user/`;
         let data = {
@@ -75,11 +77,6 @@ const EventCard3 = (props) => {
         console.log('Remove event:', event);
     };
 
-    const login = () => {
-        navigate('/login');
-    };
-
-
     return (
         <div>
             <Row>
@@ -95,7 +92,7 @@ const EventCard3 = (props) => {
 
 
 
-                <Col lg={6} md={6} sm={6} xs="6" style={{ textWrap: "wrap", whiteSpace: "wrap", textOverflow: "ellipsis" }}>
+                <Col lg={6} md={6} sm={6} xs="6" style={{ textWrap: "wrap", whiteSpace: "wrap", textOverflow: "ellipsis", overflowX: "hidden" }}>
                     <Row>
                         <Link to={`/events/${event.id}/`} style={{ textDecoration: "none" }}>
                             <h5>{event.title}</h5>
@@ -139,7 +136,7 @@ const EventCard3 = (props) => {
                 <Row className="justify-between gap-5">
                     <Col>
                         {activeUser === null ? (<>
-                            <Button variant="outline-warning" onClick={login}>Login</Button>
+                            <Button variant="outline-warning" onClick={joinEvent}>Join</Button>
                         </>) : isOrganizer ? (<>
                             <Button variant="outline-primary" onClick={editEvent}>Edit Event</Button>
                         </>) : isAttendee ? (<>

@@ -21,6 +21,7 @@ import { useEffect } from "react";
 import sports from "../data-model/sports.json";
 import EventCard3 from "../components/EventCard3";
 import { formatFriendlyDate } from "../features/apiService";
+import { getData } from "../features/apiService";
 
 const EventsPage = () => {
   // States
@@ -29,7 +30,7 @@ const EventsPage = () => {
   const [events, setEvents] = useState([]);
   const [eventDates, setEventDates] = useState([]);
   const dispatch = useDispatch();
-  
+
 
   const defaultEventImage = "/icons/event.png";
 
@@ -44,23 +45,28 @@ const EventsPage = () => {
   function onChange(newDate) {
     setDate(newDate);
   }
-  
+
   const compareDates = (a, b) => {
     return a.slice(0, 10) === b.slice(0, 10);
   };
 
   async function getEvents() {
-    const url = `${process.env.REACT_APP_SERVER_URL}events`;
-    const req = await fetch(url);
-    const res = await req.json();
-    setEvents(res.results.sort((a, b) => new Date(a.date_and_time) - new Date(b.date_and_time)));
-    setEventDates(res.results.map((event) =>  event.users_attended.includes(activeUser.id) && event.date_and_time.slice(0, 10)));
+    console.log(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate());
+    let url = `${process.env.REACT_APP_SERVER_URL}events/?date_range_after=${date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()}`;
+    let data = await getData(url);  
+    if (!data) return;
+    setEvents(data.sort((a, b) => new Date(a.date_and_time) - new Date(b.date_and_time)));
+    if (activeUser){
+      url =`${process.env.REACT_APP_SERVER_URL}users/get_user_events/?email=${activeUser.email}`;
+      data = await getData(url);
+      setEventDates(data.map((event) => event.users_attended.includes(activeUser.id) && event.date_and_time.slice(0, 10)));
+    }
   }
 
   // Effects
   useEffect(() => {
     getEvents();
-  }, [eventUpdated]);
+  }, [eventUpdated, activeUser, date]);
 
   // UI
   return (
@@ -79,15 +85,15 @@ const EventsPage = () => {
                 onChange={onChange}
                 value={date}
                 showNeighboringMonth={true}
-                tileClassName={({ date }) =>{
+                tileClassName={({ date }) => {
                   let day = date.getDate();
                   let month = date.getMonth() + 1;
-                  if (date.getMonth() < 10) 
+                  if (date.getMonth() < 10)
                     month = "0" + month;
                   if (date.getDate() < 10)
-                    day = "0" + day;  
+                    day = "0" + day;
                   let formattedDate = `${date.getFullYear()}-${month}-${day}`;
-                return eventDates.find(val=> val===formattedDate) ? "highlight" : null;
+                  return eventDates.find(val => val === formattedDate) ? "highlight" : null;
                 }}
 
                 className="border rounded"
@@ -115,7 +121,7 @@ const EventsPage = () => {
               </Row>
               {/* Events */}
               <Row>
-                <h2 className="mt-5 p-0">{`Events - ${date.getDate()}/${date.getMonth() + 1
+                <h2 className="mt-5 p-0">{`Events Starting from: ${date.getDate()}/${date.getMonth() + 1
                   }/${date.getFullYear()}`}</h2>
                 {/* {events.map((event, i) => (
                   <>
@@ -125,26 +131,26 @@ const EventsPage = () => {
                  </>
                 ))} */}
 
-<>
-      {events.map((event, i) => {
-        // Get the date part of the current event
-        
+                <>
+                  {events.map((event, i) => {
+                    // Get the date part of the current event
 
-        let isDifferentDate = true;
-        if (i > 0) {
-          // Get the date part of the previous event
-          isDifferentDate = events[i - 1].date_and_time.slice(0, 10) !== event.date_and_time.slice(0, 10);
-        }
-        
 
-        return (
-          <>
-            {isDifferentDate && <h3 style={{color: "blue", fontWeight:"bold", borderBottom:"5px solid", marginTop:"2rem"}}>{formatFriendlyDate(event.date_and_time)}</h3>}
-            <EventCard3 event={event} key={i}/>
-          </>
-        );
-      })}
-    </>
+                    let isDifferentDate = true;
+                    if (i > 0) {
+                      // Get the date part of the previous event
+                      isDifferentDate = events[i - 1].date_and_time.slice(0, 10) !== event.date_and_time.slice(0, 10);
+                    }
+
+
+                    return (
+                      <>
+                        {isDifferentDate && <h3 style={{ color: "blue", fontWeight: "bold", borderBottom: "5px solid", marginTop: "2rem" }}>{formatFriendlyDate(event.date_and_time)}</h3>}
+                        <EventCard3 event={event} key={i} />
+                      </>
+                    );
+                  })}
+                </>
 
 
 

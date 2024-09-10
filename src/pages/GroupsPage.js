@@ -34,37 +34,36 @@ const GroupsPage = () => {
         navigate(`/groups/${group.id}`);
     }
 
-    useEffect(() => {
-        const fetchGroups = async () => {
-            if (!activeUser){
-                let data = await getData(serverUrl + 'groups');
-                if (!data) return;
-                setGroupsUserNotIn(data.results);
-            }
-            else{
-
-            let data = await getData(serverUrl + 'users/get_user_groups_as_admin/?email=' + activeUser.email);
-            if (!data) return;
-            setGroupsOfUserAsAdmin(data);
-
-            data = await getData(serverUrl + 'users/get_user_groups_as_member_not_as_admin/?email=' + activeUser.email);
-            if (!data) return;
-            setGroupsOfUserAsMember(data);
-
-            data = await getData(serverUrl + 'users/get_groups_user_not_in/?email=' + activeUser.email);
+    const fetchGroups = async () => {
+        if (!activeUser){
+            let data = await getData(serverUrl + 'groups');
             if (!data) return;
             setGroupsUserNotIn(data);
-            }
-
-
         }
-        fetchGroups();
+        else{
 
+        let data = await getData(serverUrl + 'users/get_user_groups_as_admin/?email=' + activeUser.email);
+        if (!data) return;
+        setGroupsOfUserAsAdmin(data);
+
+        data = await getData(serverUrl + 'users/get_user_groups_as_member_not_as_admin/?email=' + activeUser.email);
+        if (!data) return;
+        setGroupsOfUserAsMember(data);
+
+        data = await getData(serverUrl + 'users/get_groups_user_not_in/?email=' + activeUser.email);
+        if (!data) return;
+        setGroupsUserNotIn(data);
+        }
+    };
+
+    useEffect(() => {
+        
+        fetchGroups();
         // Cleanup function if needed
         return () => {
             // Cleanup code here, if any
         };
-    }, [groupUpdated]);
+    }, [groupUpdated, activeUser]);
 
     const createGroup = () => {
         if (!activeUser) {
@@ -167,6 +166,7 @@ const GroupsPage = () => {
             <h1
                 style={{
                     marginTop: "4rem",
+                    marginBottom: "2rem",
                 }}
             >
                 Groups You Admin
@@ -188,6 +188,7 @@ const GroupsPage = () => {
             <h1
                 style={{
                     marginTop: "4rem",
+                    marginBottom: "2rem",
                 }}
             >
                 Groups You Are A Member Of
@@ -209,6 +210,7 @@ const GroupsPage = () => {
              <h1
                 style={{
                     marginTop: "4rem",
+                    marginBottom: "2rem",
                 }}
             >
                 Groups You can Join:

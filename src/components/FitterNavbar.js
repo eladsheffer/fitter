@@ -1,11 +1,11 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import logo from "@/../../public/icons/fitter-logo.jpg";
 import user from "@/../../public/icons/user.png";
 import { useSelector } from "react-redux";
-import { Link , useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { logout } from '../features/user';
-import { getData,postData } from "../features/apiService";
+import { getData, postData } from "../features/apiService";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -61,10 +61,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     paddingLeft: `calc(${theme.spacing(1)})`,
     transition: theme.transitions.create('width'),
     [theme.breakpoints.up('sm')]: {
-      width: '12ch',
-      '&:focus': {
-        width: '20ch',
-      },
+      width: '25ch',
     },
   },
 }));
@@ -75,9 +72,9 @@ function FitterNavbar() {
   const default_profile_picture = user;
 
   const dispatch = useDispatch();
-  const activeUser = useSelector((state) => (state.user? state.user.value: null));
+  const activeUser = useSelector((state) => (state.user ? state.user.value : null));
 
-  const [searchKey , setSearchKey] = useState('');
+  const [searchKey, setSearchKey] = useState('');
   const navigate = useNavigate();
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -86,23 +83,17 @@ function FitterNavbar() {
   const logoutFunc = async () => {
 
     let data = await postData(serverUrl + 'users/logout/', null);
-      dispatch(logout()); 
+    dispatch(logout());
+    localStorage.removeItem('authToken');
     handleCloseUserMenu();
     navigate('/');
   }
 
   const handleSearch = async () => {
-    let groupsData = await getData(serverUrl + `groups/?search=${searchKey}`);
-    let eventsData = await getData(serverUrl + `events/?search=${searchKey}`);
+    navigate(`/search?key=${searchKey}`);
+    setSearchKey('');
+  };
 
-    let searchResults = {
-      groupsData: groupsData.results,
-      eventsData: eventsData.results
-    }
-    navigate(`/search?key=${searchKey}`, {state: searchResults});
-
-    }
-  
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -112,7 +103,7 @@ function FitterNavbar() {
 
   const handleCloseNavMenu = (event) => {
     setAnchorElNav(null);
-    if (event.currentTarget.innerText !=='')
+    if (event.currentTarget.innerText !== '')
       navigate(`/${event.currentTarget.innerText}/`.toLocaleLowerCase());
   };
 
@@ -124,7 +115,7 @@ function FitterNavbar() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-        <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -175,7 +166,7 @@ function FitterNavbar() {
             }}
           >
             <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <img src={logo } alt="Fitter" height="50" />
+              <img src={logo} alt="Fitter" width="60" height="40" />
             </Link>
           </Typography>
           <Typography
@@ -192,20 +183,21 @@ function FitterNavbar() {
             }}
           >
             <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <img src={logo} alt="Fitter" width="100" height="50" />
+              <img src={logo} alt="Fitter" width="100" height="50" />
             </Link>
           </Typography>
           <Search>
             <StyledInputBase
-              placeholder="Search…"
+              placeholder="Search groups/events..."
               inputProps={{ 'aria-label': 'search' }}
-              onChange={(e) => setSearchKey(e.target.value)}
-              onKeyDown={(e) => {if (e.key === 'Enter') handleSearch()}}
+              onChange={(event) => setSearchKey(event.target.value)}
+              value={searchKey}
+              onKeyDown={(event) => { if (event.key === 'Enter') handleSearch() }}
             />
           </Search>
-          <IconButton size="large" aria-label="search" color="inherit" onClick={handleSearch}><SearchIcon /></IconButton>
+          <IconButton size="large" aria-label="search" color="inherit" onClick={()=>handleSearch()}><SearchIcon /></IconButton>
 
-          
+
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
@@ -242,22 +234,25 @@ function FitterNavbar() {
               onClose={handleCloseUserMenu}
             >
 
-              {activeUser && <MenuItem key="logout" onClick={logoutFunc}>
-                  <Typography textAlign="center">Logout</Typography>
-                </MenuItem>}
-                
-                {activeUser && <Link to="/edit-profile/" style={{textDecoration: "none"}}><MenuItem key="profile" onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">Settings</Typography>
-                  
-                </MenuItem></Link>}
+              {activeUser && <Link to={`/users/${activeUser.id}/`} style={{ textDecoration: "none" }}><MenuItem key="profile" onClick={handleCloseUserMenu}>
+                <Typography textAlign="center">Profile</Typography>
+              </MenuItem></Link>}
 
-                {!activeUser &&  <Link style={{textDecoration: "none"}} to="/login"><MenuItem key="login" onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">Login</Typography>
-                </MenuItem></Link>}
-                {!activeUser &&<Link to="/signup" style={{textDecoration: "none"}}> <MenuItem key="signup" onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">Signup</Typography>
-                  
-                </MenuItem></Link>}
+              {activeUser && <Link to="/edit-profile/" style={{ textDecoration: "none" }}><MenuItem key="profile" onClick={handleCloseUserMenu}>
+                <Typography textAlign="center">Settings</Typography>
+              </MenuItem></Link>}
+
+              {activeUser && <MenuItem key="logout" onClick={logoutFunc}>
+                <Typography textAlign="center">Logout</Typography>
+              </MenuItem>}
+
+              {!activeUser && <Link style={{ textDecoration: "none" }} to="/login"><MenuItem key="login" onClick={handleCloseUserMenu}>
+                <Typography textAlign="center">Login</Typography>
+              </MenuItem></Link>}
+              {!activeUser && <Link to="/signup" style={{ textDecoration: "none" }}> <MenuItem key="signup" onClick={handleCloseUserMenu}>
+                <Typography textAlign="center">Signup</Typography>
+
+              </MenuItem></Link>}
 
 
 

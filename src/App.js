@@ -12,6 +12,7 @@ import FitterNavbar from "./components/FitterNavbar";
 import NewGroupPage from "./pages/NewGroupPage";
 import NewEventPage from "./pages/NewEventPage";
 import SearchPage from "./pages/SearchPage";
+import SearchPage2 from "./pages/SearchPage2";
 import "bootstrap/dist/css/bootstrap.min.css";
 import UserPage from "./pages/UserPage";
 import EditProfilePage from "./pages/EditProfilePage";
@@ -67,7 +68,7 @@ function App() {
         <Route path="/new-group" element={<NewGroupPage />} />
         <Route path="/new-event/:id" element={<NewEventPage />} />
         <Route path="/new-event" element={<NewEventPage />} />
-        <Route path="/search" element={<SearchPage />} />
+        <Route path="/search" element={<SearchPage2 />} />
         <Route path="/users/:id" element={<UserPage />} />
         <Route path="/edit-profile" element={<EditProfilePage />} />
         <Route path="/edit-group/:id/" element={<EditGroupPage />} />

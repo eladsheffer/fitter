@@ -36,7 +36,6 @@ const EditEventPage = (props) => {
     const activeUser = useSelector((state) => state.user.value);
     const titleEventInput = useRef(null);
     const descriptionEventInput = useRef(null);
-    const eventVisibilityInput = useRef(null);
     const eventDateTimeInput = useRef(null);
     const eventSportTypeInput = useRef(null);
     const eventProfilePictureInput = useRef(null);
@@ -48,12 +47,11 @@ const EditEventPage = (props) => {
     const [event, setEvent] = useState(null);
     const [eventProfilePictureToShow, setEventProfilePictureToShow] = useState(null);
     const [location, setLocation] = useState(null);
-    const [visibility, setVisibility] = useState(null);
     const [gender, setGender] = useState(null);
     const [sportType, setSportType] = useState(null);
     const [errorMessages, setErrorMessages] = useState(null);
     const [successMessages, setSuccessMessages] = useState(null);
-    const [formValues, setFormValues] = useState({ title: true, description: true, location: true, visibility: true })
+    const [formValues, setFormValues] = useState({ title: true, description: true, location: true })
     const [cities, setCities] = useState([]);
     const [eventProfilePicture, setEventProfilePicture] = useState(null);
     const [disabledAgeSlider, setDisabledAgeSlider] = useState(true);
@@ -89,7 +87,6 @@ const EditEventPage = (props) => {
             setLocation(eventData.location);
 
             setEventProfilePictureToShow(eventData.image);
-            setVisibility(eventData.visibility);
             setGender(eventData.gender);
             setSportType(eventData.sport_type);
             if (eventData.min_age || eventData.max_age) {
@@ -139,7 +136,6 @@ const EditEventPage = (props) => {
             newEvent.append('description', descriptionEventInput.current.value);
         }
         newEvent.append('location', location);
-        newEvent.append('visibility', eventVisibilityInput.current.value);
         newEvent.append('gender', eventGenderInput.current.value);
         newEvent.append('sport_type', eventSportTypeInput.current.value);
 
@@ -168,10 +164,10 @@ const EditEventPage = (props) => {
         console.log(event);
         if (event && event.title) {
             console.log(event);
-            setSuccessMessages(`Event "${event.title}" created successfully`);
+            setSuccessMessages(`Event "${event.title}" updated successfully`);
         }
         else {
-            setErrorMessages("Error creating event");
+            setErrorMessages("Error updating event");
         }
     };
 
@@ -207,8 +203,6 @@ const EditEventPage = (props) => {
 
                     <>
                         <RemoveModal show={showRemoveModal} handleClose={() => setShowRemoveModal(false)} title="Delete Event" message="Are you sure you want to delete this event?" handleRemove={deleteEvent} />
-                        {successMessages && (<Alert severity='success' >{successMessages}</Alert>)}
-                        {errorMessages && (<Alert severity='error'>{errorMessages}</Alert>)}
                         <Stack spacing={2} margin={2}>
                             <TextField variant="outlined" inputRef={titleEventInput} name="title" placeholder='Event title is empty and will not be altered' defaultValue={event.title} label="Title"></TextField>
                             <TextField variant="outlined" inputRef={descriptionEventInput} name="description" placeholder='Event description is empty and will not be altered' defaultValue={event.description} label="Description"></TextField>
@@ -223,19 +217,6 @@ const EditEventPage = (props) => {
                                     onChange={(e, value) => setLocation(value)}
                                     renderInput={(params) => <TextField {...params} label="Location" />}
                                 />
-                            </FormControl>
-                            <FormControl fullWidth>
-                                <InputLabel id="demo-simple-select-label">Visibility</InputLabel>
-                                <Select inputRef={eventVisibilityInput} value={visibility} onChange={(e) => setVisibility(e.target.value)}
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    name="visibility"
-                                    label="Visibility"
-                                >
-                                    <MenuItem value={"public"}>public</MenuItem>
-                                    <MenuItem value={"private"}>private</MenuItem>
-                                    <MenuItem value={"invitation_only"}>invitation only</MenuItem>
-                                </Select>
                             </FormControl>
                             <DateTimePicker inputRef={eventDateTimeInput}
                                 label="Event Date & Time"
@@ -304,7 +285,8 @@ const EditEventPage = (props) => {
                                 inputMode='numeric'
                                 inputRef={maxParticipantsInput}
                             />
-
+                            {successMessages && (<Alert severity='success' >{successMessages}</Alert>)}
+                            {errorMessages && (<Alert severity='error'>{errorMessages}</Alert>)}
                             <Button color="primary" variant="contained" onClick={updateEvent}>Update Event</Button>
                             <Button color="secondary" variant="contained" onClick={() => setShowRemoveModal(true)}>Delete Event</Button>
                         </Stack>

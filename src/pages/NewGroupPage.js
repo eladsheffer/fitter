@@ -29,8 +29,6 @@ const NewGroupPage = () => {
 
   const groupNameInput = useRef(null);
   const groupDescriptionInput = useRef(null);
-  const groupVisibilityInput = useRef(null);
-  // const cityInput = useRef(null);
   const groupProfilePictureInput = useRef(null);
   const groupProfileImg = useRef(null);
   const genderInput = useRef(null);
@@ -67,15 +65,13 @@ const NewGroupPage = () => {
 
     if (
       !groupNameInput.current.checkValidity() ||
-      !groupDescriptionInput.current.checkValidity() ||
-      !groupVisibilityInput.current.checkValidity()
+      !groupDescriptionInput.current.checkValidity()
     )
       return;
     const newGroup = new FormData();
     newGroup.append("admin", activeUser.id);
     newGroup.append("name", groupNameInput.current.value);
     newGroup.append("description", groupDescriptionInput.current.value);
-    newGroup.append("visibility", groupVisibilityInput.current.value);
     newGroup.append("location", city);
     newGroup.append("min_age", disabledAgeSlider ? 0 : ageRange[0]);
     newGroup.append("max_age", disabledAgeSlider ? 120 : ageRange[1]);
@@ -129,12 +125,6 @@ const NewGroupPage = () => {
 
   return (
     <div className="login">
-      <Alert variant="danger" show={errorMessages}>
-        {errorMessages}
-      </Alert>
-      <Alert variant="success" show={successMessages}>
-        {successMessages}
-      </Alert>
       <Form noValidate validated={validated}>
         <Form.Group className="mb-3" controlId="groupName">
           <Form.Label>Group Name</Form.Label>
@@ -158,21 +148,6 @@ const NewGroupPage = () => {
             ref={groupDescriptionInput}
             onChange={handleChange}
           />
-          <Form.Control.Feedback type="invalid">
-            required field
-          </Form.Control.Feedback>
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>Group Visibility</Form.Label>
-          <Form.Select
-            aria-label="Default select example"
-            required
-            ref={groupVisibilityInput}
-          >
-            <option>public</option>
-            <option>private</option>
-            <option value={"invitation_only"}>invitation only</option>
-          </Form.Select>
           <Form.Control.Feedback type="invalid">
             required field
           </Form.Control.Feedback>
@@ -255,6 +230,12 @@ const NewGroupPage = () => {
           />
         </Form.Group>
         <Box sx={{ width: 300 }}></Box>
+        <Alert variant="danger" show={errorMessages}>
+          {errorMessages}
+        </Alert>
+        <Alert variant="success" show={successMessages}>
+          {successMessages}
+        </Alert>
         <Button variant="primary" className="w-100" onClick={createGroup}>
           Create Group
         </Button>

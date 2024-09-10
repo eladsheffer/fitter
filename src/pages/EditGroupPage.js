@@ -26,14 +26,12 @@ const EditGroupPage = (props) => {
     const [ageRange, setAgeRange] = useState([0, 120]);
     const [disabledAgeSlider, setDisabledAgeSlider] = useState(true);
     const [group, setGroup] = useState({});
-    const [visibility, setVisibility] = useState(null);
     const [gender, setGender] = useState(null);
     const [preferredSports, setPreferredSports] = useState([]);
     const [groupProfilePictureToShow, setGroupProfilePictureToShow] = useState(null);
 
     const groupNameInput = useRef(null);
     const groupDescriptionInput = useRef(null);
-    const groupVisibilityInput = useRef(null);
     const groupProfilePictureInput = useRef(null);
     const groupProfileImg = useRef(null);
     const genderInput = useRef(null);
@@ -59,29 +57,28 @@ const EditGroupPage = (props) => {
     }, []);
 
     useEffect(() => {
-    const fetchGroup = async () => {
-        const groupData = await getData(path);
-        console.log(groupData);
-        if (!groupData) return;
-        setGroup(groupData);
-        setCity(groupData.location);
-        setPreferredSports(groupData.preferred_sports[0].split(","));
-        setGroupProfilePictureToShow(groupData.profile_picture);
-        setVisibility(groupData.visibility);
-        setGender(groupData.gender);
-        if (groupData.min_age || groupData.max_age)
-            setAgeRange([groupData.min_age, groupData.max_age]);
-    };
+        const fetchGroup = async () => {
+            const groupData = await getData(path);
+            console.log(groupData);
+            if (!groupData) return;
+            setGroup(groupData);
+            setCity(groupData.location);
+            setPreferredSports(groupData.preferred_sports);
+            setGroupProfilePictureToShow(groupData.profile_picture);
+            setGender(groupData.gender);
+            if (groupData.min_age || groupData.max_age)
+                setAgeRange([groupData.min_age, groupData.max_age]);
+        };
 
-    fetchGroup();
+        fetchGroup();
 
-    // Cleanup function if needed
-    return () => {
-        // cleanup
-        
-    };
+        // Cleanup function if needed
+        return () => {
+            // cleanup
 
-}, []);
+        };
+
+    }, []);
 
     const editGroup = async () => {
         setErrorMessages(null);
@@ -90,7 +87,7 @@ const EditGroupPage = (props) => {
             alert("Please login to create a group");
             return;
         }
-        
+
         const newGroup = new FormData();
         if (groupNameInput.current.value) {
             newGroup.append('name', groupNameInput.current.value);
@@ -99,7 +96,6 @@ const EditGroupPage = (props) => {
             newGroup.append('description', groupDescriptionInput.current.value);
         }
 
-        newGroup.append('visibility', groupVisibilityInput.current.value);
         newGroup.append('location', city);
         newGroup.append('gender', genderInput.current.value);
 
@@ -108,16 +104,13 @@ const EditGroupPage = (props) => {
             newGroup.append('max_age', ageRange[1]);
         }
 
-        if (groupProfilePicture){
+        if (groupProfilePicture) {
             newGroup.append('profile_picture', groupProfilePicture);
         }
 
         if (sportsInput.current.selectedOptions.length > 0 && sportsInput.current.selectedOptions[0].value !== "") {
             newGroup.append('preferred_sports', Array.from(sportsInput.current.selectedOptions).map((option) => option.value));
         }
-
-        //const preferred_sports = Array.from(sportsInput.current.selectedOptions).map((option) => option.value);
-        //preferred_sports.forEach((sport, i) => newGroup.append(`preferred_sports[${i}]`, sport));
 
         console.log(newGroup);
 
@@ -158,7 +151,7 @@ const EditGroupPage = (props) => {
         const deleted = await deleteData(path);
 
         if (deleted) {
-            navigate(-1);   
+            navigate(-1);
         }
         else {
             setErrorMessages("Error deleting user profile");
@@ -173,12 +166,6 @@ const EditGroupPage = (props) => {
 
                     <div className="login">
                         <RemoveModal show={showDeleteModal} handleClose={() => setShowDeleteModal(false)} title="Delete Group" message="Are you sure you want to delete this group?" handleRemove={deleteGroup} />
-                        <Alert variant="danger" show={errorMessages}>
-                            {errorMessages}
-                        </Alert>
-                        <Alert variant="success" show={successMessages}>
-                            {successMessages}
-                        </Alert>
                         <Form noValidate validated={validated}>
 
                             <Form.Group className="mb-3" controlId="groupName">
@@ -192,25 +179,17 @@ const EditGroupPage = (props) => {
                                 <Form.Label>Group Description</Form.Label>
                                 <Form.Control as="textarea" placeholder="Group description is empty and will not be altered" defaultValue={group.description} ref={groupDescriptionInput} />
                             </Form.Group>
-                            <Form.Group className="mb-3" controlId="formBasicPassword">
-                                <Form.Label>Group Visibility</Form.Label>
-                                <Form.Select aria-label="Default select example" value={visibility} ref={groupVisibilityInput} onChange={(e) => setVisibility(e.target.value)}>
-                                    <option>public</option>
-                                    <option>private</option>
-                                    <option value={"invitation_only"}>invitation only</option>
-                                </Form.Select>
-                            </Form.Group>
                             <Form.Group>
-                        <Form.Label>Location</Form.Label>
-                        <Typeahead
-                            id="basic-typeahead-single"
-                            labelKey="name"
-                            onChange={(selected) => setCity(selected)}
-                            options={cities}
-                            placeholder="Choose location"
-                            defaultInputValue={city}
-                        />
-                </Form.Group>
+                                <Form.Label>Location</Form.Label>
+                                <Typeahead
+                                    id="basic-typeahead-single"
+                                    labelKey="name"
+                                    onChange={(selected) => setCity(selected)}
+                                    options={cities}
+                                    placeholder="Choose location"
+                                    defaultInputValue={city}
+                                />
+                            </Form.Group>
                             <Form.Group className="mb-3" controlId="sports">
                                 <Form.Label>Sports</Form.Label>
                                 <Form.Select multiple aria-label="sports" ref={sportsInput} value={preferredSports} onChange={(e) => setPreferredSports(Array.from(e.target.selectedOptions, option => option.value))}>
@@ -253,15 +232,21 @@ const EditGroupPage = (props) => {
                             <Box sx={{ width: 300 }}>
 
                             </Box>
+                            <Alert variant="danger" show={errorMessages}>
+                                {errorMessages}
+                            </Alert>
+                            <Alert variant="success" show={successMessages}>
+                                {successMessages}
+                            </Alert>
                             <Button variant="primary" className="w-100" onClick={editGroup}>
                                 Edit Group
                             </Button>
                             <br />
                             <br />
-                            <Button variant="danger" className="w-100" onClick={()=>setShowDeleteModal(true)}>
+                            <Button variant="danger" className="w-100" onClick={() => setShowDeleteModal(true)}>
                                 Delete Group
                             </Button>
-                            
+
                         </Form>
                     </div>}
         </div>

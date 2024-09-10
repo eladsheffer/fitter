@@ -77,23 +77,32 @@ const SignupPage = (props) => {
         newUser.append('location', city);
         newUser.append('date_of_birth', dateOfBirthInput.current.value);
         newUser.append('gender', genderInput.current.value);
-        const preferred_sports = Array.from(sportsInput.current.selectedOptions).map((option) => option.value);
-        preferred_sports.forEach((sport, i) => newUser.append(`preferred_sports[${i}]`, sport));
-        newUser.append('profile_picture', userProfilePicture);
-        newUser.append('weight', disabledWeightSlider ? null : weight);
-        newUser.append('height', disabledHeightSlider ? null : height);
+        if (sportsInput.current.selectedOptions.length > 0)
+        newUser.append('preferred_sports', Array.from(sportsInput.current.selectedOptions).map((option) => option.value));
+        if (userProfilePicture)
+            newUser.append('profile_picture', userProfilePicture);
+        if (!disabledWeightSlider)
+            newUser.append('weight', weight);
+        if (!disabledHeightSlider)
+            newUser.append('height', height);
         newUser.append('bio', bioInput.current.value);
 
         console.log(newUser);
-        newUser = await postData(serverUrl + 'users/', newUser, true);
-        if (newUser) {
-            dispatch(login(newUser));
-            setSuccessMessages("User created successfully");
-            navigate("/");
-        }
-        else {
+        let data = await postData(serverUrl + 'users/', newUser, true);
+        if (!data) {
             setErrorMessages("Error creating user");
+            return;
         }
+
+        newUser = data.user;
+        if (!newUser) {
+            setErrorMessages("Error creating user");
+            return;
+        }
+
+        dispatch(login(newUser));
+        setSuccessMessages("User created successfully");
+        navigate("/");
     };
 
     const handleChange = (event) => {
@@ -128,12 +137,6 @@ const SignupPage = (props) => {
                         </p>
                     </>
                 }
-                <Alert variant="danger" show={errorMessages}>
-                    {errorMessages}
-                </Alert>
-                <Alert variant="success" show={successMessages}>
-                    {successMessages}
-                </Alert>
                 <Form noValidate validated={validated}>
                     <Form.Group className="mb-3" controlId="name">
                         <Form.Label>First Name</Form.Label>
@@ -239,6 +242,12 @@ const SignupPage = (props) => {
                         <Form.Label>Bio (Optional)</Form.Label>
                         <Form.Control as="textarea" placeholder="Tell us about yourself" rows={3} ref={bioInput} />
                     </Form.Group>
+                    <Alert variant="danger" show={errorMessages}>
+                        {errorMessages}
+                    </Alert>
+                    <Alert variant="success" show={successMessages}>
+                        {successMessages}
+                    </Alert>
                     <Button type="button" className="w-100" onClick={signup}>
                         Sign Up
                     </Button>
