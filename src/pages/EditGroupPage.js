@@ -112,9 +112,6 @@ const EditGroupPage = (props) => {
             newGroup.append('preferred_sports', Array.from(sportsInput.current.selectedOptions).map((option) => option.value));
         }
 
-        //const preferred_sports = Array.from(sportsInput.current.selectedOptions).map((option) => option.value);
-        //preferred_sports.forEach((sport, i) => newGroup.append(`preferred_sports[${i}]`, sport));
-
         console.log(newGroup);
 
         let group = await patchData(path, newGroup);

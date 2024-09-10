@@ -94,7 +94,7 @@ export default function SearchPage() {
 
     useEffect(() => {
         applyFilters();
-    }, [filter, searchType, reset]);
+    }, [filter, searchType, reset, key]);
 
     const applyFilters = () => {
         if (searchType === 'groups') {
