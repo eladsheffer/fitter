@@ -164,10 +164,10 @@ const EditEventPage = (props) => {
         console.log(event);
         if (event && event.title) {
             console.log(event);
-            setSuccessMessages(`Event "${event.title}" created successfully`);
+            setSuccessMessages(`Event "${event.title}" updated successfully`);
         }
         else {
-            setErrorMessages("Error creating event");
+            setErrorMessages("Error updating event");
         }
     };
 

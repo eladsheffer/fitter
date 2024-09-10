@@ -235,14 +235,17 @@ function FitterNavbar() {
               onClose={handleCloseUserMenu}
             >
 
-              {activeUser && <MenuItem key="logout" onClick={logoutFunc}>
-                <Typography textAlign="center">Logout</Typography>
-              </MenuItem>}
+              {activeUser && <Link to={`/users/${activeUser.id}/`} style={{ textDecoration: "none" }}><MenuItem key="profile" onClick={handleCloseUserMenu}>
+                <Typography textAlign="center">Profile</Typography>
+              </MenuItem></Link>}
 
               {activeUser && <Link to="/edit-profile/" style={{ textDecoration: "none" }}><MenuItem key="profile" onClick={handleCloseUserMenu}>
                 <Typography textAlign="center">Settings</Typography>
-
               </MenuItem></Link>}
+
+              {activeUser && <MenuItem key="logout" onClick={logoutFunc}>
+                <Typography textAlign="center">Logout</Typography>
+              </MenuItem>}
 
               {!activeUser && <Link style={{ textDecoration: "none" }} to="/login"><MenuItem key="login" onClick={handleCloseUserMenu}>
                 <Typography textAlign="center">Login</Typography>
