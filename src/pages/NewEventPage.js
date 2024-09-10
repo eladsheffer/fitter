@@ -189,7 +189,7 @@ const NewEventPage = (props) => {
 
                 <DateTimePicker required inputRef={eventDateTimeInput}
                     label="Event Date & Time"
-                    format="YYYY-MM-DD hh:mm a"
+                     format="YYYY-MM-DD hh:mm"
                     //value={dayjs()}
                     defaultValue={dayjs(dayjs().format('YYYY-MM-DD hh:00'))}
                 //onChange={(newValue) => setValue(newValue)}
