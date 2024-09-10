@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { closeModal } from '../features/modal';
-import { postData, getData } from '../features/apiService';
+import { closeModal } from "../features/modal";
+import { postData, getData } from "../features/apiService";
 // import Button from '@mui/material/Button';
 // import TextField from '@mui/material/TextField';
 // import Dialog from '@mui/material/Dialog';
@@ -9,260 +9,404 @@ import { postData, getData } from '../features/apiService';
 // import DialogContent from '@mui/material/DialogContent';
 // import DialogContentText from '@mui/material/DialogContentText';
 // import DialogTitle from '@mui/material/DialogTitle';
-import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, IconButton, Stack, TextField, InputLabel, Select, MenuItem, FormControl, Box, Alert, Slider } from "@mui/material";
-import { DateTimePicker } from '@mui/x-date-pickers';
+import {
+  Button,
+  Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  FormControlLabel,
+  IconButton,
+  Stack,
+  TextField,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormControl,
+  Box,
+  Alert,
+  Slider,
+} from "@mui/material";
+import { DateTimePicker } from "@mui/x-date-pickers";
 import FormControlContext from "@mui/material/FormControl/FormControlContext";
-import CloseIcon from "@mui/icons-material/Close"
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { Description } from '@mui/icons-material';
-import dayjs from 'dayjs';
+import CloseIcon from "@mui/icons-material/Close";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { Description } from "@mui/icons-material";
+import dayjs from "dayjs";
 import sports from "../data-model/sports.json";
-import { useParams } from 'react-router-dom';
-import Autocomplete from '@mui/material/Autocomplete';
+import { useParams } from "react-router-dom";
+import Autocomplete from "@mui/material/Autocomplete";
 
 const NewEventPage = (props) => {
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
+  const citiesUrl = process.env.REACT_APP_CITIES_URL;
+  const streetsUrl = process.env.REACT_APP_STREETS_URL;
 
-    const serverUrl = process.env.REACT_APP_SERVER_URL;
-    const citiesUrl = process.env.REACT_APP_CITIES_URL;
-    const streetsUrl = process.env.REACT_APP_STREETS_URL;
-    let { groupId } = useParams();
-    groupId = useSelector((state) => state.modal.value.groupId) || groupId;
+  // New gov api
+  const newCitiesUrl = process.env.REACT_APP_CITIES_URL_NEW;
+  const newStreetsUrl = process.env.REACT_APP_STREETS_URL_NEW;
+  const city_name_key = "שם_ישוב";
+  const street_name_key = "שם_רחוב";
+  const cities_data_id = "cities-data";
+  const streets_data_id = "streets-data";
 
-    const activeUser = useSelector((state) => state.user.value);
-    const titleEventInput = useRef(null);
-    const descriptionEventInput = useRef(null);
-    const eventDateTimeInput = useRef(null);
-    const eventSportTypeInput = useRef(null);
-    const eventProfilePictureInput = useRef(null);
-    const ageSliderInput = useRef(null);
-    const eventGenderInput = useRef(null);
+  //   // Get data from the new gov api
+  //   const getData = async (url, query = "", limit = "100") => {
+  //     const path = `${url}&q=${query}&limit=${limit}`;
+  //     try {
+  //       const response = await fetch(path);
+  //       const data = await response.json();
+  //       const status = response.status;
+  //       console.log("NEW_GOV_DATA: ", data);
+  //       if (status === 200) return data;
+  //       return null;
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //       return null;
+  //     }
+  //   };
+  let { groupId } = useParams();
+  groupId = useSelector((state) => state.modal.value.groupId) || groupId;
 
-    const [errorMessages, setErrorMessages] = useState(null);
-    const [successMessages, setSuccessMessages] = useState(null);
-    const [formValues, setFormValues] = useState({ title: true, description: true, location: true, location: true, sportType: true });
-    const [cities, setCities] = useState([]);
-    const [streets, setStreets] = useState([]);
-    const [city, setCity] = useState(null);
-    const [eventProfilePicture, setEventProfilePicture] = useState(null);
-    const [disabledAgeSlider, setDisabledAgeSlider] = useState(true);
-    const [ageRange, setAgeRange] = useState([20, 40]);
-    const [value, setValue] = useState('');
+  const activeUser = useSelector((state) => state.user.value);
+  const titleEventInput = useRef(null);
+  const descriptionEventInput = useRef(null);
+  const eventDateTimeInput = useRef(null);
+  const eventSportTypeInput = useRef(null);
+  const eventProfilePictureInput = useRef(null);
+  const ageSliderInput = useRef(null);
+  const eventGenderInput = useRef(null);
 
-    const fetchStreets = async (city) => {
-        const data = await getData(`${streetsUrl}&q=${city}`);
-        if (!data) return;
-        const streets = data.result.records.map((street) => street.שם_רחוב.trim().replace('(', ')').replace(')', '('));
-        setStreets(streets);
+  const [errorMessages, setErrorMessages] = useState(null);
+  const [successMessages, setSuccessMessages] = useState(null);
+  const [formValues, setFormValues] = useState({
+    title: true,
+    description: true,
+    location: true,
+    location: true,
+    sportType: true,
+  });
+  const [cities, setCities] = useState([]);
+  const [streets, setStreets] = useState([]);
+  const [city, setCity] = useState(null);
+  const [street, setStreet] = useState(null);
+  const [eventProfilePicture, setEventProfilePicture] = useState(null);
+  const [disabledAgeSlider, setDisabledAgeSlider] = useState(true);
+  const [ageRange, setAgeRange] = useState([20, 40]);
+  const [value, setValue] = useState("");
+
+  const fetchStreets = async (city) => {
+    const data = await getData(`${streetsUrl}&q=${city}`);
+    if (!data) return;
+    const streets = data.result.records.map((street) =>
+      street.שם_רחוב.trim().replace("(", ")").replace(")", "(")
+    );
+    console.log("streets: ", streets);
+    setStreets(streets);
+  };
+
+  useEffect(() => {
+    const fetchCities = async () => {
+      const data = await getData(citiesUrl);
+      if (!data) return;
+      const cities = data.result.records.map((city) =>
+        city.שם_ישוב.trim().replace("(", ")").replace(")", "(")
+      );
+      setCities(cities);
     };
 
-    useEffect(() => {
-        const fetchCities = async () => {
-            const data = await getData(citiesUrl);
-            if (!data) return;
-            const cities = data.result.records.map((city) => city.שם_ישוב.trim().replace('(', ')').replace(')', '('));
-            setCities(cities);
-        };
+    fetchCities();
 
-        fetchCities();
+    // Cleanup function if needed
+    return () => {
+      // Cleanup code here, if any
+    };
+  }, []);
 
-        // Cleanup function if needed
-        return () => {
-            // Cleanup code here, if any
-        };
-    }, []);
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        let error = value === "" ? "required field" : false;
-        setFormValues({ ...formValues, [name]: error });
+  useEffect(() => {
+    if (city) {
+      fetchStreets(city);
+      setStreet(null);
+    }
+  }, [city]);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    let error = value === "" ? "required field" : false;
+    setFormValues({ ...formValues, [name]: error });
+  };
+
+  const handleAutocompleteChangeCity = (event, value) => {
+    if (!value) {
+      setFormValues({ ...formValues, ["location"]: "required city" });
+      setCity(null);
+    } else {
+      setCity(value);
+      setFormValues({ ...formValues, ["location"]: false });
+    }
+  };
+
+  const handleAutocompleteChangeStreet = (event, value) => {
+    if (!value) {
+      setFormValues({ ...formValues, ["location"]: "required street" });
+      setStreet(null);
+    } else {
+      setStreet(value);
+      setFormValues({ ...formValues, ["location"]: false });
+    }
+  };
+
+  const handleNumberInputChanged = (event) => {
+    // Extract the new value from the event
+    const newValue = event.target.value;
+    if (newValue.split("")[0] < "1" || newValue.split("")[0] > "9") {
+      return;
+    }
+    // Filter out non-numeric characters and ensure it's non-negative
+    setValue(newValue.replace(/[^0-9]/g, ""));
+  };
+
+  const createEvent = async () => {
+    console.log("Creating event!");
+    setErrorMessages(null);
+    setSuccessMessages(null);
+
+    if (activeUser == null) {
+      alert("Please login to create an event");
+      return;
     }
 
-    const handleAutocompleteChange = (event, value) => {
+    if (
+      !titleEventInput.current.value ||
+      !descriptionEventInput.current.value ||
+      !city ||
+      !street ||
+      !eventSportTypeInput.current.value ||
+      !eventDateTimeInput.current.value ||
+      !eventGenderInput.current.value
+    ) {
+      console.log(
+        `The form is not filled correctly: \nTitle: ${titleEventInput.current.value}\nDescription: ${descriptionEventInput.current.value}\nCity: ${city}\nStreet: ${street}\nSport Type: ${eventSportTypeInput.current.value}\nDate & Time: ${eventDateTimeInput.current.value}\nGender: ${eventGenderInput.current.value}`
+      );
+      setFormValues({
+        title: !titleEventInput.current.value,
+        description: !descriptionEventInput.current.value,
+        location: !city,
+        sportType: !eventSportTypeInput.current.value,
+      });
+      return;
+    }
 
-        if (!value) {
-            setFormValues({ ...formValues, ["location"]: "required field" });
-            setCity(null);
-        }
-        else {
-            setCity(value);
-            //fetchStreets(value);
-            setFormValues({ ...formValues, ["location"]: false });
-        }
-    };
+    console.log(props.group);
+    let newEvent = new FormData();
+    const location = `${city}, ${street}`;
+    newEvent.append("title", titleEventInput.current.value);
+    newEvent.append("description", descriptionEventInput.current.value);
+    newEvent.append("location", location);
+    newEvent.append("date_and_time", eventDateTimeInput.current.value);
+    newEvent.append("sport_type", eventSportTypeInput.current.value);
+    newEvent.append("image", eventProfilePicture);
+    newEvent.append("min_age", disabledAgeSlider ? 0 : ageRange[0]);
+    newEvent.append("max_age", disabledAgeSlider ? 120 : ageRange[1]);
+    newEvent.append("gender", eventGenderInput.current.value);
+    newEvent.append("max_participants", value);
+    newEvent.append("organizer", activeUser.id);
+    if (groupId) newEvent.append("group_organized", groupId);
 
+    console.log(newEvent);
+    let path = serverUrl + "events/";
+    let event = await postData(path, newEvent);
+    console.log(event);
+    if (event && event.title) {
+      console.log(event);
+      setSuccessMessages(`Event "${event.title}" created successfully`);
+    } else {
+      setErrorMessages("Error creating event");
+    }
+  };
 
-    const handleNumberInputChanged = (event) => {
-        // Extract the new value from the event
-        const newValue = event.target.value;
-        if (newValue.split('')[0] < '1' || newValue.split('')[0] > '9') {
-            return;
-        }
-        // Filter out non-numeric characters and ensure it's non-negative
-        setValue(newValue.replace(/[^0-9]/g, ''));
-    };
+  const handleSliderChange = (event, newValue, activeThumb) => {
+    if (!Array.isArray(newValue)) {
+      return;
+    }
 
-    const createEvent = async () => {
+    if (activeThumb === 0) {
+      setAgeRange([Math.min(newValue[0], ageRange[1]), ageRange[1]]);
+    } else {
+      setAgeRange([ageRange[0], Math.max(newValue[1], ageRange[0])]);
+    }
+  };
 
-        setErrorMessages(null);
-        setSuccessMessages(null);
+  let eventProfilePictureToShow = eventProfilePicture
+    ? URL.createObjectURL(eventProfilePicture)
+    : null;
 
-        if (activeUser == null) {
-            alert("Please login to create an event");
-            return;
-        }
+  return (
+    <div className="login">
+      <Stack spacing={2} margin={2}>
+        <TextField
+          variant="outlined"
+          inputRef={titleEventInput}
+          name="title"
+          error={formValues.title}
+          label="Title"
+          helperText="required field"
+          required
+          onChange={handleChange}
+        ></TextField>
+        <TextField
+          variant="outlined"
+          inputRef={descriptionEventInput}
+          name="description"
+          label="Description"
+          error={formValues.description}
+          helperText="required field"
+          required
+          onChange={handleChange}
+        ></TextField>
+        <FormControl fullWidth required>
+          <Autocomplete
+            disablePortal
+            id="combo-box-location"
+            options={cities}
+            error={formValues.location}
+            label="City"
+            onChange={handleAutocompleteChangeCity}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="City"
+                required
+                error={formValues.location}
+                onChange={handleAutocompleteChangeCity}
+              />
+            )}
+          />
+        </FormControl>
 
-        if (!titleEventInput.current.value || !descriptionEventInput.current.value || !city || !eventSportTypeInput.current.value || !eventDateTimeInput.current.value || !eventGenderInput.current.value) {
-            setFormValues({ title: !titleEventInput.current.value, description: !descriptionEventInput.current.value, location: !city, sportType: !eventSportTypeInput.current.value });
-            return;
-        }
+        <FormControl fullWidth required>
+          <Autocomplete
+            disablePortal
+            id="combo-box-location"
+            options={streets}
+            error={formValues.location}
+            label="Street"
+            onChange={handleAutocompleteChangeStreet}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Street"
+                required
+                error={formValues.location}
+                onChange={handleAutocompleteChangeStreet}
+              />
+            )}
+          />
+        </FormControl>
 
-        console.log(props.group);
-        let newEvent = new FormData();
-        newEvent.append('title', titleEventInput.current.value);
-        newEvent.append('description', descriptionEventInput.current.value);
-        newEvent.append('location', city);
-        newEvent.append('date_and_time', eventDateTimeInput.current.value);
-        newEvent.append('sport_type', eventSportTypeInput.current.value);
-        newEvent.append('image', eventProfilePicture);
-        newEvent.append('min_age', disabledAgeSlider ? 0 : ageRange[0]);
-        newEvent.append('max_age', disabledAgeSlider ? 120 : ageRange[1]);
-        newEvent.append('gender', eventGenderInput.current.value);
-        newEvent.append('max_participants', value);
-        newEvent.append('organizer', activeUser.id);
-        if (groupId)
-            newEvent.append('group_organized', groupId);
-
-        console.log(newEvent);
-        let path = serverUrl + 'events/';
-        let event = await postData(path, newEvent);
-        console.log(event);
-        if (event && event.title) {
-            console.log(event);
-            setSuccessMessages(`Event "${event.title}" created successfully`);
-        }
-        else {
-            setErrorMessages("Error creating event");
-        }
-    };
-
-    const handleSliderChange = (event, newValue, activeThumb) => {
-        if (!Array.isArray(newValue)) {
-            return;
-        }
-
-        if (activeThumb === 0) {
-            setAgeRange([Math.min(newValue[0], ageRange[1]), ageRange[1]]);
-        } else {
-            setAgeRange([ageRange[0], Math.max(newValue[1], ageRange[0])]);
-        }
-    };
-
-    let eventProfilePictureToShow = eventProfilePicture ? URL.createObjectURL(eventProfilePicture) : null;
-
-    return (
-        <div className='login'>
-            <Stack spacing={2} margin={2}>
-                <TextField variant="outlined" inputRef={titleEventInput} name="title" error={formValues.title} label="Title" helperText="required field" required onChange={handleChange}></TextField>
-                <TextField variant="outlined" inputRef={descriptionEventInput} name="description" label="Description" error={formValues.description} helperText="required field" required onChange={handleChange}></TextField>
-                <FormControl fullWidth required>
-                    <Autocomplete
-                        disablePortal
-                        id="combo-box-location"
-                        options={cities}
-                        error={formValues.location}
-                        label="Location"
-                        onChange={handleAutocompleteChange}
-                        renderInput={(params) => <TextField {...params} label="Location" required error={formValues.location} onChange={handleAutocompleteChange} />}
-                    />
-                </FormControl>
-
-                <FormControl fullWidth required>
-                    <Autocomplete
-                        disablePortal
-                        id="combo-box-location"
-                        options={streets}
-                        error={formValues.location}
-                        label="Street"
-                        onChange={handleAutocompleteChange}
-                        renderInput={(params) => <TextField {...params} label="Street" required error={formValues.street} onChange={handleAutocompleteChange} />}
-                    />
-                </FormControl>
-
-                <DateTimePicker required inputRef={eventDateTimeInput}
-                    label="Event Date & Time"
-                    format="YYYY-MM-DD hh:mm a"
-                    //value={dayjs()}
-                    defaultValue={dayjs(dayjs().format('YYYY-MM-DD hh:00'))}
-                //onChange={(newValue) => setValue(newValue)}
-                />
-                <FormControl fullWidth required>
-                    <InputLabel id="demo-simple-select-label" error={formValues.sportType} >Sport Type</InputLabel>
-                    <Select inputRef={eventSportTypeInput}
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        name="sportType"
-                        error={formValues.sportType}
-                        label="Sport Type"
-                        defaultValue={""}
-                        onChange={handleChange}
-                    >
-                        {sports.map((sport) => <MenuItem key={sport.id} value={sport.name}>{sport.name}</MenuItem>)}
-                    </Select>
-                </FormControl>
-                <FormControl fullWidth>
-                    <TextField type="file" inputProps={{ accept: 'image/*' }} ref={eventProfilePictureInput} onChange={(e) => setEventProfilePicture(e.target.files[0])} />
-                    <Box
-                        component="img"
-                        sx={{
-                            height: 233,
-                            width: 350,
-                            maxHeight: { xs: 233, md: 167 },
-                            maxWidth: { xs: 350, md: 250 },
-                        }}
-                        src={eventProfilePictureToShow}
-                    />
-                </FormControl>
-                <FormControl fullWidth>
-                    <FormControlLabel control={<Checkbox />} label="Event Age Range (Optional)" onChange={() => setDisabledAgeSlider(!disabledAgeSlider)} />
-                    <Slider ref={ageSliderInput}
-                        getAriaLabel={() => 'Minimum distance'}
-                        value={ageRange}
-                        onChange={handleSliderChange}
-                        valueLabelDisplay="auto"
-                        // getAriaValueText={valuetext}
-                        disableSwap
-                        disabled={disabledAgeSlider}
-                        max={120}
-                    />
-                </FormControl>
-                <FormControl fullWidth>
-                    <InputLabel id="gender-label">Gender</InputLabel>
-                    <Select inputRef={eventGenderInput}
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        name="gender"
-                        label="Gender"
-                        defaultValue={""}
-                    >
-                        <MenuItem value={"mixed"}>mixed</MenuItem>
-                        <MenuItem value={"men"}>men</MenuItem>
-                        <MenuItem value={"women"}>women</MenuItem>
-                    </Select>
-                </FormControl>
-                <TextField
-                    label="Maximum participants (if empty, unlimited)"
-                    placeholder='Maximum participants. If empty, unlimited'
-                    value={value}
-                    onChange={handleNumberInputChanged}
-                    variant="outlined"
-                    type="number"
-                    inputMode='numeric'
-                />
-                {successMessages && (<Alert severity='success' >{successMessages}</Alert>)}
-                {errorMessages && (<Alert severity='error'>{errorMessages}</Alert>)}
-                <Button color="primary" variant="contained" onClick={createEvent}>Create Event</Button>
-            </Stack>
-        </div>
-    );
+        <DateTimePicker
+          required
+          inputRef={eventDateTimeInput}
+          label="Event Date & Time"
+          format="YYYY-MM-DD hh:mm a"
+          //value={dayjs()}
+          defaultValue={dayjs(dayjs().format("YYYY-MM-DD hh:00"))}
+          //onChange={(newValue) => setValue(newValue)}
+        />
+        <FormControl fullWidth required>
+          <InputLabel
+            id="demo-simple-select-label"
+            error={formValues.sportType}
+          >
+            Sport Type
+          </InputLabel>
+          <Select
+            inputRef={eventSportTypeInput}
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            name="sportType"
+            error={formValues.sportType}
+            label="Sport Type"
+            defaultValue={""}
+            onChange={handleChange}
+          >
+            {sports.map((sport) => (
+              <MenuItem key={sport.id} value={sport.name}>
+                {sport.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl fullWidth>
+          <TextField
+            type="file"
+            inputProps={{ accept: "image/*" }}
+            ref={eventProfilePictureInput}
+            onChange={(e) => setEventProfilePicture(e.target.files[0])}
+          />
+          <Box
+            component="img"
+            sx={{
+              height: 233,
+              width: 350,
+              maxHeight: { xs: 233, md: 167 },
+              maxWidth: { xs: 350, md: 250 },
+            }}
+            src={eventProfilePictureToShow}
+          />
+        </FormControl>
+        <FormControl fullWidth>
+          <FormControlLabel
+            control={<Checkbox />}
+            label="Event Age Range (Optional)"
+            onChange={() => setDisabledAgeSlider(!disabledAgeSlider)}
+          />
+          <Slider
+            ref={ageSliderInput}
+            getAriaLabel={() => "Minimum distance"}
+            value={ageRange}
+            onChange={handleSliderChange}
+            valueLabelDisplay="auto"
+            // getAriaValueText={valuetext}
+            disableSwap
+            disabled={disabledAgeSlider}
+            max={120}
+          />
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel id="gender-label">Gender</InputLabel>
+          <Select
+            inputRef={eventGenderInput}
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            name="gender"
+            label="Gender"
+            defaultValue={""}
+          >
+            <MenuItem value={"mixed"}>mixed</MenuItem>
+            <MenuItem value={"men"}>men</MenuItem>
+            <MenuItem value={"women"}>women</MenuItem>
+          </Select>
+        </FormControl>
+        <TextField
+          label="Maximum participants (if empty, unlimited)"
+          placeholder="Maximum participants. If empty, unlimited"
+          value={value}
+          onChange={handleNumberInputChanged}
+          variant="outlined"
+          type="number"
+          inputMode="numeric"
+        />
+        {successMessages && <Alert severity="success">{successMessages}</Alert>}
+        {errorMessages && <Alert severity="error">{errorMessages}</Alert>}
+        <Button color="primary" variant="contained" onClick={createEvent}>
+          Create Event
+        </Button>
+      </Stack>
+    </div>
+  );
 };
 
 export default NewEventPage;
