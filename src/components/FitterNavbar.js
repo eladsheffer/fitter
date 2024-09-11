@@ -112,7 +112,7 @@ function FitterNavbar() {
   };
 
   return (
-    <AppBar position="fixed">
+    <AppBar position="sticky" style={{zIndex: "1"}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>

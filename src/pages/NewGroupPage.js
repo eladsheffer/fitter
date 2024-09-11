@@ -1,13 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Form, Row, Col, Container, Button, Modal, Image, Alert } from 'react-bootstrap'
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { getData, postData } from '../features/apiService';
 import { Box, Slider } from '@mui/material';
 import sports from "../data-model/sports.json";
 import { Typeahead } from 'react-bootstrap-typeahead';
+import { closeModal } from '../features/modal';
+import { useNavigate } from 'react-router-dom';
 
 const NewGroupPage = () => {
-
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const citiesUrl = process.env.REACT_APP_CITIES_URL;
     const [validated, setValidated] = useState(false);
@@ -103,6 +106,11 @@ const NewGroupPage = () => {
         }
     };
 
+    const handleClose = () => {
+        dispatch(closeModal());
+        navigate(-1);
+    };
+
     let groupProfilePictureToShow = groupProfilePicture ? URL.createObjectURL(groupProfilePicture) : null;
 
 
@@ -192,6 +200,11 @@ const NewGroupPage = () => {
                 </Alert>
                 <Button variant="primary" className="w-100" onClick={createGroup}>
                     Create Group
+                </Button>
+                <br />
+                <br />
+                <Button variant="info" className="w-100" onClick={()=>handleClose()}>
+                    Back
                 </Button>
             </Form>
         </div>

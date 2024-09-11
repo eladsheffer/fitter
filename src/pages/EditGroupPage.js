@@ -8,9 +8,12 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import RemoveModal from '../components/RemoveModal';
 import LinearProgress from '@mui/material/LinearProgress';
 import { Typeahead } from 'react-bootstrap-typeahead';
+import { useDispatch } from 'react-redux';
+import { closeModal } from '../features/modal';
 
 const EditGroupPage = (props) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     let { id } = useParams();
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const citiesUrl = process.env.REACT_APP_CITIES_URL;
@@ -157,6 +160,12 @@ const EditGroupPage = (props) => {
             setErrorMessages("Error deleting user profile");
         }
     };
+    
+    const handleClose = () => {
+        dispatch(closeModal());
+        navigate(-1);
+    ;}
+
 
 
     return (
@@ -246,6 +255,12 @@ const EditGroupPage = (props) => {
                             <Button variant="danger" className="w-100" onClick={() => setShowDeleteModal(true)}>
                                 Delete Group
                             </Button>
+                            <br />
+                            <br />
+                            <Button variant="info" className="w-100" onClick={() => handleClose()}>
+                                Back
+                            </Button>
+
 
                         </Form>
                     </div>}

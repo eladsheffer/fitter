@@ -9,6 +9,7 @@ import sports from "../data-model/sports.json";
 import { useSelector } from 'react-redux';
 import RemoveModal from '../components/RemoveModal';
 import { Typeahead } from 'react-bootstrap-typeahead';
+import { closeModal } from '../features/modal';
 
 const EditProfilePage = (props) => {
     const activeUser = useSelector((state) => state.user.value);
@@ -148,7 +149,12 @@ const EditProfilePage = (props) => {
         }
 
 
-    }
+    };
+
+    const handleClose = () => {
+        dispatch(closeModal());
+        navigate(-1);
+    };
 
     return (
         <div>
@@ -266,6 +272,11 @@ const EditProfilePage = (props) => {
                         <br />
                         <Button type="button" variant='danger' className="w-100" onClick={() => setDeleteProfileModalShow(true)}>
                             Delete Profile
+                        </Button>
+                        <br />
+                        <br />
+                        <Button type="button" variant="info" className="w-100" onClick={()=>handleClose()}>
+                            Back
                         </Button>
                     </Form>
                 </div>}

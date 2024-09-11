@@ -22,10 +22,11 @@ import LinearProgress from '@mui/material/LinearProgress';
 import RemoveModal from '../components/RemoveModal';
 import Autocomplete from '@mui/material/Autocomplete';
 
-
 const EditEventPage = (props) => {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     let { id } = useParams();
 
     const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -196,6 +197,11 @@ const EditEventPage = (props) => {
         }
     };
 
+    const handleClose = () => {
+        dispatch(closeModal());
+        navigate(-1);
+    };
+
     return (
         <div className='login'>
             {!activeUser ? <Alert variant="danger">You must be logged in to view this page. <Link to="/login">Login</Link></Alert> : !event ? <LinearProgress /> :
@@ -289,6 +295,7 @@ const EditEventPage = (props) => {
                             {errorMessages && (<Alert severity='error'>{errorMessages}</Alert>)}
                             <Button color="primary" variant="contained" onClick={updateEvent}>Update Event</Button>
                             <Button color="secondary" variant="contained" onClick={() => setShowRemoveModal(true)}>Delete Event</Button>
+                            <Button variant="contained" onClick={()=>handleClose()}>Back</Button>
                         </Stack>
                     </>
             }

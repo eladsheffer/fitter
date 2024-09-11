@@ -47,7 +47,7 @@ const RootModal = (props) => {
     }: {title: 'Error', body: 'Invalid Modal Type'};
 
     return (
-        <Container>
+        <Container style={{zIndex: "2"}}>
             {!props.hideButton &&
             <Row>
                 <Col>

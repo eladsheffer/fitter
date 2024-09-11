@@ -17,11 +17,13 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Description } from '@mui/icons-material';
 import dayjs from 'dayjs';
 import sports from "../data-model/sports.json";
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Autocomplete from '@mui/material/Autocomplete';
 
 const NewEventPage = (props) => {
 
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const citiesUrl = process.env.REACT_APP_CITIES_URL;
     const streetsUrl = process.env.REACT_APP_STREETS_URL;
@@ -155,6 +157,11 @@ const NewEventPage = (props) => {
             setAgeRange([ageRange[0], Math.max(newValue[1], ageRange[0])]);
         }
     };
+    
+    const handleClose = () => {
+        dispatch(closeModal());
+        navigate(-1);
+    };
 
     let eventProfilePictureToShow = eventProfilePicture ? URL.createObjectURL(eventProfilePicture) : null;
 
@@ -260,6 +267,7 @@ const NewEventPage = (props) => {
                 {successMessages && (<Alert severity='success' >{successMessages}</Alert>)}
                 {errorMessages && (<Alert severity='error'>{errorMessages}</Alert>)}
                 <Button color="primary" variant="contained" onClick={createEvent}>Create Event</Button>
+                <Button color="secondary" variant="contained" onClick={handleClose}>Back</Button>
             </Stack>
         </div>
     );
