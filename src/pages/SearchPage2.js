@@ -24,7 +24,7 @@ export default function SearchPage() {
     const [filter, setFilter] = useState(false);
     const [filteredGroups, setFilteredGroups] = useState([]);
     const [filteredEvents, setFilteredEvents] = useState([]);
-    const key = queryParams.get('key');
+    // const key = queryParams.get('key');
     const [searchType, setSearchType] = useState('groups');
 
     const [selectedFilters, setSelectedFilters] = useState({
@@ -56,10 +56,10 @@ export default function SearchPage() {
 
     const fetchGroups = async () => {
         setLoading(true);
-        let url = `${serverUrl}groups/?search=${key}`;
+        let url = `${serverUrl}groups/`;
         let groupsData = await getData(url);
         setGroups(groupsData);
-        url = `${serverUrl}groups/?search=${key}&location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&age_range=${ageRange[0]}-${ageRange[1]}`;
+        url = `${serverUrl}groups/?location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&age_range=${ageRange[0]}-${ageRange[1]}`;
         groupsData = await getData(url);
         setFilteredGroups(groupsData);
         setLoading(false);
@@ -67,10 +67,10 @@ export default function SearchPage() {
 
     const fetchEvents = async () => {
         setLoading(true);
-        let url = `${serverUrl}events/?search=${key}`;
+        let url = `${serverUrl}events/`;
         let eventsData = await getData(url);
         setEvents(eventsData);
-        url = `${serverUrl}events/?search=${key}&location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&age_range=${ageRange[0]}-${ageRange[1]}`;
+        url = `${serverUrl}events/?location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&age_range=${ageRange[0]}-${ageRange[1]}`;
         eventsData = await getData(url);
         setFilteredEvents(eventsData);
         setLoading(false);
@@ -94,7 +94,7 @@ export default function SearchPage() {
 
     useEffect(() => {
         applyFilters();
-    }, [filter, searchType, reset, key]);
+    }, [filter, searchType, reset]);
 
     const applyFilters = () => {
         if (searchType === 'groups') {
@@ -139,7 +139,7 @@ export default function SearchPage() {
             <Row className="my-4 justify-content-center">
                 <Col xs="auto" className="text-center">
                     <h1>Search Page</h1>
-                    <p>Search key: {key}</p>
+                    {/* <p>Search key: {key}</p> */}
                 </Col>
             </Row>
             <Row className="mb-3 justify-content-center">

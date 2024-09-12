@@ -74,7 +74,7 @@ function FitterNavbar() {
   const dispatch = useDispatch();
   const activeUser = useSelector((state) => (state.user ? state.user.value : null));
 
-  const [searchKey, setSearchKey] = useState('');
+  // const [searchKey, setSearchKey] = useState('');
   const navigate = useNavigate();
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -90,8 +90,8 @@ function FitterNavbar() {
   }
 
   const handleSearch = async () => {
-    navigate(`/search?key=${searchKey}`);
-    setSearchKey('');
+    navigate(`/search`);
+    // setSearchKey('');
   };
 
   const handleOpenNavMenu = (event) => {
@@ -112,7 +112,7 @@ function FitterNavbar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="sticky" style={{zIndex: "1"}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -186,7 +186,7 @@ function FitterNavbar() {
               <img src={logo} alt="Fitter" width="100" height="50" />
             </Link>
           </Typography>
-          <Search>
+          {/* <Search>
             <StyledInputBase
               placeholder="Search groups/events..."
               inputProps={{ 'aria-label': 'search' }}
@@ -194,7 +194,7 @@ function FitterNavbar() {
               value={searchKey}
               onKeyDown={(event) => { if (event.key === 'Enter') handleSearch() }}
             />
-          </Search>
+          </Search> */}
           <IconButton size="large" aria-label="search" color="inherit" onClick={()=>handleSearch()}><SearchIcon /></IconButton>
 
 
@@ -214,7 +214,6 @@ function FitterNavbar() {
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="" src={!activeUser ? null : activeUser.profile_picture ? activeUser.profile_picture : default_profile_picture} />
-                {/* <img src={!activeUser ? "/icons/group.png" : activeUser.profile_picture ? activeUser.profile_picture : default_profile_picture} width="30" height="30" roundedCircle /> */}
               </IconButton>
             </Tooltip>
             <Menu
@@ -235,7 +234,7 @@ function FitterNavbar() {
             >
 
               {activeUser && <Link to={`/users/${activeUser.id}/`} style={{ textDecoration: "none" }}><MenuItem key="profile" onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">Profile</Typography>
+                <Typography textAlign="center">View Profile</Typography>
               </MenuItem></Link>}
 
               {activeUser && <Link to="/edit-profile/" style={{ textDecoration: "none" }}><MenuItem key="profile" onClick={handleCloseUserMenu}>
