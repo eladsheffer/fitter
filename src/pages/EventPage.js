@@ -7,9 +7,10 @@ import events from "../data-model/events.json";
 import { useSelector } from "react-redux";
 import { green } from "@mui/material/colors";
 import { formatFriendlyDate } from "../features/apiService";
-import LinearProgress from '@mui/material/LinearProgress';
+import LinearProgress from "@mui/material/LinearProgress";
 import UserCard from "../components/UserCard";
 import { getData } from "../features/apiService";
+import Map from "../components/Map";
 
 export default function EventPage() {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -21,10 +22,7 @@ export default function EventPage() {
   const defaultEventImage = "/icons/event.png";
   const [eventImage, setEventImage] = useState(defaultEventImage);
 
-
-
   const fetchEventAndAttendees = async () => {
-
     // Fetch evnet data
     let organizerId = null;
     const eventData = await getData(`${serverUrl}events/${id}/`);
@@ -37,7 +35,9 @@ export default function EventPage() {
     }
 
     // Fetch attendees data
-    const attendeesData = await getData(`${serverUrl}events/${id}/get_event_attendees/`);
+    const attendeesData = await getData(
+      `${serverUrl}events/${id}/get_event_attendees/`
+    );
     if (attendeesData) {
       setAttendees(attendeesData);
     }
@@ -48,7 +48,6 @@ export default function EventPage() {
         setOrganizer(organizerData);
       }
     }
-
   };
 
   useEffect(() => {
@@ -93,7 +92,7 @@ export default function EventPage() {
                   </p>
                 )}
                 {event.max_participants !== null &&
-                  typeof event.max_participants === "number" ? (
+                typeof event.max_participants === "number" ? (
                   <h6
                     style={{ color: green }}
                   >{`${event.users_attended.length}/${event.max_participants} Attendees`}</h6>
@@ -103,14 +102,13 @@ export default function EventPage() {
                   >{`${event.users_attended.length} Attendees`}</h6>
                 )}
               </Col>
-              {
-                activeUser && event.organizer === activeUser.id &&
+              {activeUser && event.organizer === activeUser.id && (
                 <Col xs="1">
                   <Link to={`/edit-event/${event.id}/`}>
                     <Image width={50} height={50} src="/icons/settings.png" />
                   </Link>
                 </Col>
-              }
+              )}
             </Row>
             <Row>
               <Col>
@@ -118,19 +116,16 @@ export default function EventPage() {
                 <p>{event.description}</p>
               </Col>
             </Row>
-            {
-              organizer &&
+            {organizer && (
               <Row>
                 <Col lg={1} md={2} sm={2} xs={3}>
                   <h4>Organizer: </h4>
-
                 </Col>
                 <Col>
                   <UserCard user={organizer} />
                 </Col>
-
               </Row>
-            }
+            )}
 
             <h1
               style={{
@@ -140,7 +135,6 @@ export default function EventPage() {
             >
               Attendees
             </h1>
-
 
             <Row
               style={{
@@ -161,16 +155,7 @@ export default function EventPage() {
             <Row>
               <Col>
                 <h3>Location</h3>
-                {/* Interactive Map placeholder */}
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d300780.0954889981!2d35.28056742967263!3d32.48295704346882!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151d385ce718290f%3A0x34ef60772c7aee4f!2z15TXkNeV16DXmdeR16jXodeZ15jXlCDXlNek16rXldeX15Q!5e0!3m2!1siw!2sil!4v1718755591991!5m2!1siw!2sil"
-                  width="100%"
-                  height="450"
-                  style={{ border: 0 }}
-                  allowfullscreen=""
-                  loading="lazy"
-                  referrerpolicy="no-referrer-when-downgrade"
-                ></iframe>
+                <Map address={event.location} />
               </Col>
             </Row>
           </Container>

@@ -2,23 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { closeModal } from "../features/modal";
 import { postData, getData } from "../features/apiService";
-// import Button from '@mui/material/Button';
-// import TextField from '@mui/material/TextField';
-// import Dialog from '@mui/material/Dialog';
-// import DialogActions from '@mui/material/DialogActions';
-// import DialogContent from '@mui/material/DialogContent';
-// import DialogContentText from '@mui/material/DialogContentText';
-// import DialogTitle from '@mui/material/DialogTitle';
 import {
   Button,
   Checkbox,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
   FormControlLabel,
-  IconButton,
   Stack,
   TextField,
   InputLabel,
@@ -30,15 +17,9 @@ import {
   Slider,
 } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
-import FormControlContext from "@mui/material/FormControl/FormControlContext";
-import CloseIcon from "@mui/icons-material/Close";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { Description } from "@mui/icons-material";
 import dayjs from "dayjs";
 import sports from "../data-model/sports.json";
 import { useParams, useNavigate } from "react-router-dom";
-import Autocomplete from "@mui/material/Autocomplete";
-import { useParams } from "react-router-dom";
 import Autocomplete from "@mui/material/Autocomplete";
 
 const NewEventPage = (props) => {
@@ -164,8 +145,7 @@ const NewEventPage = (props) => {
       !city ||
       !street ||
       !eventSportTypeInput.current.value ||
-      !eventDateTimeInput.current.value ||
-      !eventGenderInput.current.value
+      !eventDateTimeInput.current.value
     ) {
       console.log(
         `The form is not filled correctly: \nTitle: ${titleEventInput.current.value}\nDescription: ${descriptionEventInput.current.value}\nCity: ${city}\nStreet: ${street}\nSport Type: ${eventSportTypeInput.current.value}\nDate & Time: ${eventDateTimeInput.current.value}\nGender: ${eventGenderInput.current.value}`
@@ -217,186 +197,189 @@ const NewEventPage = (props) => {
     } else {
       setAgeRange([ageRange[0], Math.max(newValue[1], ageRange[0])]);
     }
+    if (activeThumb === 0) {
+      setAgeRange([Math.min(newValue[0], ageRange[1]), ageRange[1]]);
+    } else {
+      setAgeRange([ageRange[0], Math.max(newValue[1], ageRange[0])]);
+    }
   };
-  if (activeThumb === 0) {
-    setAgeRange([Math.min(newValue[0], ageRange[1]), ageRange[1]]);
-  } else {
-    setAgeRange([ageRange[0], Math.max(newValue[1], ageRange[0])]);
-  }
-};
 
-const handleClose = () => {
-  dispatch(closeModal());
-  navigate(-1);
-};
+  const handleClose = () => {
+    dispatch(closeModal());
+    navigate(-1);
+  };
 
-let eventProfilePictureToShow = eventProfilePicture
-  ? URL.createObjectURL(eventProfilePicture)
-  : null;
+  let eventProfilePictureToShow = eventProfilePicture
+    ? URL.createObjectURL(eventProfilePicture)
+    : null;
 
-return (
-  <div className="login">
-    <Stack spacing={2} margin={2}>
-      <TextField
-        variant="outlined"
-        inputRef={titleEventInput}
-        name="title"
-        error={formValues.title}
-        label="Title"
-        helperText="required field"
-        required
-        onChange={handleChange}
-      ></TextField>
-      <TextField
-        variant="outlined"
-        inputRef={descriptionEventInput}
-        name="description"
-        label="Description"
-        error={formValues.description}
-        helperText="required field"
-        required
-        onChange={handleChange}
-      ></TextField>
-      <FormControl fullWidth required>
-        <Autocomplete
-          disablePortal
-          id="combo-box-location"
-          options={cities}
-          error={formValues.location}
-          label="City"
-          onChange={handleAutocompleteChangeCity}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="City"
-              required
-              error={formValues.location}
-              onChange={handleAutocompleteChangeCity}
-            />
-          )}
-        />
-      </FormControl>
-
-      <FormControl fullWidth required>
-        <Autocomplete
-          disablePortal
-          id="combo-box-location"
-          options={streets}
-          error={formValues.location}
-          label="Street"
-          onChange={handleAutocompleteChangeStreet}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Street"
-              required
-              error={formValues.location}
-              onChange={handleAutocompleteChangeStreet}
-            />
-          )}
-        />
-      </FormControl>
-
-      <DateTimePicker
-        required
-        inputRef={eventDateTimeInput}
-        label="Event Date & Time"
-        format="YYYY-MM-DD hh:mm"
-        //value={dayjs()}
-        defaultValue={dayjs(dayjs().format("YYYY-MM-DD hh:00"))}
-        //onChange={(newValue) => setValue(newValue)}
-      />
-      <FormControl fullWidth required>
-        <InputLabel id="demo-simple-select-label" error={formValues.sportType}>
-          Sport Type
-        </InputLabel>
-        <Select
-          inputRef={eventSportTypeInput}
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          name="sportType"
-          error={formValues.sportType}
-          label="Sport Type"
-          defaultValue={""}
-          onChange={handleChange}
-        >
-          {sports.map((sport) => (
-            <MenuItem key={sport.id} value={sport.name}>
-              {sport.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <FormControl fullWidth>
+  return (
+    <div className="login">
+      <Stack spacing={2} margin={2}>
         <TextField
-          type="file"
-          inputProps={{ accept: "image/*" }}
-          ref={eventProfilePictureInput}
-          onChange={(e) => setEventProfilePicture(e.target.files[0])}
+          variant="outlined"
+          inputRef={titleEventInput}
+          name="title"
+          error={formValues.title}
+          label="Title"
+          helperText="required field"
+          required
+          onChange={handleChange}
+        ></TextField>
+        <TextField
+          variant="outlined"
+          inputRef={descriptionEventInput}
+          name="description"
+          label="Description"
+          error={formValues.description}
+          helperText="required field"
+          required
+          onChange={handleChange}
+        ></TextField>
+        <FormControl fullWidth required>
+          <Autocomplete
+            disablePortal
+            id="combo-box-location"
+            options={cities}
+            error={formValues.location}
+            label="City"
+            onChange={handleAutocompleteChangeCity}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="City"
+                required
+                error={formValues.location}
+                onChange={handleAutocompleteChangeCity}
+              />
+            )}
+          />
+        </FormControl>
+
+        <FormControl fullWidth required>
+          <Autocomplete
+            disablePortal
+            id="combo-box-location"
+            options={streets}
+            error={formValues.location}
+            label="Street"
+            onChange={handleAutocompleteChangeStreet}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Street"
+                required
+                error={formValues.location}
+                onChange={handleAutocompleteChangeStreet}
+              />
+            )}
+          />
+        </FormControl>
+
+        <DateTimePicker
+          required
+          inputRef={eventDateTimeInput}
+          label="Event Date & Time"
+          format="YYYY-MM-DD hh:mm"
+          //value={dayjs()}
+          defaultValue={dayjs(dayjs().format("YYYY-MM-DD hh:00"))}
+          //onChange={(newValue) => setValue(newValue)}
         />
-        <Box
-          component="img"
-          sx={{
-            height: 233,
-            width: 350,
-            maxHeight: { xs: 233, md: 167 },
-            maxWidth: { xs: 350, md: 250 },
-          }}
-          src={eventProfilePictureToShow}
+        <FormControl fullWidth required>
+          <InputLabel
+            id="demo-simple-select-label"
+            error={formValues.sportType}
+          >
+            Sport Type
+          </InputLabel>
+          <Select
+            inputRef={eventSportTypeInput}
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            name="sportType"
+            error={formValues.sportType}
+            label="Sport Type"
+            defaultValue={""}
+            onChange={handleChange}
+          >
+            {sports.map((sport) => (
+              <MenuItem key={sport.id} value={sport.name}>
+                {sport.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl fullWidth>
+          <TextField
+            type="file"
+            inputProps={{ accept: "image/*" }}
+            ref={eventProfilePictureInput}
+            onChange={(e) => setEventProfilePicture(e.target.files[0])}
+          />
+          <Box
+            component="img"
+            sx={{
+              height: 233,
+              width: 350,
+              maxHeight: { xs: 233, md: 167 },
+              maxWidth: { xs: 350, md: 250 },
+            }}
+            src={eventProfilePictureToShow}
+          />
+        </FormControl>
+        <FormControl fullWidth>
+          <FormControlLabel
+            control={<Checkbox />}
+            label="Event Age Range (Optional)"
+            onChange={() => setDisabledAgeSlider(!disabledAgeSlider)}
+          />
+          <Slider
+            ref={ageSliderInput}
+            getAriaLabel={() => "Minimum distance"}
+            value={ageRange}
+            onChange={handleSliderChange}
+            valueLabelDisplay="auto"
+            // getAriaValueText={valuetext}
+            disableSwap
+            disabled={disabledAgeSlider}
+            max={120}
+          />
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel id="gender-label">Gender</InputLabel>
+          <Select
+            inputRef={eventGenderInput}
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            name="gender"
+            label="Gender"
+            defaultValue={""}
+          >
+            <MenuItem value={"mixed"}>mixed</MenuItem>
+            <MenuItem value={"men"}>men</MenuItem>
+            <MenuItem value={"women"}>women</MenuItem>
+          </Select>
+        </FormControl>
+        <TextField
+          label="Maximum participants (if empty, unlimited)"
+          placeholder="Maximum participants. If empty, unlimited"
+          value={value}
+          onChange={handleNumberInputChanged}
+          variant="outlined"
+          type="number"
+          inputMode="numeric"
         />
-      </FormControl>
-      <FormControl fullWidth>
-        <FormControlLabel
-          control={<Checkbox />}
-          label="Event Age Range (Optional)"
-          onChange={() => setDisabledAgeSlider(!disabledAgeSlider)}
-        />
-        <Slider
-          ref={ageSliderInput}
-          getAriaLabel={() => "Minimum distance"}
-          value={ageRange}
-          onChange={handleSliderChange}
-          valueLabelDisplay="auto"
-          // getAriaValueText={valuetext}
-          disableSwap
-          disabled={disabledAgeSlider}
-          max={120}
-        />
-      </FormControl>
-      <FormControl fullWidth>
-        <InputLabel id="gender-label">Gender</InputLabel>
-        <Select
-          inputRef={eventGenderInput}
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          name="gender"
-          label="Gender"
-          defaultValue={""}
-        >
-          <MenuItem value={"mixed"}>mixed</MenuItem>
-          <MenuItem value={"men"}>men</MenuItem>
-          <MenuItem value={"women"}>women</MenuItem>
-        </Select>
-      </FormControl>
-      <TextField
-        label="Maximum participants (if empty, unlimited)"
-        placeholder="Maximum participants. If empty, unlimited"
-        value={value}
-        onChange={handleNumberInputChanged}
-        variant="outlined"
-        type="number"
-        inputMode="numeric"
-      />
-      {successMessages && <Alert severity="success">{successMessages}</Alert>}
-      {errorMessages && <Alert severity="error">{errorMessages}</Alert>}
-      <Button color="primary" variant="contained" onClick={createEvent}>
-        Create Event
-      </Button>
-      <Button color="secondary" variant="contained" onClick={handleClose}>
-        Back
-      </Button>
-    </Stack>
-  </div>
-);
+        {successMessages && <Alert severity="success">{successMessages}</Alert>}
+        {errorMessages && <Alert severity="error">{errorMessages}</Alert>}
+        <Button color="primary" variant="contained" onClick={createEvent}>
+          Create Event
+        </Button>
+        <Button color="secondary" variant="contained" onClick={handleClose}>
+          Back
+        </Button>
+      </Stack>
+    </div>
+  );
+};
 
 export default NewEventPage;
