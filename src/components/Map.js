@@ -15,9 +15,9 @@ const OpenStreetMapIframeWithAddress = ({ address }) => {
           // Parse lat/lon as floats and calculate a smaller bbox margin
           const latFloat = parseFloat(lat);
           const lonFloat = parseFloat(lon);
-          const bbox = `${lonFloat - 0.02},${latFloat - 0.02},${
-            lonFloat + 0.02
-          },${latFloat + 0.02}`;
+          const bbox = `${lonFloat - 0.004},${latFloat - 0.004},${
+            lonFloat + 0.004
+          },${latFloat + 0.004}`;
           const src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat},${lon}&zoom=14`; // Added zoom parameter
           console.log("src:", src);
           setIframeSrc(src);
