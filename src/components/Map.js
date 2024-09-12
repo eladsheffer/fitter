@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { getData } from '../features/apiService';
+import LinearProgress from '@mui/material/LinearProgress';
 
 const OpenStreetMapIframeWithAddress = ({ address }) => {
   const [iframeSrc, setIframeSrc] = useState("");
 
   useEffect(() => {
     const fetchCoordinates = async () => {
-      try {
-        const response = await fetch(
-          `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
-            address
-          )}&format=json`
-        );
-        const data = await response.json();
-        if (data.length > 0) {
+      const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json`;
+      
+        const data = await getData(url);
+        if (data && data.length > 0) {
           const { lat, lon } = data[0];
           // Parse lat/lon as floats and calculate a smaller bbox margin
           const latFloat = parseFloat(lat);
@@ -26,9 +24,6 @@ const OpenStreetMapIframeWithAddress = ({ address }) => {
         } else {
           console.error("Address not found");
         }
-      } catch (error) {
-        console.error("Error fetching coordinates:", error);
-      }
     };
 
     fetchCoordinates();
@@ -39,8 +34,8 @@ const OpenStreetMapIframeWithAddress = ({ address }) => {
       <h1>Map for: {address}</h1>
       {iframeSrc ? (
         <iframe
-          width="600"
-          height="450"
+          width="100%"
+          height="500"
           src={iframeSrc}
           style={{ border: "1px solid black" }}
           allowFullScreen=""
@@ -48,7 +43,7 @@ const OpenStreetMapIframeWithAddress = ({ address }) => {
           title="OpenStreetMap Embed"
         ></iframe>
       ) : (
-        <p>Loading map...</p>
+        <LinearProgress />
       )}
     </div>
   );

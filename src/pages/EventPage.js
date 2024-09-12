@@ -153,7 +153,7 @@ export default function EventPage() {
               )}
             </Row>
             <Row>
-              <Col>
+              <Col lg="8" md="10" sm="12" xs="12">
                 <h3>Location</h3>
                 <Map address={event.location} />
               </Col>
