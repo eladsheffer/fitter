@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import GroupCard from '../components/GroupCard';
 import EventCard from '../components/EventCard';
-import { Button, Row, Col, Container, ToggleButton, ButtonGroup, Dropdown, Form } from 'react-bootstrap';
+import { Button, Row, Col, Container, ToggleButton, ButtonGroup, Dropdown, Form, FormControl } from 'react-bootstrap';
 import { getData } from '../features/apiService';
 import SearchFilter from '../components/SearchFilter';
 import GroupCard3 from '../components/GroupCard3';
@@ -26,6 +26,8 @@ export default function SearchPage() {
     const [filteredEvents, setFilteredEvents] = useState([]);
     // const key = queryParams.get('key');
     const [searchType, setSearchType] = useState('groups');
+    
+    const nameInput = useRef(null);
 
     const [selectedFilters, setSelectedFilters] = useState({
         location: [],
@@ -58,11 +60,12 @@ export default function SearchPage() {
         setLoading(true);
         let url = `${serverUrl}groups/`;
         let groupsData = await getData(url);
-        setGroups(groupsData);
-        url = `${serverUrl}groups/?location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&age_range=${ageRange[0]}-${ageRange[1]}`;
+        setGroups(groupsData.sort((a,b)=>a.location.localeCompare(b.location)));
+        url = `${serverUrl}groups/?search=${nameInput.current.value}&location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&age_range=${ageRange[0]}-${ageRange[1]}`;
         groupsData = await getData(url);
         setFilteredGroups(groupsData);
         setLoading(false);
+        nameInput.current.value = '';
     };
 
     const fetchEvents = async () => {
@@ -70,10 +73,11 @@ export default function SearchPage() {
         let url = `${serverUrl}events/`;
         let eventsData = await getData(url);
         setEvents(eventsData);
-        url = `${serverUrl}events/?location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&age_range=${ageRange[0]}-${ageRange[1]}`;
+        url = `${serverUrl}events/?search=${nameInput.current.value}&location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&age_range=${ageRange[0]}-${ageRange[1]}`;
         eventsData = await getData(url);
         setFilteredEvents(eventsData);
         setLoading(false);
+        nameInput.current.value = '';
     };
 
     const applyAgeFilter = (event) => {
@@ -170,11 +174,16 @@ export default function SearchPage() {
                     </ButtonGroup>
                 </Col>
             </Row>
+            <Row className="mb-3 d-flex justify-content-center">
+                <Col lg="6" md="8" sm={11} xs="11" style={{marginInline:"auto"}}>
+                <FormControl ref={nameInput} style={{width:"100%"}} type="search" placeholder="Type name of group/event (Only if you know it)" className="mr-2 rounded-pill" aria-label="Search" />
+                </Col>
+            </Row>
             <Row className='d-flex justify-content-around'>
                 <Col lg="2" md="2" xs="3" style={{marginInline:"auto"}} >
                     <Dropdown>
                         <Dropdown.Toggle variant="primary" id="dropdown1" className="text-wrap" style={{ borderRadius: "20px" }} >
-                            Locations Filter
+                            Locations
                         </Dropdown.Toggle>
                         <Dropdown.Menu style={{ maxHeight: "200px", overflowY: "auto" }}>
                             {searchType === 'groups' ? (
@@ -204,7 +213,7 @@ export default function SearchPage() {
                 <Col lg="2" md="2" sm="2" xs="3"  style={{marginInline:"auto"}}>
                     <Dropdown>
                         <Dropdown.Toggle variant="primary" id="dropdown1" className="text-wrap" style={{ borderRadius: "20px" }} >
-                            Gender Filter
+                            Gender
                         </Dropdown.Toggle>
                         <Dropdown.Menu style={{ maxHeight: "200px", overflowY: "auto" }}>
                             {searchType === 'groups' ? (
@@ -238,7 +247,7 @@ export default function SearchPage() {
                 <Col lg="2" md="2" xs="3"  style={{marginInline:"auto"}}>
                     <Dropdown>
                         <Dropdown.Toggle variant="primary" id="dropdown1" className="text-wrap" style={{ borderRadius: "20px" }} >
-                            Sport Filter
+                            Sport Type
                         </Dropdown.Toggle>
                         <Dropdown.Menu style={{ maxHeight: "200px", overflowY: "auto" }}>
                             {searchType === 'groups' ? (
