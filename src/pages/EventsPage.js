@@ -17,6 +17,7 @@ const EventsPage = () => {
   // States
   const [date, setDate] = useState(new Date());
   const [events, setEvents] = useState([]);
+  const [selectedSport, setSelectedSport] = useState("Any Sports");
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [eventDates, setEventDates] = useState([]);
   const dispatch = useDispatch();
@@ -36,8 +37,18 @@ const EventsPage = () => {
   }
 
   function handleSportSelection(sport) {
-    const filteredEvents = events.filter((event) => event.sport_type === sport);
-    setFilteredEvents(filteredEvents);
+    if (sport !== "Any Sports") {
+      const newEvents = JSON.parse(JSON.stringify(events));
+      const filteredEvents = newEvents.filter(
+        (event) => event.sport_type.toLowerCase() === sport.toLowerCase()
+      );
+      setFilteredEvents(filteredEvents);
+    }
+  }
+
+  function resetSelection() {
+    setSelectedSport("Any Sports");
+    setFilteredEvents(events);
   }
 
   const compareDates = (a, b) => {
@@ -72,6 +83,10 @@ const EventsPage = () => {
   useEffect(() => {
     getEvents();
   }, [eventUpdated, activeUser, date]);
+
+  useEffect(() => {
+    handleSportSelection(selectedSport);
+  }, [selectedSport]);
 
   // UI
   return (
@@ -113,14 +128,14 @@ const EventsPage = () => {
                       id="dropdown1"
                       style={{ borderRadius: "20px" }}
                     >
-                      Any Sports
+                      {selectedSport}
                     </Dropdown.Toggle>
                     <Dropdown.Menu
                       style={{ maxHeight: "200px", overflowY: "auto" }}
                     >
                       {sports.map((sport, i) => (
                         <Dropdown.Item
-                          onClick={() => handleSportSelection(sport.name)}
+                          onClick={() => setSelectedSport(sport.name)}
                           key={i}
                         >
                           {sport.name}
@@ -131,7 +146,9 @@ const EventsPage = () => {
                 </Col>
 
                 <Col>
-                  <Button variant="link">Reset</Button>
+                  <Button onClick={() => resetSelection()} variant="link">
+                    Reset
+                  </Button>
                 </Col>
               </Row>
               {/* Events */}
