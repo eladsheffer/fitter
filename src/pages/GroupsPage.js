@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { getData } from '../features/apiService';
 import LinearProgress from '@mui/material/LinearProgress';
 import GroupCard3 from "../components/GroupCard3";
+import PageTitle from "../components/PageTitle";
 
 const GroupsPage = () => {
     const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -70,29 +71,17 @@ const GroupsPage = () => {
 
     return (
         <div>
-            <div style={{ width: "90%", marginInline: "auto", marginTop: "4rem" }}>
-                {/* <Row>
-                    <Col>
-                    </Col>
-                    <Col xs="10">
-                        <h1>Find Your Group</h1>
-                    </Col>
-                </Row> */}
+           <div style={{ width: "90%", marginInline: "auto", marginTop: "1rem" }}>
+                <PageTitle title={`Fitter - Groups`} />
                 <Row>
                     <Col>
                     </Col>
                     <Col>
-                        {/* <Form.Control
-                            type="text"
-                            placeholder="Search"
-                            className="mr-sm-2 rounded-pill"
-                        /> */}
+
                     </Col>
                     <Col>
-                        {/* <Button>Search</Button> */}
                     </Col>
                     <Col>
-                        {/* <h3>Or</h3> */}
                     </Col>
                     <Col>
                         <p>Start your group and community!</p>
@@ -106,53 +95,6 @@ const GroupsPage = () => {
                     </Col>
 
                 </Row>
-
-                {/* <Row>
-                    <Col>
-                        <h3>Search By Filters</h3>
-                    </Col>
-                </Row> */}
-
-                {/* <div className="d-flex justify-content-between"> 
-                    <Dropdown>
-                        <Dropdown.Toggle variant="primary" id="dropdown1" style={{ borderRadius: "20px" }}>
-                            Any Sports
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            {sports.map((sport, i) => (
-                                <Dropdown.Item key={i}>{sport.name}</Dropdown.Item>
-                            ))}
-                        </Dropdown.Menu>
-                    </Dropdown>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <Dropdown>
-                        <Dropdown.Toggle variant="primary" id="dropdown2" style={{ borderRadius: "20px" }}>
-                            Any Location
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                           
-                        </Dropdown.Menu>
-                    </Dropdown>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <Dropdown>
-                        <Dropdown.Toggle variant="primary" id="dropdown3" style={{ borderRadius: "20px" }}>
-                            Any Proficiency
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                           
-                        </Dropdown.Menu>
-                    </Dropdown>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <Dropdown>
-                        <Dropdown.Toggle variant="primary" id="dropdown4" style={{ borderRadius: "20px" }}>
-                            Any Rating
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                           
-                        </Dropdown.Menu>
-                    </Dropdown>
-                </div> */}
-            
             
             {groupsOfUserAsAdmin.length===0 && groupsOfUserAsMember.length===0 && groupsUserNotIn.length===0? <LinearProgress/> : null}
             {groupsOfUserAsAdmin.length===0? null : <>

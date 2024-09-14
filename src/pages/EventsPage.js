@@ -11,6 +11,7 @@ import sports from "../data-model/sports.json";
 import EventCard3 from "../components/EventCard3";
 import { formatFriendlyDate } from "../features/apiService";
 import { getData } from "../features/apiService";
+import PageTitle from "../components/PageTitle";
 
 const EventsPage = () => {
   // States
@@ -58,7 +59,8 @@ const EventsPage = () => {
   // UI
   return (
     <div>
-      <div style={{ width: "90%", marginInline: "auto", marginTop: "4rem" }}>
+      <div style={{ width: "90%", marginInline: "auto", marginTop: "1rem" }}>
+        <PageTitle title={`Fitter - Events`} />
         <Container>
           <Row>
             <Col xs="8">

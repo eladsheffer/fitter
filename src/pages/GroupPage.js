@@ -9,6 +9,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import RootDialog from '../components/RootDialog';
 import { useDispatch } from 'react-redux';
 import { setGroupId, showModal } from '../features/modal';
+import PageTitle from '../components/PageTitle';
 
 
 const GroupPage = () => {
@@ -66,9 +67,10 @@ const GroupPage = () => {
     return (
         <div>
             {!group ? (
-                <LinearProgress style={{ marginTop: "4rem" }} />
+                <LinearProgress />
             ) : (
-                <div style={{ width: "80%", margin: "4rem auto" }}>
+                <div style={{ width: "90%", marginInline: "auto", marginTop: "1rem" }}>
+                    <PageTitle title={`Fitter - Group - ${group.name}`} />
                     <Container fluid="md">
                         {
                             activeUser && group.admin === activeUser.id &&

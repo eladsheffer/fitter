@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import RemoveModal from '../components/RemoveModal';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { closeModal } from '../features/modal';
+import PageTitle from "../components/PageTitle";
 
 const EditProfilePage = (props) => {
     const activeUser = useSelector((state) => state.user.value);
@@ -93,8 +94,6 @@ const EditProfilePage = (props) => {
         newUser.append('location', city);
         newUser.append('date_of_birth', dateOfBirthInput.current.value);
         newUser.append('gender', genderInput.current.value);
-        // const preferred_sports = Array.from(sportsInput.current.selectedOptions).map((option) => option.value);
-        // preferred_sports.forEach((sport, i) => newUser.append(`preferred_sports[${i}]`, sport));
         if (sportsInput.current.selectedOptions.length > 0 && sportsInput.current.selectedOptions[0].value !== "")
             newUser.append('preferred_sports', Array.from(sportsInput.current.selectedOptions).map((option) => option.value));
         if (userProfilePicture)
@@ -175,6 +174,7 @@ const EditProfilePage = (props) => {
         <div className='login'>
             {!activeUser ? <Alert variant="danger">You must be logged in to view this page. <Link to="/login">Login</Link></Alert> :
                 <div className="login">
+                    <PageTitle title={`Fitter - Edit Profile`} />
                     <RemoveModal show={deleteProfileModalShow} handleClose={() => setDeleteProfileModalShow(false)} title="Delete Profile" message="Are you sure you want to delete your profile?" handleRemove={handleDelete} />
                     <Form noValidate validated={validated}>
                         <Form.Group className="mb-3" controlId="name">

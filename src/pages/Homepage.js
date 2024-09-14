@@ -5,6 +5,7 @@ import { getData } from "../features/apiService";
 import GroupCard3 from "../components/GroupCard3";
 import EventCard3 from "../components/EventCard3";
 import LinearProgress from '@mui/material/LinearProgress';
+import PageTitle from "../components/PageTitle";
 
 const Homepage = () => {
     const activeUser = useSelector((state) => state.user.value);
@@ -49,6 +50,7 @@ const Homepage = () => {
 
         <div>
             <div style={{ width: "95%", marginInline: "auto", marginTop: "1rem" }}>
+                <PageTitle title={`Fitter - Home Page`} />
                 { activeUser &&
                 <h1>
                     Hello {activeUser.first_name} 👋

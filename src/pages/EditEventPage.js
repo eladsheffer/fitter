@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { closeModal } from '../features/modal';
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { postData, getData, patchData, deleteData } from '../features/apiService';
-import { Button, Checkbox, FormControlLabel, Stack, TextField, InputLabel, Select, MenuItem, FormControl, Box, Alert, Slider } from "@mui/material";
+import { Button, Checkbox, FormControlLabel, Stack, TextField, InputLabel, Select, MenuItem, FormControl, Box, Alert, Slider, Grid } from "@mui/material";
 import { DateTimePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import sports from "../data-model/sports.json";
@@ -11,6 +11,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import RemoveModal from '../components/RemoveModal';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Col, Row } from 'react-bootstrap';
+import PageTitle from "../components/PageTitle";
 
 const EditEventPage = (props) => {
 
@@ -193,6 +194,7 @@ const EditEventPage = (props) => {
                 activeUser.id !== event.organizer ? <Alert variant="danger">You are not the organizer of this event. <Button variant='link' onClick={() => navigate(-1)} >Go Back</Button> </Alert> :
 
                     <>
+                        <PageTitle title={`Fitter - Edit Event`} />
                         <RemoveModal show={showRemoveModal} handleClose={() => setShowRemoveModal(false)} title="Delete Event" message="Are you sure you want to delete this event?" handleRemove={deleteEvent} />
                         <Stack spacing={2} margin={2}>
                             <TextField variant="outlined" inputRef={titleEventInput} name="title" placeholder='Event title is empty and will not be altered' defaultValue={event.title} label="Title"></TextField>
@@ -228,23 +230,24 @@ const EditEventPage = (props) => {
                                 </Select>
                             </FormControl>
                             <FormControl fullWidth>
-                                <Row>
-                                   
+                                <Grid container spacing={2}>
+                                   <Grid item xs={12} sm={12} md={12} lg={12}>
                                 <TextField type="file" inputProps={{ accept: 'image/*' }} inputRef={eventProfilePictureInput} onChange={(e) => (setEventProfilePicture((e.target.files[0])), setEventProfilePictureToShow(URL.createObjectURL(e.target.files[0])))} />
-                                </Row>
-                                <Row>
-                                <Col xs="7">
+                                </Grid>
+                                <Grid item xs={7} sm={7} md={7} lg={7}>
                                 <Box inputRef={eventProfileImg}
                                     component="img"
                                     style={{ width: "100%", height: "100%" }}
                                     src={eventProfilePictureToShow}
                                 />
-                                </Col>
-                                <Col xs="2" style={{margin:"auto"}}>
+                                </Grid>
+                               <Grid item xs={2} sm={2} md={2} lg={2} style={{margin: "auto"}}>
+                               
                                 <Button color="error" variant="contained" onClick={() => removeImage()}>Remove Image</Button>
-                                </Col>
+                                </Grid>
                                 
-                                </Row>
+                                
+                                </Grid>
                             </FormControl>
                             <FormControl fullWidth>
                                 <FormControlLabel control={<Checkbox />} label="Event Age Range (Optional)" onChange={() => setDisabledAgeSlider(!disabledAgeSlider)} />

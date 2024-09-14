@@ -7,6 +7,7 @@ import EventCard3 from '../components/EventCard3';
 import RootModal from '../components/RootModal';
 import { LinearProgress } from '@mui/material';
 import { Slider } from '@mui/material';
+import PageTitle from "../components/PageTitle";
 
 export default function SearchPage() {
     const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -126,7 +127,8 @@ export default function SearchPage() {
     }
 
     return (
-         <div style={{ width: "90%", marginInline: "auto", marginTop: "4rem" }}>
+        <div style={{ width: "90%", marginInline: "auto", marginTop: "1rem" }}>
+            <PageTitle title={`Fitter - Search Page`} />
             <RootModal hideButton />
             <Row className="my-4 justify-content-center">
                 <Col xs="auto" className="text-center">

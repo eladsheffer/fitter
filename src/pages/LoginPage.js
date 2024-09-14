@@ -1,6 +1,6 @@
 import { Form, Alert, Button } from 'react-bootstrap'
 import React, { useRef, useState } from 'react';
-import { useDispatch} from 'react-redux';
+import { useDispatch, useSelector} from 'react-redux';
 import { login } from '../features/user';
 import {setGroupsAsAdmin, setGroupsAsMember} from '../features/groups'
 import {setEventsAsHost, setEventsAsParticipant } from '../features/events'
@@ -8,9 +8,10 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { getData, postData } from '../features/apiService';
 import { showModal} from '../features/modal';
+import PageTitle from "../components/PageTitle";
 
 function LoginPage(props) {
-
+    const activeUser = useSelector((state) => state.user.value);
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const [validated, setValidated] = useState(false);
     const [invalidLogin, setInvalidLogin] = useState(false);
@@ -91,8 +92,9 @@ function LoginPage(props) {
 
     return (
         <div>
+            {activeUser ? navigate("/") :
             <div className="login">
-
+                <PageTitle title={`Fitter - Login`} />
                 {props.modal ? null : <>
                     <h1>Login</h1>
                     <p>
@@ -124,6 +126,7 @@ function LoginPage(props) {
                     </Button>
                 </Form>
             </div>
+            }
         </div>
     );
 }

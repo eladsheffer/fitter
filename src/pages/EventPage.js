@@ -8,6 +8,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import UserCard from "../components/UserCard";
 import { getData } from "../features/apiService";
 import Map from "../components/Map";
+import PageTitle from "../components/PageTitle";
 
 export default function EventPage() {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -54,9 +55,10 @@ export default function EventPage() {
   return (
     <div>
       {!event ? (
-        <LinearProgress style={{ marginTop: "4rem" }} />
+        <LinearProgress />
       ) : (
-        <div style={{ width: "80%", margin: "4rem auto" }}>
+        <div style={{ width: "90%", marginInline: "auto", marginTop: "1rem" }}>
+          <PageTitle title={`Fitter - Event - ${event.title}`} />
           <Container fluid="md">
 
             {activeUser && event.organizer === activeUser.id && (

@@ -7,6 +7,7 @@ import sports from "../data-model/sports.json";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { closeModal } from "../features/modal";
 import { useNavigate } from "react-router-dom";
+import PageTitle from "../components/PageTitle";
 
 const NewGroupPage = () => {
   const dispatch = useDispatch();
@@ -125,6 +126,7 @@ const NewGroupPage = () => {
 
   return (
     <div className="login">
+      <PageTitle title={`Fitter - Create Group`} />
       <Form noValidate validated={validated}>
         <Form.Group className="mb-3" controlId="groupName">
           <Form.Label>Group Name</Form.Label>

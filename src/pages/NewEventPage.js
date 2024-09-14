@@ -2,25 +2,13 @@ import React, { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { closeModal } from "../features/modal";
 import { postData, getData } from "../features/apiService";
-import {
-  Button,
-  Checkbox,
-  FormControlLabel,
-  Stack,
-  TextField,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormControl,
-  Box,
-  Alert,
-  Slider,
-} from "@mui/material";
+import {Button, Checkbox, FormControlLabel, Stack, TextField, InputLabel, Select, MenuItem, FormControl, Box, Alert, Slider, Grid} from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import sports from "../data-model/sports.json";
 import { useParams, useNavigate } from "react-router-dom";
 import Autocomplete from "@mui/material/Autocomplete";
+import PageTitle from "../components/PageTitle";
 
 const NewEventPage = (props) => {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -210,6 +198,7 @@ const NewEventPage = (props) => {
 
   return (
     <div className="login">
+      <PageTitle title={`Fitter - Create Event`} />
       <Stack spacing={2} margin={2}>
         <TextField
           variant="outlined"
@@ -305,22 +294,23 @@ const NewEventPage = (props) => {
           </Select>
         </FormControl>
         <FormControl fullWidth>
+          <Grid container spacing={2}>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
           <TextField
             type="file"
             inputProps={{ accept: "image/*" }}
             ref={eventProfilePictureInput}
             onChange={(e) => setEventProfilePicture(e.target.files[0])}
           />
+          </Grid>
+          <Grid item xs={7} sm={7} md={7} lg={7}>
           <Box
             component="img"
-            sx={{
-              height: 233,
-              width: 350,
-              maxHeight: { xs: 233, md: 167 },
-              maxWidth: { xs: 350, md: 250 },
-            }}
+            style={{ width: "100%", height: "100%" }}
             src={eventProfilePictureToShow}
           />
+          </Grid>
+          </Grid>
         </FormControl>
         <FormControl fullWidth>
           <FormControlLabel

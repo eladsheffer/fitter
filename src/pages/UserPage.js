@@ -6,6 +6,7 @@ import { getData } from '../features/apiService';
 import EventCard3 from '../components/EventCard3';
 import GroupCard3 from '../components/GroupCard3';
 import LinearProgress from '@mui/material/LinearProgress';
+import PageTitle from "../components/PageTitle";
 
 const UserPage = () => {
     const activeUser = useSelector((state) => state.user.value);
@@ -72,7 +73,8 @@ const UserPage = () => {
     }
 
     return (
-        <div style={{ width: "90%", marginInline: "auto", marginTop: "4rem" }}>
+        <div style={{ width: "90%", marginInline: "auto", marginTop: "1rem" }}>
+            <PageTitle title={`Fitter - User Page`}/>
             <Row style={{ marginTop: "3em" }}>
                 <Col xs="1"></Col>
                 <Col lg={4} md={6} sm={8} xs="8">

@@ -10,8 +10,10 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../features/modal';
+import PageTitle from "../components/PageTitle";
 
 const EditGroupPage = (props) => {
+    const activeUser = useSelector((state) => state.user.value);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     let { id } = useParams();
@@ -28,7 +30,7 @@ const EditGroupPage = (props) => {
     const [groupProfilePicture, setGroupProfilePicture] = useState(null);
     const [ageRange, setAgeRange] = useState([0, 120]);
     const [disabledAgeSlider, setDisabledAgeSlider] = useState(true);
-    const [group, setGroup] = useState({});
+    const [group, setGroup] = useState(null);
     const [gender, setGender] = useState(null);
     const [preferredSports, setPreferredSports] = useState([]);
     const [groupProfilePictureToShow, setGroupProfilePictureToShow] = useState(null);
@@ -41,7 +43,7 @@ const EditGroupPage = (props) => {
     const ageSliderInput = useRef(null);
     const sportsInput = useRef(null);
 
-    const activeUser = useSelector((state) => state.user.value);
+    
 
     const fetchCities = async () => {
         const data = await getData(citiesUrl);
@@ -179,6 +181,7 @@ const EditGroupPage = (props) => {
                 activeUser.id !== group.admin ? <Alert variant="danger">You are not the admin of this group. <Button variant='link' onClick={() => navigate(-1)} >Go Back</Button> </Alert> :
 
                     <>
+                        <PageTitle title={`Fitter - Edit Group`} />
                         <RemoveModal show={showDeleteModal} handleClose={() => setShowDeleteModal(false)} title="Delete Group" message="Are you sure you want to delete this group?" handleRemove={deleteGroup} />
                         <Form noValidate validated={validated}>
 
@@ -226,7 +229,7 @@ const EditGroupPage = (props) => {
                                         <Form.Control type="file" accept='image/*' ref={groupProfilePictureInput} onChange={(e) => (setGroupProfilePicture((e.target.files[0])), setGroupProfilePictureToShow(URL.createObjectURL(e.target.files[0])))} />
                                     </Col>
                                 </Row>
-                                <Row>
+                                <Row className='my-3'>
                                     <Col xs={7}>
                                         <Image src={groupProfilePictureToShow} ref={groupProfileImg} fluid />
                                     </Col>
