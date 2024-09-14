@@ -241,16 +241,16 @@ const EditProfilePage = (props) => {
                         </Form.Group>
                         <Form.Group controlId="formFile" className="mb-3">
                             <Row>
-                                <Col sm={9}>
+                                <Col lg={12} md={12} sm={12} xs={12}>
                                     <Form.Label>User Profile Picture</Form.Label>
                                     <Form.Control type="file" accept='image/*' ref={userProfilePictureInput} onChange={(e) => (setUserProfilePicture((e.target.files[0])), setUserProfilePictureToShow(URL.createObjectURL(e.target.files[0])))} />
                                 </Col>
                                 </Row>
-                                <Row>
-                                <Col xs={7}>
+                                <Row className='my-3'>
+                                <Col lg={7} md={7} sm={7} xs={7}>
                                     <Image src={userProfilePictureToShow} ref={userProfileImg} fluid />
                                 </Col>
-                                <Col xs={2} style={{margin:"auto"}}>
+                                <Col lg={2} md={2} sm={2} xs={2} style={{margin:"auto"}}>
                                 <Button variant='danger' type="button" onClick={removePicture}>
                                     Remove Picture
                                 </Button>

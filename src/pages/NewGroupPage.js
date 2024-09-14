@@ -195,7 +195,7 @@ const NewGroupPage = () => {
         </Form.Group>
         <Form.Group controlId="formFile" className="mb-3">
           <Row>
-            <Col sm={9}>
+            <Col lg={12} md={12} sm={12} xs={12}>
               <Form.Label>Group Profile Picture</Form.Label>
               <Form.Control
                 type="file"
@@ -204,7 +204,9 @@ const NewGroupPage = () => {
                 onChange={(e) => setGroupProfilePicture(e.target.files[0])}
               />
             </Col>
-            <Col sm={3}>
+          </Row>
+            <Row className="my-3">
+            <Col lg={7} md={7} sm={7} xs={7}>
               <Image
                 src={groupProfilePictureToShow}
                 ref={groupProfileImg}

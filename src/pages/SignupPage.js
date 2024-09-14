@@ -209,11 +209,13 @@ const SignupPage = (props) => {
                         </Form.Group>
                         <Form.Group controlId="formFile" className="mb-3">
                             <Row>
-                                <Col sm={9}>
+                                <Col lg={12} md={12} sm={12} xs={12}>
                                     <Form.Label>User Profile Picture</Form.Label>
                                     <Form.Control type="file" accept='image/*' ref={userProfilePictureInput} onChange={(e) => setUserProfilePicture((e.target.files[0]))} />
                                 </Col>
-                                <Col sm={3}>
+                            </Row>
+                            <Row className="my-3">
+                                <Col lg={7} md={7} sm={7} xs={7}>
                                     <Image src={userProfilePictureToShow} ref={userProfileImg} fluid />
                                 </Col>
                             </Row>
