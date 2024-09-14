@@ -12,7 +12,6 @@ import EventCard3 from "../components/EventCard3";
 import { formatFriendlyDate } from "../features/apiService";
 import { getData } from "../features/apiService";
 import PageTitle from "../components/PageTitle";
-import { set } from "zod";
 
 const EventsPage = () => {
   // States
