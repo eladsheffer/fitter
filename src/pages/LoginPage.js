@@ -92,7 +92,7 @@ function LoginPage(props) {
 
     return (
         <div>
-            {activeUser ? navigate("/") :
+            {activeUser ? <Alert variant="success">You're already logged in. <Link to="/">Homepage</Link></Alert> :
             <div className="login">
                 <PageTitle title={`Fitter - Login`} />
                 {props.modal ? null : <>

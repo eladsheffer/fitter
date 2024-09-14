@@ -71,7 +71,8 @@ const NewGroupPage = () => {
     newGroup.append("location", city);
     newGroup.append("min_age", disabledAgeSlider ? 0 : ageRange[0]);
     newGroup.append("max_age", disabledAgeSlider ? 120 : ageRange[1]);
-    newGroup.append("profile_picture", groupProfilePicture);
+    if (groupProfilePicture)
+      newGroup.append("profile_picture", groupProfilePicture);
     newGroup.append("gender", genderInput.current.value);
     const preferred_sports = Array.from(
       sportsInput.current.selectedOptions

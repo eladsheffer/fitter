@@ -124,7 +124,7 @@ const SignupPage = (props) => {
 
     return (
         <div>
-            {activeUser ? navigate('/') :
+            {activeUser ? <Alert variant="success">You're already logged in. <Link to="/">Homepage</Link></Alert> :
                 <div className="login">
                     <PageTitle title={`Fitter - Sign Up`} />
                     {props.modal ? null :

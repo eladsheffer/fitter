@@ -152,7 +152,8 @@ const NewEventPage = (props) => {
     newEvent.append("location", location);
     newEvent.append("date_and_time", eventDateTimeInput.current.value);
     newEvent.append("sport_type", eventSportTypeInput.current.value);
-    newEvent.append("image", eventProfilePicture);
+    if (eventProfilePicture)
+      newEvent.append("image", eventProfilePicture);
     newEvent.append("min_age", disabledAgeSlider ? 0 : ageRange[0]);
     newEvent.append("max_age", disabledAgeSlider ? 120 : ageRange[1]);
     newEvent.append("gender", eventGenderInput.current.value);
