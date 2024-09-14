@@ -127,7 +127,7 @@ export default function SearchPage() {
     }
 
     return (
-        <div style={{ width: "90%", marginInline: "auto", marginTop: "1rem" }}>
+        <div className="pages">
             <PageTitle title={`Fitter - Search Page`} />
             <RootModal hideButton />
             <Row className="my-4 justify-content-center">

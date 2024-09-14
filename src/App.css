@@ -33,6 +33,12 @@
   margin-inline: auto;
 }
 
+.pages {
+  width: 90%;
+  margin-inline: auto;
+  margin-top: 1rem;
+}
+
 .highlight{
   position: relative;
   display: inline-block;

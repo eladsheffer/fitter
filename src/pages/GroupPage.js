@@ -69,7 +69,7 @@ const GroupPage = () => {
             {!group ? (
                 <LinearProgress />
             ) : (
-                <div style={{ width: "90%", marginInline: "auto", marginTop: "1rem" }}>
+                <div className="pages">
                     <PageTitle title={`Fitter - Group - ${group.name}`} />
                     <Container fluid="md">
                         {

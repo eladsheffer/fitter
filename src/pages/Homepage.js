@@ -49,7 +49,7 @@ const Homepage = () => {
     return (
 
         <div>
-            <div style={{ width: "95%", marginInline: "auto", marginTop: "1rem" }}>
+            <div className="pages">
                 <PageTitle title={`Fitter - Home Page`} />
                 { activeUser &&
                 <h1>

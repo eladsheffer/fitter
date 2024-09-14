@@ -73,9 +73,9 @@ const UserPage = () => {
     }
 
     return (
-        <div style={{ width: "90%", marginInline: "auto", marginTop: "1rem" }}>
+        <div className="pages">
             <PageTitle title={`Fitter - User Page`}/>
-            <Row style={{ marginTop: "3em" }}>
+            <Row>
                 <Col xs="1"></Col>
                 <Col lg={4} md={6} sm={8} xs="8">
 

@@ -71,7 +71,7 @@ const GroupsPage = () => {
 
     return (
         <div>
-           <div style={{ width: "90%", marginInline: "auto", marginTop: "1rem" }}>
+           <div className="pages">
                 <PageTitle title={`Fitter - Groups`} />
                 <Row>
                     <Col>

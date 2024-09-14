@@ -57,7 +57,7 @@ export default function EventPage() {
       {!event ? (
         <LinearProgress />
       ) : (
-        <div style={{ width: "90%", marginInline: "auto", marginTop: "1rem" }}>
+        <div className="pages">
           <PageTitle title={`Fitter - Event - ${event.title}`} />
           <Container fluid="md">
 
