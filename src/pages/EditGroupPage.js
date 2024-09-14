@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Form, Row, Col, Button, Image, Alert } from 'react-bootstrap'
 import { useSelector } from "react-redux";
-import { getData, patchData, putData, deleteData } from '../features/apiService';
+import { getData, patchData, postData, deleteData } from '../features/apiService';
 import { Box, Slider } from '@mui/material';
 import sports from "../data-model/sports.json";
 import { Link, useParams, useNavigate } from "react-router-dom";
@@ -43,43 +43,32 @@ const EditGroupPage = (props) => {
 
     const activeUser = useSelector((state) => state.user.value);
 
+    const fetchCities = async () => {
+        const data = await getData(citiesUrl);
+        if (!data) return;
+        const cities = data.result.records.map((city) => city.שם_ישוב.trim().replace('(', ')').replace(')', '('));
+        setCities(cities);
+    };
     useEffect(() => {
-        const fetchCities = async () => {
-            const data = await getData(citiesUrl);
-            if (!data) return;
-            const cities = data.result.records.map((city) => city.שם_ישוב.trim().replace('(', ')').replace(')', '('));
-            setCities(cities);
-        };
-
         fetchCities();
-        // Cleanup function if needed
-        return () => {
-            // cleanup
-        };
-
     }, []);
 
+    const fetchGroup = async () => {
+        const groupData = await getData(path);
+        if (!groupData) return;
+        setGroup(groupData);
+        setCity(groupData.location);
+        setPreferredSports(groupData.preferred_sports);
+        setGroupProfilePictureToShow(groupData.profile_picture);
+        setGender(groupData.gender);
+        if (groupData.min_age || groupData.max_age)
+            setAgeRange([groupData.min_age, groupData.max_age]);
+    };
+
+
     useEffect(() => {
-        const fetchGroup = async () => {
-            const groupData = await getData(path);
-            console.log(groupData);
-            if (!groupData) return;
-            setGroup(groupData);
-            setCity(groupData.location);
-            setPreferredSports(groupData.preferred_sports);
-            setGroupProfilePictureToShow(groupData.profile_picture);
-            setGender(groupData.gender);
-            if (groupData.min_age || groupData.max_age)
-                setAgeRange([groupData.min_age, groupData.max_age]);
-        };
 
         fetchGroup();
-
-        // Cleanup function if needed
-        return () => {
-            // cleanup
-
-        };
 
     }, []);
 
@@ -160,20 +149,36 @@ const EditGroupPage = (props) => {
             setErrorMessages("Error deleting user profile");
         }
     };
-    
+
     const handleClose = () => {
         dispatch(closeModal());
         navigate(-1);
-    ;}
+        ;
+    }
+
+    const removePicture = async () => {
+
+        setGroupProfilePicture(null);
+        setGroupProfilePictureToShow(null);
+
+        const deleteImage = await postData(`${serverUrl}groups/${id}/remove_profile_picture/`, null);
+        if (deleteImage) {
+            setSuccessMessages("Profile picture removed successfully");
+        }
+        else {
+            setErrorMessages("Error removing profile picture");
+        }
+
+    };
 
 
 
     return (
-        <div>
+        <div className='login'>
             {!activeUser ? <Alert variant="danger">You must be logged in to view this page. <Link to="/login">Login</Link></Alert> : !group ? <LinearProgress /> :
                 activeUser.id !== group.admin ? <Alert variant="danger">You are not the admin of this group. <Button variant='link' onClick={() => navigate(-1)} >Go Back</Button> </Alert> :
 
-                    <div className="login">
+                    <>
                         <RemoveModal show={showDeleteModal} handleClose={() => setShowDeleteModal(false)} title="Delete Group" message="Are you sure you want to delete this group?" handleRemove={deleteGroup} />
                         <Form noValidate validated={validated}>
 
@@ -220,10 +225,16 @@ const EditGroupPage = (props) => {
                                         <Form.Label>Group Profile Picture</Form.Label>
                                         <Form.Control type="file" accept='image/*' ref={groupProfilePictureInput} onChange={(e) => (setGroupProfilePicture((e.target.files[0])), setGroupProfilePictureToShow(URL.createObjectURL(e.target.files[0])))} />
                                     </Col>
-                                    <Col sm={3}>
+                                </Row>
+                                <Row>
+                                    <Col xs={7}>
                                         <Image src={groupProfilePictureToShow} ref={groupProfileImg} fluid />
                                     </Col>
+                                    <Col xs={2} style={{ margin: "auto" }}>
+                                        <Button variant="danger" onClick={removePicture}>Remove Picture</Button>
+                                    </Col>
                                 </Row>
+
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="min-max">
                                 <Form.Check type="checkbox" label="Group Age Range (Optional)" onChange={() => setDisabledAgeSlider(!disabledAgeSlider)} />
@@ -263,7 +274,7 @@ const EditGroupPage = (props) => {
 
 
                         </Form>
-                    </div>}
+                    </>}
         </div>
     );
 }

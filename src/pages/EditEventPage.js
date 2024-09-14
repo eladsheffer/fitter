@@ -2,25 +2,15 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { closeModal } from '../features/modal';
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { postData, getData, putData, patchData, deleteData } from '../features/apiService';
-// import Button from '@mui/material/Button';
-// import TextField from '@mui/material/TextField';
-// import Dialog from '@mui/material/Dialog';
-// import DialogActions from '@mui/material/DialogActions';
-// import DialogContent from '@mui/material/DialogContent';
-// import DialogContentText from '@mui/material/DialogContentText';
-// import DialogTitle from '@mui/material/DialogTitle';
-import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, IconButton, Stack, TextField, InputLabel, Select, MenuItem, FormControl, Box, Alert, Slider } from "@mui/material";
+import { postData, getData, patchData, deleteData } from '../features/apiService';
+import { Button, Checkbox, FormControlLabel, Stack, TextField, InputLabel, Select, MenuItem, FormControl, Box, Alert, Slider } from "@mui/material";
 import { DateTimePicker } from '@mui/x-date-pickers';
-import FormControlContext from "@mui/material/FormControl/FormControlContext";
-import CloseIcon from "@mui/icons-material/Close"
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { Description } from '@mui/icons-material';
 import dayjs from 'dayjs';
 import sports from "../data-model/sports.json";
 import LinearProgress from '@mui/material/LinearProgress';
 import RemoveModal from '../components/RemoveModal';
 import Autocomplete from '@mui/material/Autocomplete';
+import { Col, Row } from 'react-bootstrap';
 
 const EditEventPage = (props) => {
 
@@ -60,51 +50,37 @@ const EditEventPage = (props) => {
     const [maxParticipants, setMaxParticipants] = useState('');
     const [showRemoveModal, setShowRemoveModal] = useState(false);
 
+    const fetchCities = async () => {
+        const data = await getData(citiesUrl);
+        if (!data) return;
+        const cities = data.result.records.map((city) => city.שם_ישוב.trim().replace('(', ')').replace(')', '('));
+        setCities(cities);
+    };
 
-    useEffect(() => {
-        const fetchCities = async () => {
-            const data = await getData(citiesUrl);
-            if (!data) return;
-            const cities = data.result.records.map((city) => city.שם_ישוב.trim().replace('(', ')').replace(')', '('));
-            setCities(cities);
-        };
 
+    useEffect(() => {  
         fetchCities();
-
-        // Cleanup function if needed
-        return () => {
-            // Cleanup code here, if any
-        };
     }, []);
 
+    const fetchEvent = async () => {
+        const eventData = await getData(path);
+       
+        if (!eventData) return;
+        setEvent(eventData);
+        setLocation(eventData.location);
+
+        setEventProfilePictureToShow(eventData.image);
+        setGender(eventData.gender);
+        setSportType(eventData.sport_type);
+        if (eventData.min_age || eventData.max_age) {
+            setAgeRange([eventData.min_age, eventData.max_age]);
+        }
+
+        setMaxParticipants(eventData.max_participants);
+    };
+
     useEffect(() => {
-        const fetchEvent = async () => {
-            const eventData = await getData(path);
-            console.log(eventData);
-            if (!eventData) return;
-            setEvent(eventData);
-            console.log(eventData);
-            console.log(event);
-            setLocation(eventData.location);
-
-            setEventProfilePictureToShow(eventData.image);
-            setGender(eventData.gender);
-            setSportType(eventData.sport_type);
-            if (eventData.min_age || eventData.max_age) {
-                setAgeRange([eventData.min_age, eventData.max_age]);
-            }
-
-            setMaxParticipants(eventData.max_participants);
-        };
-
         fetchEvent();
-
-        // Cleanup function if needed
-        return () => {
-            // cleanup
-
-        };
-
     }, []);
 
     const handleNumberInputChanged = (event) => {
@@ -127,7 +103,6 @@ const EditEventPage = (props) => {
             return;
         }
 
-        console.log(props.group);
         let newEvent = new FormData();
         if (titleEventInput.current.value) {
             newEvent.append('title', titleEventInput.current.value);
@@ -159,12 +134,9 @@ const EditEventPage = (props) => {
         if (props.group)
             newEvent.append('group_organized', props.group);
 
-        console.log(newEvent);
 
         let event = await patchData(path, newEvent);
-        console.log(event);
         if (event && event.title) {
-            console.log(event);
             setSuccessMessages(`Event "${event.title}" updated successfully`);
         }
         else {
@@ -200,6 +172,19 @@ const EditEventPage = (props) => {
     const handleClose = () => {
         dispatch(closeModal());
         navigate(-1);
+    };
+
+    const removeImage = async () => {
+        setEventProfilePicture(null);
+        setEventProfilePictureToShow(null);
+        const deleteImage = await postData(`${serverUrl}events/${id}/remove_image/`,null);
+        if (deleteImage) {
+            setSuccessMessages("Image removed successfully");
+        }
+        else {
+            setErrorMessages("Error removing image");
+        }
+
     };
 
     return (
@@ -243,17 +228,28 @@ const EditEventPage = (props) => {
                                 </Select>
                             </FormControl>
                             <FormControl fullWidth>
+                                <Row>
+                                   
                                 <TextField type="file" inputProps={{ accept: 'image/*' }} inputRef={eventProfilePictureInput} onChange={(e) => (setEventProfilePicture((e.target.files[0])), setEventProfilePictureToShow(URL.createObjectURL(e.target.files[0])))} />
+                                </Row>
+                                <Row>
+                                <Col xs="7">
                                 <Box inputRef={eventProfileImg}
                                     component="img"
                                     sx={{
-                                        height: 233,
-                                        width: 350,
-                                        maxHeight: { xs: 233, md: 167 },
-                                        maxWidth: { xs: 350, md: 250 },
+                                        height: 160,
+                                        width: 250,
+                                        maxHeight: { xs: 160, md: 160 },
+                                        maxWidth: { xs: 250, md: 250 },
                                     }}
                                     src={eventProfilePictureToShow}
                                 />
+                                </Col>
+                                <Col xs="2" style={{margin:"auto"}}>
+                                <Button color="error" variant="contained" onClick={() => removeImage()}>Remove Image</Button>
+                                </Col>
+                                
+                                </Row>
                             </FormControl>
                             <FormControl fullWidth>
                                 <FormControlLabel control={<Checkbox />} label="Event Age Range (Optional)" onChange={() => setDisabledAgeSlider(!disabledAgeSlider)} />
@@ -282,7 +278,7 @@ const EditEventPage = (props) => {
                                 </Select>
                             </FormControl>
                             <TextField
-                                label="Maximum participants (if empty, unlimited)"
+                                label="Maximum participants"
                                 placeholder='Maximum participants is empty and will not be altered'
                                 value={maxParticipants}
                                 onChange={handleNumberInputChanged}
@@ -294,7 +290,7 @@ const EditEventPage = (props) => {
                             {successMessages && (<Alert severity='success' >{successMessages}</Alert>)}
                             {errorMessages && (<Alert severity='error'>{errorMessages}</Alert>)}
                             <Button color="primary" variant="contained" onClick={updateEvent}>Update Event</Button>
-                            <Button color="secondary" variant="contained" onClick={() => setShowRemoveModal(true)}>Delete Event</Button>
+                            <Button color="error" variant="contained" onClick={() => setShowRemoveModal(true)}>Delete Event</Button>
                             <Button variant="contained" onClick={()=>handleClose()}>Back</Button>
                         </Stack>
                     </>

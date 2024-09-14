@@ -3,7 +3,7 @@ import { Form, Alert, Button, Row, Col, Image } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { login, logout } from '../features/user';
 import { useNavigate, Link } from 'react-router-dom';
-import { getData, putData, patchData, deleteData } from '../features/apiService';
+import { getData, postData, patchData, deleteData } from '../features/apiService';
 import { Slider } from '@mui/material';
 import sports from "../data-model/sports.json";
 import { useSelector } from 'react-redux';
@@ -106,7 +106,6 @@ const EditProfilePage = (props) => {
 
         newUser.append('bio', bioInput.current.value);
 
-        console.log(newUser);
         newUser = await patchData(serverUrl + 'users/' + activeUser.id + "/", newUser);
         if (newUser) {
             dispatch(login(newUser));
@@ -139,7 +138,6 @@ const EditProfilePage = (props) => {
     const handleDelete = async () => {
         setDeleteProfileModalShow(false);
         const deleted = await deleteData(`${serverUrl}users/${activeUser.id}/`);
-        console.log(deleted);
         if (deleted) {
             dispatch(logout());
             navigate('/');
@@ -147,8 +145,6 @@ const EditProfilePage = (props) => {
         else {
             setErrorMessages("Error deleting user profile");
         }
-
-
     };
 
     const handleClose = () => {
@@ -156,8 +152,27 @@ const EditProfilePage = (props) => {
         navigate(-1);
     };
 
+    const removePicture = async () => {
+        if (!activeUser) {
+            setErrorMessages("No user logged in");
+            return;
+        }
+            
+        setUserProfilePicture(null);
+        setUserProfilePictureToShow(null);
+        
+        const deleteImage = await postData(`${serverUrl}users/${activeUser.id}/remove_profile_picture/`, null);
+        if (deleteImage) {
+            setSuccessMessages("Profile picture removed successfully");
+        }
+        else {
+            setErrorMessages("Error removing profile picture");
+        }
+
+    };
+
     return (
-        <div>
+        <div className='login'>
             {!activeUser ? <Alert variant="danger">You must be logged in to view this page. <Link to="/login">Login</Link></Alert> :
                 <div className="login">
                     <RemoveModal show={deleteProfileModalShow} handleClose={() => setDeleteProfileModalShow(false)} title="Delete Profile" message="Are you sure you want to delete your profile?" handleRemove={handleDelete} />
@@ -230,8 +245,15 @@ const EditProfilePage = (props) => {
                                     <Form.Label>User Profile Picture</Form.Label>
                                     <Form.Control type="file" accept='image/*' ref={userProfilePictureInput} onChange={(e) => (setUserProfilePicture((e.target.files[0])), setUserProfilePictureToShow(URL.createObjectURL(e.target.files[0])))} />
                                 </Col>
-                                <Col sm={3}>
+                                </Row>
+                                <Row>
+                                <Col xs={7}>
                                     <Image src={userProfilePictureToShow} ref={userProfileImg} fluid />
+                                </Col>
+                                <Col xs={2} style={{margin:"auto"}}>
+                                <Button variant='danger' type="button" onClick={removePicture}>
+                                    Remove Picture
+                                </Button>
                                 </Col>
                             </Row>
                         </Form.Group>

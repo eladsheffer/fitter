@@ -1,13 +1,13 @@
 import { Form, Alert, Button } from 'react-bootstrap'
 import React, { useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch} from 'react-redux';
 import { login } from '../features/user';
 import {setGroupsAsAdmin, setGroupsAsMember} from '../features/groups'
 import {setEventsAsHost, setEventsAsParticipant } from '../features/events'
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { getData, postData } from '../features/apiService';
-import { showModal, closeModal } from '../features/modal';
+import { showModal} from '../features/modal';
 
 function LoginPage(props) {
 
@@ -41,7 +41,6 @@ function LoginPage(props) {
             setInvalidLogin(true);
             return;
         }
-        console.log(user);
         dispatch(login(user)); // dispatch the user object to the store
 
         // get the groups of the user

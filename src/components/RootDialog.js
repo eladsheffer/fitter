@@ -1,21 +1,9 @@
-import React, { useState, useRef } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from "react-redux";
-import { closeModal, showModal, renderModalType } from '../features/modal';
-import { postData, getData } from '../features/apiService';
-// import Button from '@mui/material/Button';
-// import TextField from '@mui/material/TextField';
-// import Dialog from '@mui/material/Dialog';
-// import DialogActions from '@mui/material/DialogActions';
-// import DialogContent from '@mui/material/DialogContent';
-// import DialogContentText from '@mui/material/DialogContentText';
-// import DialogTitle from '@mui/material/DialogTitle';
-import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, IconButton, Stack, TextField, InputLabel, Select, MenuItem, FormControl, Box } from "@mui/material";
-import { DateTimePicker } from '@mui/x-date-pickers';
-import FormControlContext from "@mui/material/FormControl/FormControlContext";
+import { closeModal, showModal } from '../features/modal';
+import { Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close"
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { Description } from '@mui/icons-material';
-import dayjs from 'dayjs';
 import NewEventPage from '../pages/NewEventPage';
 
 const RootDialog = (props) => {

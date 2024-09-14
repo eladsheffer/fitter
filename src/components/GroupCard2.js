@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
-import { Card, Button, Row, Col, Image, Accordion } from 'react-bootstrap';
+import { Card, Button, Accordion } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { postData } from '../features/apiService';
-import RemoveModal from '../components/RemoveModal';
-import { renderCardType, makeAdmin, makeMember, removeAdmin, removeMember } from '../features/card';
-import { setGroupsAsAdmin, setGroupsAsMember, addGroup, removeGroup } from '../features/groups';
-import { showModal, closeModal, renderModalType, setGroupId } from '../features/modal';
-import RootModal from './RootModal';
-import RootDialog from './RootDialog';
+import { removeGroup } from '../features/groups';
+import { showModal, renderModalType, setGroupId } from '../features/modal';
 
 const GroupCard2= (props) => {
     const dispatch = useDispatch();
@@ -78,7 +74,6 @@ const GroupCard2= (props) => {
     };
 
     const editGroup = () => {
-        console.log('Edit group:', group);
         navigate(`/edit-group/${group.id}`);
     };
 
@@ -88,10 +83,6 @@ const GroupCard2= (props) => {
         dispatch(setGroupId({groupId: group.id}));
         dispatch(showModal());
     };
-
-    // const removeGroup = () => {
-    //     console.log('Remove group:', group);
-    // };
 
     const login = () => {
         navigate('/login');

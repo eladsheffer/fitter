@@ -4,8 +4,7 @@ import { useDispatch } from 'react-redux';
 import { login } from '../features/user';
 import { useNavigate, Link } from 'react-router-dom';
 import { getData, postData } from '../features/apiService';
-import { showModal, closeModal } from '../features/modal';
-import { Box, Slider } from '@mui/material';
+import { Slider } from '@mui/material';
 import sports from "../data-model/sports.json";
 import { Typeahead } from 'react-bootstrap-typeahead';
 
@@ -39,20 +38,16 @@ const SignupPage = (props) => {
     const [height, setHeight] = useState(165);
     const [weight, setWeight] = useState(60);
 
+
+    const fetchCities = async () => {
+        const data = await getData(citiesUrl);
+        if (!data) return;
+        const cities = data.result.records.map((city) => city.שם_ישוב.trim().replace('(', ')').replace(')', '('));
+        setCities(cities);
+    };
+
     useEffect(() => {
-        const fetchCities = async () => {
-            const data = await getData(citiesUrl);
-            if (!data) return;
-            const cities = data.result.records.map((city) => city.שם_ישוב.trim().replace('(', ')').replace(')', '('));
-            setCities(cities);
-        };
-
         fetchCities();
-
-        // Cleanup function if needed
-        return () => {
-            // Cleanup code here, if any
-        };
     }, []);
 
     const signup = async () => {
@@ -87,7 +82,6 @@ const SignupPage = (props) => {
             newUser.append('height', height);
         newUser.append('bio', bioInput.current.value);
 
-        console.log(newUser);
         let data = await postData(serverUrl + 'users/', newUser, true);
         if (!data) {
             setErrorMessages("Error creating user");

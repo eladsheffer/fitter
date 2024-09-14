@@ -67,7 +67,6 @@ const GroupCard3 = (props) => {
     };
 
     const editGroup = () => {
-        console.log('Edit group:', group);
         navigate(`/edit-group/${group.id}`);
     };
 

@@ -35,7 +35,8 @@
 .login {
   max-width: 500px;
   margin: 20px auto;
-
+  width: 90%;
+  margin-inline: auto;
 }
 
 .highlight{

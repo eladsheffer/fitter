@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Row, Col, Container, Button, Image, Alert, Modal } from 'react-bootstrap'
 import LoginPage from '../pages/LoginPage';
 import SignupPage from '../pages/SignupPage';

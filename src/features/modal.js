@@ -17,12 +17,10 @@ export const modalSlice = createSlice({
     reducers: {
         showModal: (state) => {
         state.value.show = true;
-        console.log("SHOW MODAL")
         },
         closeModal: (state) => {
         state.value.show = false;
         state.value.groupId = null;
-        console.log("CLOSE MODAL");
         },
 
         renderModalType: (state, action) => {

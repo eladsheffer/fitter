@@ -1,9 +1,5 @@
-import { Dropdown, Row, Col, Form, Button, Image, Card, CardGroup, Container } from 'react-bootstrap';
-import groups from "../data-model/groups.json";
-import sports from "../data-model/sports.json";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import GroupCard2 from '../components/GroupCard2';
-import RootCard from '../components/RootCard';
+import { Row, Col,Image } from 'react-bootstrap';
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import RootModal from '../components/RootModal';
 import { renderModalType, showModal } from '../features/modal';
@@ -11,7 +7,6 @@ import { useState, useEffect } from 'react';
 import { getData } from '../features/apiService';
 import LinearProgress from '@mui/material/LinearProgress';
 import GroupCard3 from "../components/GroupCard3";
-import { updateGroup } from '../features/groups';
 
 const GroupsPage = () => {
     const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -19,8 +14,6 @@ const GroupsPage = () => {
     const dispatch = useDispatch();
     const activeUser = useSelector((state) => state.user.value);
     const groupUpdated = useSelector((state) => state.groups.value.groupUpdated);
-    //const groups = useSelector((state) => state.groups.value);
-    const location = useLocation();
 
     const [groupsOfUserAsAdmin, setGroupsOfUserAsAdmin] = useState([]);
     const [groupsOfUserAsMember, setGroupsOfUserAsMember] = useState([]);
@@ -77,7 +70,7 @@ const GroupsPage = () => {
 
     return (
         <div>
-            <div style={{ width: "95%", marginInline: "auto", marginTop: "4rem" }}>
+            <div style={{ width: "90%", marginInline: "auto", marginTop: "4rem" }}>
                 {/* <Row>
                     <Col>
                     </Col>

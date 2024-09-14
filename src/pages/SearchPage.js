@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import GroupCard from '../components/GroupCard';
-import EventCard from '../components/EventCard';
-import { Button, Row, Col, Container, ToggleButton, ButtonGroup, Dropdown, Form } from 'react-bootstrap';
+import { Row, Col, ToggleButton, ButtonGroup, Dropdown, Form } from 'react-bootstrap';
 import { getData } from '../features/apiService';
-import SearchFilter from '../components/SearchFilter';
 import GroupCard3 from '../components/GroupCard3';
 import EventCard3 from '../components/EventCard3';
 import RootModal from '../components/RootModal';

@@ -26,8 +26,7 @@ const GroupModal = () => {
         if (!groupNameInput.current.checkValidity() || !groupDescriptionInput.current.checkValidity() || !groupVisibilityInput.current.checkValidity()) 
             return;
         
-        
-
+    
         let newGroup = {
             admin: activeUser.id,
             name: groupNameInput.current.value,
@@ -38,7 +37,6 @@ const GroupModal = () => {
         let path = serverUrl + 'groups/';
         let group = postData(path, newGroup);
         if (group){
-            console.log(group);
             setShow(false);
         }
         else {

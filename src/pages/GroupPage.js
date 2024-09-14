@@ -1,17 +1,12 @@
-import FitterNavbar from '../components/FitterNavbar';
 import { useState, useEffect } from 'react';
-import { Card, Col, Row, Image, CardGroup, Container } from 'react-bootstrap';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-// import events from '../data-model/events.json';
-// import groups from '../data-model/groups.json';
+import { Col, Row, Image, Container } from 'react-bootstrap';
+import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import User from '../features/user';
 import UserCard from '../components/UserCard';
-import { getData, postData } from '../features/apiService';
+import { getData } from '../features/apiService';
 import EventCard3 from '../components/EventCard3';
 import LinearProgress from '@mui/material/LinearProgress';
 import RootDialog from '../components/RootDialog';
-import RootModal from '../components/RootModal';
 import { useDispatch } from 'react-redux';
 import { setGroupId, showModal } from '../features/modal';
 
@@ -23,7 +18,6 @@ const GroupPage = () => {
     const [users, setUsers] = useState([]);
     const [events, setEvents] = useState([]);
     const [admin, setAdmin] = useState(null);
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     let { id } = useParams();
 

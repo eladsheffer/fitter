@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import GroupCard from '../components/GroupCard';
-import EventCard from '../components/EventCard';
-import { Button, Row, Col, Container, ToggleButton, ButtonGroup, Dropdown, Form, FormControl } from 'react-bootstrap';
+import { Button, Row, Col, ToggleButton, ButtonGroup, Dropdown, Form, FormControl } from 'react-bootstrap';
 import { getData } from '../features/apiService';
-import SearchFilter from '../components/SearchFilter';
 import GroupCard3 from '../components/GroupCard3';
 import EventCard3 from '../components/EventCard3';
 import RootModal from '../components/RootModal';
@@ -13,8 +10,8 @@ import { Slider } from '@mui/material';
 
 export default function SearchPage() {
     const serverUrl = process.env.REACT_APP_SERVER_URL;
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
+    //const location = useLocation();
+    //const queryParams = new URLSearchParams(location.search);
 
     const checkboxRefs = useRef({});
 
@@ -35,7 +32,6 @@ export default function SearchPage() {
         gender: [],
     });
     const [ageRange, setAgeRange] = useState([0, 120]);
-    const [filterAge, setFilterAge] = useState(false);
     const ageSliderInput = React.createRef();
 
     const [reset, setReset] = useState(false);
@@ -79,13 +75,6 @@ export default function SearchPage() {
         setLoading(false);
         nameInput.current.value = '';
     };
-
-    const applyAgeFilter = (event) => {
-        if (!event.target.checked) {
-            setAgeRange([0, 120]);
-        };
-    };
-
 
     const handleFilterChange = (filterType, event) => {
         let value = event.target.name;
@@ -133,12 +122,11 @@ export default function SearchPage() {
         });
 
         setAgeRange([0, 120]);
-        setFilterAge(false);
         setReset(!reset);
     }
 
     return (
-        <div>
+         <div style={{ width: "90%", marginInline: "auto", marginTop: "4rem" }}>
             <RootModal hideButton />
             <Row className="my-4 justify-content-center">
                 <Col xs="auto" className="text-center">

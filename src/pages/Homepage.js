@@ -1,15 +1,9 @@
-import { Card, Col, Row, CardGroup } from "react-bootstrap";
-import groups from "../data-model/groups.json";
-import events from "../data-model/events.json";
-import { Link } from "react-router-dom";
+import { Card, Col, Row} from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getData } from "../features/apiService";
-import GroupCard2 from "../components/GroupCard2";
 import GroupCard3 from "../components/GroupCard3";
-import EventCard2 from "../components/EventCard2";
 import EventCard3 from "../components/EventCard3";
-import RootCard from "../components/RootCard";
 import LinearProgress from '@mui/material/LinearProgress';
 
 const Homepage = () => {

@@ -1,14 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import {
-  Form,
-  Row,
-  Col,
-  Container,
-  Button,
-  Modal,
-  Image,
-  Alert,
-} from "react-bootstrap";
+import {Form, Row, Col, Button, Image, Alert} from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { getData, postData } from "../features/apiService";
 import { Box, Slider } from "@mui/material";

@@ -1,6 +1,5 @@
-import FitterNavbar from '../components/FitterNavbar';
 import { useState, useEffect } from 'react';
-import { Card, CardGroup, Row, Col, Image } from 'react-bootstrap';
+import { Row, Col, Image } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getData } from '../features/apiService';

@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
-import FitterNavbar from "../components/FitterNavbar";
 import { Container, Image, Row, Col } from "react-bootstrap";
-import logo from "@/../../public/icons/fitter-logo.jpg";
 import { useParams, Link } from "react-router-dom";
-import events from "../data-model/events.json";
 import { useSelector } from "react-redux";
 import { green } from "@mui/material/colors";
 import { formatFriendlyDate } from "../features/apiService";
@@ -61,6 +58,18 @@ export default function EventPage() {
       ) : (
         <div style={{ width: "80%", margin: "4rem auto" }}>
           <Container fluid="md">
+
+            {activeUser && event.organizer === activeUser.id && (
+              <Row>
+                <Col lg="9" md="9" sm="9" xs="9"></Col>
+                <Col lg="1" md="1" sm="1" xs="1">
+                  <Link to={`/edit-event/${event.id}/`}>
+                    <Image width={50} height={50} src="/icons/settings.png" />
+                  </Link>
+                </Col>
+              </Row>
+            )}
+
             <Row className="mb-4">
               <Col md={6}>
                 <Image src={eventImage} alt="Event Banner" fluid />
@@ -92,7 +101,7 @@ export default function EventPage() {
                   </p>
                 )}
                 {event.max_participants !== null &&
-                typeof event.max_participants === "number" ? (
+                  typeof event.max_participants === "number" ? (
                   <h6
                     style={{ color: green }}
                   >{`${event.users_attended.length}/${event.max_participants} Attendees`}</h6>
@@ -102,13 +111,7 @@ export default function EventPage() {
                   >{`${event.users_attended.length} Attendees`}</h6>
                 )}
               </Col>
-              {activeUser && event.organizer === activeUser.id && (
-                <Col xs="1">
-                  <Link to={`/edit-event/${event.id}/`}>
-                    <Image width={50} height={50} src="/icons/settings.png" />
-                  </Link>
-                </Col>
-              )}
+
             </Row>
             <Row>
               <Col>
@@ -166,6 +169,5 @@ export default function EventPage() {
 
   function handleReminderToggle() {
     // Handle reminder setting logic here, perhaps update the server with new state
-    console.log("Reminder toggled");
   }
 }

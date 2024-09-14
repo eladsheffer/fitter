@@ -27,7 +27,6 @@ const EventCard3 = (props) => {
     const [numOfAttendees, setNumOfAttendees] = useState(event.users_attended.length);
 
     const editEvent = () => {
-        console.log('Edit event:', event);
         navigate(`/edit-event/${event.id}`);
     };
 

@@ -1,19 +1,8 @@
 import { useState } from "react";
-import {
-  DropdownButton,
-  Button,
-  Dropdown,
-  Row,
-  Col,
-  Container,
-  Image,
-} from "react-bootstrap";
+import {Button, Dropdown, Row, Col, Container} from "react-bootstrap";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { Link } from "react-router-dom";
-//import events from "../data-model/events.json";
 import { useSelector, useDispatch } from "react-redux";
-import EventModal from "../components/EventModal";
 import RootDialog from "../components/RootDialog";
 import RootModal from "../components/RootModal";
 import { renderModalType } from "../features/modal";
@@ -25,7 +14,6 @@ import { getData } from "../features/apiService";
 
 const EventsPage = () => {
   // States
-  const [sport, setSport] = useState("Any Sport");
   const [date, setDate] = useState(new Date());
   const [events, setEvents] = useState([]);
   const [eventDates, setEventDates] = useState([]);
@@ -51,7 +39,6 @@ const EventsPage = () => {
   };
 
   async function getEvents() {
-    console.log(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate());
     let url = `${process.env.REACT_APP_SERVER_URL}events/?date_range_after=${date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()}`;
     let data = await getData(url);  
     if (!data) return;
@@ -71,7 +58,7 @@ const EventsPage = () => {
   // UI
   return (
     <div>
-      <div style={{ width: "95%", marginInline: "auto", marginTop: "4rem" }}>
+      <div style={{ width: "90%", marginInline: "auto", marginTop: "4rem" }}>
         <Container>
           <Row>
             <Col xs="8">

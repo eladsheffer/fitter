@@ -46,7 +46,6 @@ const NewEventPage = (props) => {
     title: true,
     description: true,
     location: true,
-    location: true,
     sportType: true,
   });
   const [cities, setCities] = useState([]);
@@ -130,7 +129,6 @@ const NewEventPage = (props) => {
   };
 
   const createEvent = async () => {
-    console.log("Creating event!");
     setErrorMessages(null);
     setSuccessMessages(null);
 
@@ -159,7 +157,6 @@ const NewEventPage = (props) => {
       return;
     }
 
-    console.log(props.group);
     let newEvent = new FormData();
     const location = `${city}, ${street}`;
     newEvent.append("title", titleEventInput.current.value);
@@ -175,12 +172,10 @@ const NewEventPage = (props) => {
     newEvent.append("organizer", activeUser.id);
     if (groupId) newEvent.append("group_organized", groupId);
 
-    console.log(newEvent);
     let path = serverUrl + "events/";
     let event = await postData(path, newEvent);
-    console.log(event);
+
     if (event && event.title) {
-      console.log(event);
       setSuccessMessages(`Event "${event.title}" created successfully`);
     } else {
       setErrorMessages("Error creating event");
