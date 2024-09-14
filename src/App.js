@@ -1,6 +1,5 @@
 import "./App.css";
-import { Route, Routes, BrowserRouter, HashRouter } from "react-router-dom";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import GroupsPage from "./pages/GroupsPage";
 import EventsPage from "./pages/EventsPage";
@@ -11,7 +10,6 @@ import SignupPage from "./pages/SignupPage";
 import FitterNavbar from "./components/FitterNavbar";
 import NewGroupPage from "./pages/NewGroupPage";
 import NewEventPage from "./pages/NewEventPage";
-import SearchPage from "./pages/SearchPage";
 import SearchPage2 from "./pages/SearchPage2";
 import "bootstrap/dist/css/bootstrap.min.css";
 import UserPage from "./pages/UserPage";
@@ -20,39 +18,6 @@ import EditGroupPage from "./pages/EditGroupPage";
 import EditEventPage from "./pages/EditEventPage";
 
 function App() {
-  // const router = createBrowserRouter([
-  //   {
-  //     path: "/",
-  //     element: <Homepage />,
-  //   },
-  //   {
-  //     path: "/groups",
-  //     element: <GroupsPage />
-  //   },
-  //   {
-  //     path: "/groups/:id",
-  //     element:
-  //       <GroupPage />,
-  //   },
-  //   {
-  //     path: "/events",
-  //     element: <EventsPage />,
-  //   },
-  //   {
-  //     path: "/events/:id",
-  //     element: <EventPage />,
-  //   },
-  //   {
-  //     path: "/login",
-  //     element:
-  //       <LoginPage />
-  //   },
-  //   {
-  //     path: "/signup",
-  //     element:
-  //       <SignupPage />,
-  //   }
-  // ]);
   return <div>
 
     <BrowserRouter>

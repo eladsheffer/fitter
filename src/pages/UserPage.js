@@ -72,7 +72,7 @@ const UserPage = () => {
     }
 
     return (
-        <div style={{ width: "95%", marginInline: "auto", marginTop: "4rem" }}>
+        <div style={{ width: "90%", marginInline: "auto", marginTop: "4rem" }}>
             <Row style={{ marginTop: "3em" }}>
                 <Col xs="1"></Col>
                 <Col lg={4} md={6} sm={8} xs="8">
