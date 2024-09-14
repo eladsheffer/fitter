@@ -11,6 +11,7 @@ const OpenStreetMapIframeWithAddress = ({ address }) => {
       
         const data = await getData(url);
         console.log("data:", data);
+        let src = "";
         if (data && data.length > 0) {
           const { lat, lon } = data[0];
           // Parse lat/lon as floats and calculate a smaller bbox margin
@@ -20,12 +21,12 @@ const OpenStreetMapIframeWithAddress = ({ address }) => {
             lonFloat + 0.004
           },${latFloat + 0.004}`;
           //const src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat},${lon}&zoom=14`; // Added zoom parameter
-          const src = `https://maps.google.com/maps?q=${lat},${lon}&hl=he&t=&z=16&ie=UTF8&iwloc=B&output=embed`
+          src = `https://maps.google.com/maps?q=${lat},${lon}&hl=he&t=&z=16&ie=UTF8&iwloc=B&output=embed`
           console.log("src:", src);
-          setIframeSrc(src);
         } else {
-          console.error("Address not found");
+          src = `https://maps.google.com/maps?q=${encodeURIComponent(address)}&hl=he&t=&z=16&ie=UTF8&iwloc=B&output=embed`;
         }
+        setIframeSrc(src);
     };
 
     fetchCoordinates();

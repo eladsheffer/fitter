@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Col, Row, Image, Container } from 'react-bootstrap';
+import { Col, Row, Image, Container, Button } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import UserCard from '../components/UserCard';
-import { getData } from '../features/apiService';
+import { getData, postData } from '../features/apiService';
 import EventCard3 from '../components/EventCard3';
 import LinearProgress from '@mui/material/LinearProgress';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import RootDialog from '../components/RootDialog';
 import { useDispatch } from 'react-redux';
 import { setGroupId, showModal } from '../features/modal';
@@ -63,6 +64,21 @@ const GroupPage = () => {
     };
 
     let profile_picture = group?.profile_picture || "/icons/group.png";
+    
+    const removeUser = async (userId) => {
+        
+        const url =`${serverUrl}groups/${id}/remove_user/`;
+        let userToRemove = {
+            user_id: userId
+        };
+        let response = await postData(url, userToRemove);
+        if (response) {
+            fetchGroupAndUsers();
+        } else {    
+            console.error('Error removing user:', response);
+        }   
+
+    };
 
     return (
         <div>
@@ -177,7 +193,15 @@ const GroupPage = () => {
                                 users.map((user, i) => (
                                     <Col lg={3} md={4} sm={6} xs={12}>
                                         <UserCard key={i} user={user} />
+                                        {activeUser && group.admin === activeUser.id && user.id !== activeUser.id && (
+                                        <Button className='rounded-pill' variant='danger' style={{backgroundColor:"transparent"}}
+                                        onClick={() => removeUser(user.id)}
+                                        >
+                                        <RemoveCircleOutlineIcon style={{ color: "red" }} />
+                                        </Button>
+                                        )}
                                     </Col>
+  
                                 ))
                             ) : (
                                 <p style={{ color: "red" }}>No members found.</p>
