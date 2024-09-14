@@ -236,12 +236,7 @@ const EditEventPage = (props) => {
                                 <Col xs="7">
                                 <Box inputRef={eventProfileImg}
                                     component="img"
-                                    sx={{
-                                        height: 160,
-                                        width: 250,
-                                        maxHeight: { xs: 160, md: 160 },
-                                        maxWidth: { xs: 250, md: 250 },
-                                    }}
+                                    style={{ width: "100%", height: "100%" }}
                                     src={eventProfilePictureToShow}
                                 />
                                 </Col>

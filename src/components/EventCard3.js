@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Row, Col, Image, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { addEvent, removeEvent, updateEvent } from '../features/events';
-import { showModal, renderModalType, setGroupId } from '../features/modal';
+import { updateEvent } from '../features/events';
 import { postData } from '../features/apiService';
 import { formatFriendlyDate } from "../features/apiService";
 
