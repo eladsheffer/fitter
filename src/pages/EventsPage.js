@@ -82,6 +82,7 @@ const EventsPage = () => {
   // Effects
   useEffect(() => {
     getEvents();
+    resetSelection();
   }, [eventUpdated, activeUser, date]);
 
   useEffect(() => {
