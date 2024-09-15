@@ -62,7 +62,8 @@ export default function SearchPage() {
         groupsData = await getData(url);
         setFilteredGroups(groupsData);
         setLoading(false);
-        nameInput.current.value = '';
+        if (nameInput && nameInput.current && nameInput.current.value)
+            nameInput.current.value = '';
     };
 
     const fetchEvents = async () => {
