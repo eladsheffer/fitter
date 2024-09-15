@@ -10,6 +10,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Autocomplete from "@mui/material/Autocomplete";
 import PageTitle from "../components/PageTitle";
 import LinearProgress from '@mui/material/LinearProgress';
+import { updateEvent } from "../features/events";
 
 const NewEventPage = (props) => {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -170,6 +171,7 @@ const NewEventPage = (props) => {
 
     if (event && event.title) {
       setSuccessMessages(`Event "${event.title}" created successfully`);
+      dispatch(updateEvent());
     } else {
       setErrorMessages("Error creating event");
     }
