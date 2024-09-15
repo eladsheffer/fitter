@@ -35,6 +35,7 @@ const EditEventPage = (props) => {
     const eventGenderInput = useRef(null);
     const eventProfileImg = useRef(null);
     const maxParticipantsInput = useRef(null);
+    const locationInput = useRef(null);
 
     const [event, setEvent] = useState(null);
     const [eventProfilePictureToShow, setEventProfilePictureToShow] = useState(null);
@@ -115,7 +116,10 @@ const EditEventPage = (props) => {
         if (descriptionEventInput.current.value) {
             newEvent.append('description', descriptionEventInput.current.value);
         }
-        newEvent.append('location', location);
+
+        if(locationInput.current.value){
+        newEvent.append('location', locationInput.current.value);
+        }
         newEvent.append('gender', eventGenderInput.current.value);
         newEvent.append('sport_type', eventSportTypeInput.current.value);
 
@@ -205,7 +209,7 @@ const EditEventPage = (props) => {
                         <Stack spacing={2} margin={2}>
                             <TextField variant="outlined" inputRef={titleEventInput} name="title" placeholder='Event title is empty and will not be altered' defaultValue={event.title} label="Title"></TextField>
                             <TextField multiline variant="outlined" inputRef={descriptionEventInput} name="description" placeholder='Event description is empty and will not be altered' defaultValue={event.description} label="Description"></TextField>
-                            <FormControl fullWidth>
+                            {/* <FormControl fullWidth>
                                 <Autocomplete
                                     disablePortal
                                     id="combo-box-location"
@@ -216,10 +220,11 @@ const EditEventPage = (props) => {
                                     onChange={(e, value) => setLocation(value)}
                                     renderInput={(params) => <TextField {...params} label="Location" />}
                                 />
-                            </FormControl>
+                            </FormControl> */}
+                            <TextField variant="outlined" inputRef={locationInput} name="location" placeholder='Event location is empty and will not be altered' defaultValue={event.location} label="Location" ></TextField>
                             <DateTimePicker inputRef={eventDateTimeInput}
                                 label="Event Date & Time"
-                                format="YYYY-MM-DD hh:mm"
+                                format="YYYY-MM-DD HH:mm"
                                 //value={dayjs()}
                                 defaultValue={dayjs(event.date_and_time)}
                             //onChange={(newValue) => setValue(newValue)}

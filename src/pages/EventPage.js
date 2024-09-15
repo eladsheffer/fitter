@@ -94,7 +94,7 @@ export default function EventPage() {
               </Col>
               <Col md={5}>
                 <h1>{`${event.title} - ${event.location}`}</h1>
-                <h2>{formatFriendlyDate(event.date_and_time)}</h2>
+                <h2>{formatFriendlyDate(event.date_and_time, "time")}</h2>
                 {organizer ? (
                   <h3>{`By ${organizer.first_name} ${organizer.last_name}`}</h3>
                 ) : (

@@ -28,6 +28,7 @@ const NewEventPage = (props) => {
   const eventProfilePictureInput = useRef(null);
   const ageSliderInput = useRef(null);
   const eventGenderInput = useRef(null);
+  const locationInput = useRef(null);
 
   const [errorMessages, setErrorMessages] = useState(null);
   const [successMessages, setSuccessMessages] = useState(null);
@@ -130,8 +131,7 @@ const NewEventPage = (props) => {
     if (
       !titleEventInput.current.value ||
       !descriptionEventInput.current.value ||
-      !city ||
-      !street ||
+      !locationInput.current.value ||
       !eventSportTypeInput.current.value ||
       !eventDateTimeInput.current.value
     ) {
@@ -141,7 +141,7 @@ const NewEventPage = (props) => {
       setFormValues({
         title: !titleEventInput.current.value,
         description: !descriptionEventInput.current.value,
-        location: !city,
+        location: !locationInput.current.value,
         sportType: !eventSportTypeInput.current.value,
       });
       return;
@@ -150,10 +150,9 @@ const NewEventPage = (props) => {
     setLoading(true);
 
     let newEvent = new FormData();
-    const location = `${street} ${city}`;
     newEvent.append("title", titleEventInput.current.value);
     newEvent.append("description", descriptionEventInput.current.value);
-    newEvent.append("location", location);
+    newEvent.append("location", locationInput.current.value);
     newEvent.append("date_and_time", eventDateTimeInput.current.value);
     newEvent.append("sport_type", eventSportTypeInput.current.value);
     if (eventProfilePicture)
@@ -227,7 +226,17 @@ const NewEventPage = (props) => {
           required
           onChange={handleChange}
         ></TextField>
-        <FormControl fullWidth required>
+        <TextField
+          variant="outlined"
+          inputRef={locationInput}
+          name="location"
+          error={formValues.location}
+          label="Location"
+          helperText="required field"
+          required
+          onChange={handleChange}
+        ></TextField>
+        {/* <FormControl fullWidth required>
           <Autocomplete
             disablePortal
             id="combo-box-location"
@@ -265,15 +274,15 @@ const NewEventPage = (props) => {
               />
             )}
           />
-        </FormControl>
+        </FormControl> */}
 
         <DateTimePicker
           required
           inputRef={eventDateTimeInput}
           label="Event Date & Time"
-          format="YYYY-MM-DD hh:mm"
+          format="YYYY-MM-DD HH:mm"
           //value={dayjs()}
-          defaultValue={dayjs(dayjs().format("YYYY-MM-DD hh:00"))}
+          defaultValue={dayjs(dayjs().format("YYYY-MM-DD HH:mm"))}
           //onChange={(newValue) => setValue(newValue)}
         />
         <FormControl fullWidth required>
@@ -345,7 +354,7 @@ const NewEventPage = (props) => {
             id="demo-simple-select"
             name="gender"
             label="Gender"
-            defaultValue={""}
+            defaultValue={"mixed"}
           >
             <MenuItem value={"mixed"}>mixed</MenuItem>
             <MenuItem value={"men"}>men</MenuItem>

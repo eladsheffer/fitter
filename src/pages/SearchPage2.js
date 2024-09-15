@@ -25,7 +25,7 @@ export default function SearchPage() {
     // const key = queryParams.get('key');
     const [searchType, setSearchType] = useState('groups');
     
-    const nameInput = useRef(null);
+    const titleInput = useRef(null);
 
     const [selectedFilters, setSelectedFilters] = useState({
         location: [],
@@ -58,24 +58,32 @@ export default function SearchPage() {
         let url = `${serverUrl}groups/`;
         let groupsData = await getData(url);
         setGroups(groupsData.sort((a,b)=>a.location.localeCompare(b.location)));
-        url = `${serverUrl}groups/?search=${nameInput.current.value}&location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&age_range=${ageRange[0]}-${ageRange[1]}`;
+        if (titleInput && titleInput.current && titleInput.current.value)
+            url = `${serverUrl}groups/?search=${titleInput.current.value}&location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&age_range=${ageRange[0]}-${ageRange[1]}`;
+        else
+            url = `${serverUrl}groups/?location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&age_range=${ageRange[0]}-${ageRange[1]}`;
         groupsData = await getData(url);
         setFilteredGroups(groupsData);
         setLoading(false);
-        if (nameInput && nameInput.current && nameInput.current.value)
-            nameInput.current.value = '';
+        if (titleInput && titleInput.current && titleInput.current.value)
+            titleInput.current.value = '';
     };
 
     const fetchEvents = async () => {
         setLoading(true);
         let url = `${serverUrl}events/`;
         let eventsData = await getData(url);
-        setEvents(eventsData);
-        url = `${serverUrl}events/?search=${nameInput.current.value}&location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&age_range=${ageRange[0]}-${ageRange[1]}`;
+        setEvents(eventsData.sort((a,b)=>a.location.localeCompare(b.location)));
+        if (titleInput && titleInput.current && titleInput.current.value)
+            url = `${serverUrl}events/?search=${titleInput.current.value}&location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&age_range=${ageRange[0]}-${ageRange[1]}`;
+        else 
+            url = `${serverUrl}events/?location=${selectedFilters.location}&sport_type=${selectedFilters.sport_type}&gender=${selectedFilters.gender}&age_range=${ageRange[0]}-${ageRange[1]}`;
+            
         eventsData = await getData(url);
         setFilteredEvents(eventsData);
         setLoading(false);
-        nameInput.current.value = '';
+        if (titleInput && titleInput.current && titleInput.current.value)
+            titleInput.current.value = '';
     };
 
     const handleFilterChange = (filterType, event) => {
@@ -167,7 +175,7 @@ export default function SearchPage() {
             </Row>
             <Row className="mb-3 d-flex justify-content-center">
                 <Col lg="6" md="8" sm={11} xs="11" style={{marginInline:"auto"}}>
-                <FormControl ref={nameInput} style={{width:"100%"}} type="search" placeholder="Type name of group/event (Only if you know it)" className="mr-2 rounded-pill" aria-label="Search" />
+                <FormControl ref={titleInput} style={{width:"100%"}} type="search" placeholder="Type title of group/event (Only if you know it)" className="mr-2 rounded-pill" aria-label="Search" />
                 </Col>
             </Row>
             <Row className='d-flex justify-content-around'>
