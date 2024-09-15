@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import {Form, Row, Col, Button, Image, Alert} from "react-bootstrap";
+import { Form, Row, Col, Button, Image, Alert } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { getData, postData } from "../features/apiService";
 import { Box, Slider } from "@mui/material";
@@ -8,6 +8,7 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import { closeModal } from "../features/modal";
 import { useNavigate } from "react-router-dom";
 import PageTitle from "../components/PageTitle";
+import LinearProgress from '@mui/material/LinearProgress';
 
 const NewGroupPage = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const NewGroupPage = () => {
   const [cities, setCities] = useState([]);
   const [groupProfilePicture, setGroupProfilePicture] = useState(null);
   const [ageRange, setAgeRange] = useState([20, 40]);
+  const [loading, setLoading] = useState(false);
   const [disabledAgeSlider, setDisabledAgeSlider] = useState(true);
   const [city, setCity] = useState(null);
 
@@ -64,6 +66,9 @@ const NewGroupPage = () => {
       !groupDescriptionInput.current.checkValidity()
     )
       return;
+
+    setLoading(true);
+
     const newGroup = new FormData();
     newGroup.append("admin", activeUser.id);
     newGroup.append("name", groupNameInput.current.value);
@@ -81,10 +86,11 @@ const NewGroupPage = () => {
       newGroup.append(`preferred_sports[${i}]`, sport)
     );
 
-    console.log(newGroup);
-
     let path = serverUrl + "groups/";
     let group = await postData(path, newGroup);
+
+    setLoading(false);
+
     if (group && group.name) {
       console.log("response data: ", group);
       setSuccessMessages(`Group "${group.name}" created successfully`);
@@ -206,7 +212,7 @@ const NewGroupPage = () => {
               />
             </Col>
           </Row>
-            <Row className="my-3">
+          <Row className="my-3">
             <Col lg={7} md={7} sm={7} xs={7}>
               <Image
                 src={groupProfilePictureToShow}
@@ -235,6 +241,7 @@ const NewGroupPage = () => {
           />
         </Form.Group>
         <Box sx={{ width: 300 }}></Box>
+        {loading && <LinearProgress />}
         <Alert variant="danger" show={errorMessages}>
           {errorMessages}
         </Alert>

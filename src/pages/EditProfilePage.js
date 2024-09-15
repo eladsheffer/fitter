@@ -11,6 +11,7 @@ import RemoveModal from '../components/RemoveModal';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { closeModal } from '../features/modal';
 import PageTitle from "../components/PageTitle";
+import LinearProgress from '@mui/material/LinearProgress';
 
 const EditProfilePage = (props) => {
     const activeUser = useSelector((state) => state.user.value);
@@ -45,6 +46,7 @@ const EditProfilePage = (props) => {
     const [city, setCity] = useState(activeUser ? activeUser.location : "");
     const [gender, setGender] = useState(activeUser ? activeUser.gender : "");
     const [preferredSports, setPreferredSports] = useState(activeUser && activeUser.preferred_sports.length > 0 ? activeUser.preferred_sports: []);
+    const [loading, setLoading] = useState(false);
 
 
     useEffect(() => {
@@ -70,12 +72,17 @@ const EditProfilePage = (props) => {
         if (!emailInput.current.checkValidity())
             return;
 
+        setLoading(true);
         let user = await getData(serverUrl + 'users/get_user_by_email?email=' + emailInput.current.value);
 
+        setLoading(false);
+        
         if (user == null) {
             setErrorMessages("No such user exists");
             return;
         }
+
+        setLoading(true);
 
         let newUser = new FormData();
 
@@ -104,8 +111,11 @@ const EditProfilePage = (props) => {
             newUser.append('weight', weight);
 
         newUser.append('bio', bioInput.current.value);
-
+        
         newUser = await patchData(serverUrl + 'users/' + activeUser.id + "/", newUser);
+
+        setLoading(false);
+
         if (newUser) {
             dispatch(login(newUser));
             setSuccessMessages("User profile updated successfully");
@@ -281,6 +291,7 @@ const EditProfilePage = (props) => {
                                 defaultValue={activeUser ? activeUser.bio : ""}
                             />
                         </Form.Group>
+                        {loading && <LinearProgress />}
                         <Alert variant="danger" show={errorMessages}>
                             {errorMessages}
                         </Alert>

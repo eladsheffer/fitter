@@ -9,6 +9,7 @@ import sports from "../data-model/sports.json";
 import { useParams, useNavigate } from "react-router-dom";
 import Autocomplete from "@mui/material/Autocomplete";
 import PageTitle from "../components/PageTitle";
+import LinearProgress from '@mui/material/LinearProgress';
 
 const NewEventPage = (props) => {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -44,6 +45,7 @@ const NewEventPage = (props) => {
   const [disabledAgeSlider, setDisabledAgeSlider] = useState(true);
   const [ageRange, setAgeRange] = useState([20, 40]);
   const [value, setValue] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const fetchStreets = async (city) => {
     const data = await getData(`${streetsUrl}&q=${city}`);
@@ -145,8 +147,10 @@ const NewEventPage = (props) => {
       return;
     }
 
+    setLoading(true);
+
     let newEvent = new FormData();
-    const location = `${city}, ${street}`;
+    const location = `${street} ${city}`;
     newEvent.append("title", titleEventInput.current.value);
     newEvent.append("description", descriptionEventInput.current.value);
     newEvent.append("location", location);
@@ -160,9 +164,10 @@ const NewEventPage = (props) => {
     newEvent.append("max_participants", value);
     newEvent.append("organizer", activeUser.id);
     if (groupId) newEvent.append("group_organized", groupId);
-
+    
     let path = serverUrl + "events/";
     let event = await postData(path, newEvent);
+    setLoading(false);
 
     if (event && event.title) {
       setSuccessMessages(`Event "${event.title}" created successfully`);
@@ -212,6 +217,7 @@ const NewEventPage = (props) => {
           onChange={handleChange}
         ></TextField>
         <TextField
+         multiline
           variant="outlined"
           inputRef={descriptionEventInput}
           name="description"
@@ -355,6 +361,7 @@ const NewEventPage = (props) => {
           type="number"
           inputMode="numeric"
         />
+        {loading && <LinearProgress />}
         {successMessages && <Alert severity="success">{successMessages}</Alert>}
         {errorMessages && <Alert severity="error">{errorMessages}</Alert>}
         <Button color="primary" variant="contained" onClick={createEvent}>

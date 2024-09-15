@@ -24,8 +24,9 @@ const OpenStreetMapIframeWithAddress = ({ address }) => {
           src = `https://maps.google.com/maps?q=${lat},${lon}&hl=he&t=&z=16&ie=UTF8&iwloc=B&output=embed`
           console.log("src:", src);
         } else {
-          src = `https://maps.google.com/maps?q=${encodeURIComponent(address)}&hl=he&t=&z=16&ie=UTF8&iwloc=B&output=embed`;
+          
         }
+        src = `https://maps.google.com/maps?q=${encodeURIComponent(address)}&hl=he&t=&z=16&ie=UTF8&iwloc=B&output=embed`;
         setIframeSrc(src);
     };
 

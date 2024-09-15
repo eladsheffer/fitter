@@ -50,6 +50,7 @@ const EditEventPage = (props) => {
     const [ageRange, setAgeRange] = useState([0, 120]);
     const [maxParticipants, setMaxParticipants] = useState('');
     const [showRemoveModal, setShowRemoveModal] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const fetchCities = async () => {
         const data = await getData(citiesUrl);
@@ -104,6 +105,8 @@ const EditEventPage = (props) => {
             return;
         }
 
+        setLoading(true);
+
         let newEvent = new FormData();
         if (titleEventInput.current.value) {
             newEvent.append('title', titleEventInput.current.value);
@@ -137,6 +140,9 @@ const EditEventPage = (props) => {
 
 
         let event = await patchData(path, newEvent);
+
+        setLoading(false);
+
         if (event && event.title) {
             setSuccessMessages(`Event "${event.title}" updated successfully`);
         }
@@ -198,7 +204,7 @@ const EditEventPage = (props) => {
                         <RemoveModal show={showRemoveModal} handleClose={() => setShowRemoveModal(false)} title="Delete Event" message="Are you sure you want to delete this event?" handleRemove={deleteEvent} />
                         <Stack spacing={2} margin={2}>
                             <TextField variant="outlined" inputRef={titleEventInput} name="title" placeholder='Event title is empty and will not be altered' defaultValue={event.title} label="Title"></TextField>
-                            <TextField variant="outlined" inputRef={descriptionEventInput} name="description" placeholder='Event description is empty and will not be altered' defaultValue={event.description} label="Description"></TextField>
+                            <TextField multiline variant="outlined" inputRef={descriptionEventInput} name="description" placeholder='Event description is empty and will not be altered' defaultValue={event.description} label="Description"></TextField>
                             <FormControl fullWidth>
                                 <Autocomplete
                                     disablePortal
@@ -285,6 +291,7 @@ const EditEventPage = (props) => {
                                 inputMode='numeric'
                                 inputRef={maxParticipantsInput}
                             />
+                            {loading && <LinearProgress />}
                             {successMessages && (<Alert severity='success' >{successMessages}</Alert>)}
                             {errorMessages && (<Alert severity='error'>{errorMessages}</Alert>)}
                             <Button color="primary" variant="contained" onClick={updateEvent}>Update Event</Button>

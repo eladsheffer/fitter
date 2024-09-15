@@ -8,6 +8,7 @@ import { Slider } from '@mui/material';
 import sports from "../data-model/sports.json";
 import { Typeahead } from 'react-bootstrap-typeahead';
 import PageTitle from "../components/PageTitle";
+import LinearProgress from '@mui/material/LinearProgress';
 
 const SignupPage = (props) => {
     const activeUser = useSelector((state) => state.user.value);
@@ -39,6 +40,7 @@ const SignupPage = (props) => {
     const [disabledHeightSlider, setDisabledHeightSlider] = useState(true);
     const [height, setHeight] = useState(165);
     const [weight, setWeight] = useState(60);
+    const [loading, setLoading] = useState(false);
 
 
     const fetchCities = async () => {
@@ -59,13 +61,15 @@ const SignupPage = (props) => {
         if (!firstNameInput.current.checkValidity() || !lastNameInput.current.checkValidity() || !emailInput.current.checkValidity() || !passwordInput.current.checkValidity() || !dateOfBirthInput.current.checkValidity())
             return;
 
+        setLoading(true);
         let user = await getData(serverUrl + 'users/get_user_by_email?email=' + emailInput.current.value);
+        setLoading(false);
 
         if (user != null) {
             setErrorMessages("Email already exists. Please login or signup with another email");
             return;
         }
-
+        setLoading(true);
         let newUser = new FormData();
         newUser.append('first_name', firstNameInput.current.value);
         newUser.append('last_name', lastNameInput.current.value);
@@ -85,6 +89,9 @@ const SignupPage = (props) => {
         newUser.append('bio', bioInput.current.value);
 
         let data = await postData(serverUrl + 'users/', newUser, true);
+
+        setLoading(false);
+
         if (!data) {
             setErrorMessages("Error creating user");
             return;
@@ -180,13 +187,6 @@ const SignupPage = (props) => {
                             />
                         </Form.Group>
 
-                        {/* <Form.Group className="mb-3" controlId="city">
-                        <Form.Label>City</Form.Label>
-                        <Form.Select aria-label="cities" ref={cityInput} required>
-                            <option value="" disabled checked>Choose Location</option>
-                            {cities.map((city) => <option value={city} key={city}>{city}</option>)}
-                        </Form.Select>
-                    </Form.Group> */}
                         <Form.Group className="mb-3" controlId="date-of-birth">
                             <Form.Label>Date of Birth</Form.Label>
                             <Form.Control type="date" ref={dateOfBirthInput} required />
@@ -242,6 +242,7 @@ const SignupPage = (props) => {
                             <Form.Label>Bio (Optional)</Form.Label>
                             <Form.Control as="textarea" placeholder="Tell us about yourself" rows={3} ref={bioInput} />
                         </Form.Group>
+                        {loading && <LinearProgress />}
                         <Alert variant="danger" show={errorMessages}>
                             {errorMessages}
                         </Alert>

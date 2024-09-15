@@ -34,6 +34,7 @@ const EditGroupPage = (props) => {
     const [gender, setGender] = useState(null);
     const [preferredSports, setPreferredSports] = useState([]);
     const [groupProfilePictureToShow, setGroupProfilePictureToShow] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const groupNameInput = useRef(null);
     const groupDescriptionInput = useRef(null);
@@ -82,6 +83,8 @@ const EditGroupPage = (props) => {
             return;
         }
 
+        setLoading(true);
+
         const newGroup = new FormData();
         if (groupNameInput.current.value) {
             newGroup.append('name', groupNameInput.current.value);
@@ -106,7 +109,7 @@ const EditGroupPage = (props) => {
             newGroup.append('preferred_sports', Array.from(sportsInput.current.selectedOptions).map((option) => option.value));
         }
 
-        console.log(newGroup);
+        setLoading(false);
 
         let group = await patchData(path, newGroup);
         if (group && group.name) {
@@ -255,6 +258,7 @@ const EditGroupPage = (props) => {
                             <Box sx={{ width: 300 }}>
 
                             </Box>
+                            {loading && <LinearProgress />}
                             <Alert variant="danger" show={errorMessages}>
                                 {errorMessages}
                             </Alert>
