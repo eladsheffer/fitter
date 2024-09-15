@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Container, Image, Row, Col } from "react-bootstrap";
+import { Container, Image, Row, Col, Button } from "react-bootstrap";
 import { useParams, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { green } from "@mui/material/colors";
 import { formatFriendlyDate } from "../features/apiService";
 import LinearProgress from "@mui/material/LinearProgress";
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import UserCard from "../components/UserCard";
-import { getData } from "../features/apiService";
+import { getData, postData } from "../features/apiService";
 import Map from "../components/Map";
 import PageTitle from "../components/PageTitle";
 
@@ -51,6 +52,21 @@ export default function EventPage() {
   useEffect(() => {
     fetchEventAndAttendees();
   }, []);
+
+  const removeAttendee = async (userId) => {
+
+    const url = `${serverUrl}events/${id}/remove_user/`;
+    let attendeeToRemove = {
+      user_id: userId
+    };
+    let response = await postData(url, attendeeToRemove);
+    if (response) {
+      fetchEventAndAttendees();
+    } else {
+      console.error('Error removing user:', response);
+    }
+
+  };
 
   return (
     <div>
@@ -148,9 +164,20 @@ export default function EventPage() {
               }}
             >
               {attendees.length > 0 ? (
-                attendees.map((user, i) => (
+                attendees.map((attendee, i) => (
                   <Col lg={3} md={4} sm={6} xs={12}>
-                    <UserCard key={i} user={user} />
+                    <UserCard key={i} user={attendee} />
+                    {activeUser && event.organizer === activeUser.id && attendee.id !== activeUser.id && (
+
+                      <Button className='rounded-pill' variant='danger' style={{ backgroundColor: "transparent", marginBottom: "4rem" }}
+                        onClick={() => removeAttendee(attendee.id)}
+                      >
+                        <RemoveCircleOutlineIcon style={{ color: "red" }} />
+                      </Button>
+
+
+
+                    )}
                   </Col>
                 ))
               ) : (

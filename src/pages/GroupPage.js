@@ -17,13 +17,13 @@ const GroupPage = () => {
     const activeUser = useSelector((state) => state.user.value);
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const [group, setGroup] = useState(null);
-    const [users, setUsers] = useState([]);
+    const [members, setMembers] = useState([]);
     const [events, setEvents] = useState([]);
     const [admin, setAdmin] = useState(null);
     const dispatch = useDispatch();
     let { id } = useParams();
 
-    const fetchGroupAndUsers = async () => {
+    const fetchGroupAndMembers = async () => {
 
         // Fetch group data
         let adminId = null;
@@ -33,10 +33,10 @@ const GroupPage = () => {
             adminId = groupData.admin;
         }
 
-        // Fetch users data
-        const usersData = await getData(`${serverUrl}groups/${id}/get_group_members/`);
-        if (usersData) {
-            setUsers(usersData);
+        // Fetch members data
+        const membersData = await getData(`${serverUrl}groups/${id}/get_group_members/`);
+        if (membersData) {
+            setMembers(membersData);
         }
 
         if (adminId) {
@@ -55,7 +55,7 @@ const GroupPage = () => {
 
     useEffect(() => {
        
-        fetchGroupAndUsers();
+        fetchGroupAndMembers();
     }, []);
 
     const createEvent = () => {
@@ -73,7 +73,7 @@ const GroupPage = () => {
         };
         let response = await postData(url, userToRemove);
         if (response) {
-            fetchGroupAndUsers();
+            fetchGroupAndMembers();
         } else {    
             console.error('Error removing user:', response);
         }   
@@ -189,12 +189,12 @@ const GroupPage = () => {
                                 marginLeft: "2rem",
                             }}
                         >
-                            {users.length > 0 ? (
-                                users.map((user, i) => (
+                            {members.length > 0 ? (
+                                members.map((user, i) => (
                                     <Col lg={3} md={4} sm={6} xs={12}>
                                         <UserCard key={i} user={user} />
                                         {activeUser && group.admin === activeUser.id && user.id !== activeUser.id && (
-                                        <Button className='rounded-pill' variant='danger' style={{backgroundColor:"transparent"}}
+                                        <Button className='rounded-pill' variant='danger' style={{backgroundColor:"transparent", marginBottom:"4rem"}}
                                         onClick={() => removeUser(user.id)}
                                         >
                                         <RemoveCircleOutlineIcon style={{ color: "red" }} />
