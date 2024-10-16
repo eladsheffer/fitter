@@ -20,16 +20,27 @@ const Homepage = () => {
             if (!data) return;
             setGroups(data);
 
-            data = await getData(serverUrl + 'events');
+            let date = new Date();
+            let url = `${serverUrl}events/?date_range_after=${
+                date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
+              }`;
+            
+
+            data = await getData(url);
             if (!data) return;
             setEvents(data);
         }
         else {
-            let data = await getData(serverUrl + 'users/get_groups_user_not_in/?email=' + activeUser.email);
+            let url = `${serverUrl}users/get_groups_user_not_in/?email=${activeUser.email}`;
+            let data = await getData(url);
             if (!data) return;
             setGroups(data);
 
-            data = await getData(serverUrl + 'users/get_events_user_not_in/?email=' + activeUser.email);
+            let date = new Date();
+            url = `${serverUrl}users/get_events_user_not_in/?email=${activeUser.email}&date_range_after=${
+                date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
+              }`;
+            data = await getData(url);
             if (!data) return;
             setEvents(data);
         }
